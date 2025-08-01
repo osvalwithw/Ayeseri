@@ -56,7 +56,7 @@ async function buscarPorID_EE(id) {
 function extrae() {
     event.preventDefault();
     // Evita que el formulario se enví
-    
+    //TEST line
     
     let inputNombre = document.getElementById("Usuario").value;
     let inputpss = document.getElementById("password").value;
@@ -65,7 +65,7 @@ function extrae() {
     } else if (! inputNombre) {
         alert('como se llama?? :))))')
     } else if (! inputpss) {
-        alert('Contraseñaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa?')
+        alert('Contraseñaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa?')
     } else {
         window.open("./Main-page.html", "_self",)
     }
