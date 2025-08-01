@@ -55,7 +55,8 @@ async function buscarPorID_EE(id) {
 
 function extrae() {
     event.preventDefault();
-    // Evita que el formulario se envíe
+    // Evita que el formulario se enví
+    
     
     let inputNombre = document.getElementById("Usuario").value;
     let inputpss = document.getElementById("password").value;
