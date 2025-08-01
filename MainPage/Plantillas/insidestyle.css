@@ -1,0 +1,237 @@
+body {
+    margin: 0;
+    height: 100vh;
+    background-image: url('IMGs/Background.jpg');
+    background-size: cover;
+}
+
+/*-------------Barra de inicio---------------------------------------------*/
+ul {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+    background-color: #38444d;
+}
+
+li {
+    float: left;
+}
+
+ul.main-bar li.submenu {
+    float: right;
+}
+
+li a,
+.submenu-btn {
+    display: inline-block;
+    color: white;
+    text-align: center;
+    padding: 14px 16px;
+    text-decoration: none;
+}
+
+li a:hover,
+.sub-menu:hover .submenu-btn {
+    background-color: red;
+}
+
+.submenu {
+    display: inline-block;
+}
+
+.submenu-content {
+    display: none;
+    position: absolute;
+    margin-left: -85px;
+    background-color: #f9f9f9;
+    min-width: 160px;
+    box-shadow: 0px 0px 16px 8px rgba(0, 0, 0, 0.2);
+    z-index: 1;
+}
+
+.submenu-content a {
+    color: black;
+    padding: 12px 16px;
+    text-decoration: none;
+    display: block;
+    text-align: left;
+}
+
+.submenu-content a:hover {
+    background-color: #f1f1f1;
+}
+
+.submenu:hover .submenu-content {
+    display: block;
+}
+/*-------------Modulo de opciones---------------------------------------------*/
+.display_opt {
+    width: 200px;
+    height: 75px;
+    margin: 20px 20px;
+    display: flex;
+    background: rgba(255, 255, 255, 0.1);
+    border: rgb(39, 0, 148) groove 3px;
+    border-radius: 15px;
+}
+
+.Overview {
+    width: 0px;
+    display: inline-block;
+    margin-top: 10px;
+    margin-left: 20px;
+}
+
+#TOverview_icon{
+    margin-left: 15px;
+    width: 50px;
+    cursor: pointer;
+    background-color: rgba(0, 255, 17, 0.484);
+}
+
+#overview_label{
+    opacity: 0;
+    color: white; 
+    margin-left: 8px;
+    background-color: rgba(33, 37, 33, 0.6);
+}
+
+.Overview:hover #overview_label{
+    opacity: 1;
+}
+
+.Report {
+    display: inline-block;
+    width: 0px;
+    margin-top: 10px;
+    margin-left: 85px;
+}
+
+#Report_icon{
+    margin-left: 12px;
+    cursor: pointer;
+    background-color: rgba(251, 255, 0, 0.484);
+}
+
+#report-label{
+    opacity: 0;
+    color: white; 
+    margin-left: 16px;
+    background-color: rgba(33, 37, 33, 0.6);
+}
+
+.Report:hover #report-label {
+    opacity: 1;
+}
+
+/*-------------------Informacion a consultar/consultada---------------------------------------*/
+.PInformation {
+    border-collapse: collapse;
+    margin-left: 300px;
+    margin-top: -110px;
+    width: 410px;
+    height: 250px;
+    background: rgba(255, 255, 255, 0.3);
+    border: rgb(39, 0, 148) groove 3px;
+    border-radius: 15px;
+}
+
+td[id |= "pil1"] {
+    border-right: rgb(39, 0, 148) solid 3px;
+    width: 110px;
+    text-align: right;
+    padding-right: 3px;
+}
+
+[id |= "pil1"] span {
+    background: rgba(255, 255, 255, 0.5);
+}
+
+[id |= "pitry"] {
+    padding-left: 3px;
+    background: rgba(255, 255, 255, 0.367);
+}
+
+[id |= "pitry"] input {
+    width: 250px;
+    background: rgba(255, 255, 255, 0.367);
+}
+/*----------------------------------------------------------*/
+.Maintain-options {
+    margin-top: -270px;
+}
+
+.infotype_selection {
+    position: absolute;
+    width: 330px;
+    margin-top: 290px;
+    margin-left: 20px;
+    text-align: left;
+    border-collapse: collapse;
+    border: rgb(39, 0, 148) groove 3px;
+    border-radius: 10px;
+}
+
+.infotype_selection th {
+    border-bottom: rgb(39, 0, 148) groove 3px;
+    border-left: rgb(39, 0, 148) groove 3px;
+    ;
+    border-radius: 5px;
+}
+
+.infotype_selection td {
+    border-left: rgb(39, 0, 148) groove 3px;
+    border-right: rgb(39, 0, 148) groove 3px;
+}
+
+#Help_button {
+    text-align: center;
+}
+
+.period_selection {
+    position: absolute;
+    width: 300px;
+    margin-top: 290px;
+    margin-left: 365px;
+    text-align: left;
+    border-collapse: collapse;
+    border: rgb(39, 0, 148) groove 3px;
+    border-radius: 5px;
+}
+
+.period_selection th {
+    border: rgb(39, 0, 148) groove 3px;
+    border-radius: 5px;
+    text-align: center;
+}
+
+.period_selection td {
+    height: 27px;
+}
+
+/*---------------------------------------------------------------------------------------------------------------------*/
+.Direct-search {
+    position: absolute;
+    width: 692px;
+    margin-top: 550px;
+    margin-left: 20px;
+    text-align: left;
+    border-collapse: collapse;
+    border: rgb(39, 0, 148) groove 3px;
+    border-radius: 5px;
+    padding-bottom: 8px;
+}
+
+.Direct-search input,
+p {
+    display: inline-block;
+    margin: 0 20px 0 22px;
+    vertical-align: middle;
+}
+
+.Direct-search h1 {
+    font-size: 15px;
+    border-bottom: rgb(39, 0, 148) groove 3px;
+    margin-bottom: 5px;
+}

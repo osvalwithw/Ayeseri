@@ -1,0 +1,30 @@
+<html>
+    <Body>
+        <h1>
+            Esta es otra pagina asies
+        </h1>
+        <a href=http://192.168.100.10:8000/intro> 
+            para regresar
+        </a>
+        <h2>
+            hora actual: {{momento.day}} / {{momento.month}} / {{momento.year}}
+        </h2>
+        <p>
+            {% if subt%}
+                {% for Temas in subt %}
+                
+                    {{Temas}}
+
+                {% endfor %}
+            {% else %}
+                <p>No hay elementos que mostrar</p>
+            {% endif %}
+        </p>
+        <input type="submit" value="Cerrar" class="SBbutton1" onclick="kill()">
+        <script type="text/javascript">
+            function kill() { 
+                window.close()
+            } 
+        </script>
+    </body>
+</html>
