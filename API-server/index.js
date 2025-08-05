@@ -6,10 +6,7 @@ const cors = require('cors');
 const app = express();
 //const PORT = 3327;
 
-const PORT = process.env.PORT || 3000;
-app.listen(PORT, () => {
-  console.log(`Servidor corriendo en puerto ${PORT}`);
-});
+const PORT = process.env.PORT || 3327;
 
 // Middleware
 app.use(cors()); // Permite peticiones desde cualquier origen
@@ -17,10 +14,10 @@ app.use(express.json()); // Para manejar JSON en peticiones POST
 
 // Conexión a la base de datos
 const db = mysql.createConnection({
-  host: '192.168.18.254',
-  user: 'apicon',
-  password: '!G00gl3!',
-  database: 'dev_base'
+  host: process.env.DB_HOST,
+  user: process.env.DB_USER,
+  password: process.env.DB_PASS,
+  database: process.env.DB_TABLE
 });
 
 db.connect(err => {
