@@ -4,7 +4,12 @@ const mysql = require('mysql2');
 const cors = require('cors');
 
 const app = express();
-const PORT = 3327;
+//const PORT = 3327;
+
+const PORT = process.env.PORT || 3000;
+app.listen(PORT, () => {
+  console.log(`Servidor corriendo en puerto ${PORT}`);
+});
 
 // Middleware
 app.use(cors()); // Permite peticiones desde cualquier origen
