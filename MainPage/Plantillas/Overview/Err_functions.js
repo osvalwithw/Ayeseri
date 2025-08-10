@@ -9,7 +9,7 @@ function display_errors() {
     }
     document.getElementById('Header_1').textContent = `Overview Infotype ${it} errors`;
 
-    fetch(`http://localhost:3327/employee_errors/${id}`)
+    fetch(`https://ayeseri.onrender.com/employee_errors/${id}`)
     .then(res => {
     if (!res.ok) throw new Error('Fallo la API');
         return res.json();
