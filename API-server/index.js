@@ -1,47 +1,49 @@
-
 const express = require('express');
-const mysql = require('mysql2');
 const cors = require('cors');
+const mysql = require('mysql2/promise');
 
 const app = express();
-//const PORT = 3327;
+app.use(cors());
+app.use(express.json());
 
-const PORT = process.env.PORT || 3327;
-
-// Middleware
-app.use(cors()); // Permite peticiones desde cualquier origen
-app.use(express.json()); // Para manejar JSON en peticiones POST
-
-// Conexión a la base de datos
-const db = mysql.createConnection({
-  host: process.env.DB_HOST,
-  user: process.env.DB_USER,
-  password: process.env.DB_PASS,
-  database: process.env.DB_TABLE
+// Pool de conexiones a Railway (usa variables de entorno)
+const pool = mysql.createPool({
+  host: process.env.MYSQLHOST,         // p. ej. ballast.proxy.rlwy.net
+  port: process.env.MYSQLPORT ? Number(process.env.MYSQLPORT) : 3306,
+  user: process.env.MYSQLUSER,         // p. ej. root
+  password: process.env.MYSQLPASSWORD, // NO hardcodear
+  database: process.env.MYSQLDATABASE, // p. ej. railway
+  waitForConnections: true,
+  connectionLimit: 10,
+  queueLimit: 0
 });
 
-db.connect(err => {
-  if (err) {
-    console.error('Error al conectar con la base de datos:', err);
-    process.exit(1);
+// Healthcheck (verifica DB)
+app.get('/healthz', async (_req, res) => {
+  try {
+    const [rows] = await pool.query('SELECT 1 AS ok');
+    res.json({ ok: rows[0].ok === 1 });
+  } catch (e) {
+    console.error('❌ DB Health:', e.message);
+    res.status(500).json({ ok: false, error: e.message });
   }
-  console.log('Conectado a la base de datos MySQL');
 });
 
-// Ruta para obtener todos los registros de la tabla errors
-app.get('/errors', (req, res) => {
-  db.query('SELECT * FROM errors', (err, results) => {
-    if (err) {
-      console.error('❌ Error en la consulta /errors:', err.message);
-      return res.status(500).json({ error: err.message });
-    }
-    res.json(results);
-  });
+// Ejemplo: contar errores
+app.get('/errors/count', async (_req, res) => {
+  try {
+    const [rows] = await pool.query('SELECT COUNT(*) AS total FROM errors');
+    res.json({ total: rows[0].total });
+  } catch (e) {
+    console.error('❌ /errors/count:', e.message);
+    res.status(500).json({ error: e.message });
+  }
 });
 
-app.get('/employee_errors/:id', (req, res) => {
+// Tu endpoint existente (ajustado a async/await)
+app.get('/employee_errors/:id', async (req, res) => {
   const id = req.params.id;
-  const query = `
+  const sql = `
     SELECT 
       ee.ID_EE, 
       ee.Load_Date, 
@@ -49,26 +51,22 @@ app.get('/employee_errors/:id', (req, res) => {
       e.Error_message,
       IT.ID_Infotype
     FROM employee_errors ee
-    JOIN errors e ON ee.ID_Error = e.IDX
+    JOIN errors e   ON ee.ID_Error = e.IDX
     JOIN infotypes IT ON e.ID_Infotype = IT.Infotype_IND
     WHERE ee.ID_EE = ?
   `;
-  db.query(query, [id], (err, results) => {
-    if (err) {
-      console.error('❌ Error en la consulta por ID_EE:', err.message);
-      return res.status(500).json({ error: err.message });
-    }
-
-    if (results.length === 0) {
-      return res.status(404).json({ message: 'No se encontró ningún registro con ese ID_EE' });
-    }
-
-    res.json(results); // o `res.json(results)` si esperas múltiples
-  });
+  try {
+    const [rows] = await pool.query(sql, [id]);
+    if (!rows.length) return res.status(404).json({ message: 'No se encontró ningún registro con ese ID_EE' });
+    res.json(rows);
+  } catch (e) {
+    console.error('❌ /employee_errors:', e.message);
+    res.status(500).json({ error: e.message });
+  }
 });
 
-
-// Escuchar en el puerto 3000
+// Arranque
+const PORT = process.env.PORT || 3000;
 app.listen(PORT, '0.0.0.0', () => {
-  console.log(`🚀 API corriendo en http://0.0.0.0:${PORT}`);
+  console.log(`🚀 API escuchando en ${PORT}`);
 });
