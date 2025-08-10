@@ -6,39 +6,51 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 
-// Pool de conexiones a Railway (usa variables de entorno)
 const pool = mysql.createPool({
-  host: process.env.MYSQLHOST,         // p. ej. ballast.proxy.rlwy.net
+  host: process.env.MYSQLHOST,
   port: process.env.MYSQLPORT ? Number(process.env.MYSQLPORT) : 3306,
-  user: process.env.MYSQLUSER,         // p. ej. root
-  password: process.env.MYSQLPASSWORD, // NO hardcodear
-  database: process.env.MYSQLDATABASE, // p. ej. railway
+  user: process.env.MYSQLUSER,
+  password: process.env.MYSQLPASSWORD,
+  database: process.env.MYSQLDATABASE,
   waitForConnections: true,
   connectionLimit: 10,
-  queueLimit: 0
+  queueLimit: 0,
+  // Activa SSL si lo necesitas (p.ej., PlanetScale requiere; Railway a veces no)
+  ssl: process.env.MYSQL_SSL === 'true' ? { rejectUnauthorized: false } : undefined
 });
 
-// Healthcheck (verifica DB)
+
 app.get('/healthz', async (_req, res) => {
   try {
     const [rows] = await pool.query('SELECT 1 AS ok');
     res.json({ ok: rows[0].ok === 1 });
   } catch (e) {
-    console.error('❌ DB Health:', e.message);
-    res.status(500).json({ ok: false, error: e.message });
+    console.error('❌ DB Health error:', e); // log completo
+    res.status(500).json({ ok: false, error: e.message || String(e) });
   }
 });
 
-// Ejemplo: contar errores
 app.get('/errors/count', async (_req, res) => {
   try {
     const [rows] = await pool.query('SELECT COUNT(*) AS total FROM errors');
     res.json({ total: rows[0].total });
   } catch (e) {
-    console.error('❌ /errors/count:', e.message);
-    res.status(500).json({ error: e.message });
+    console.error('❌ /errors/count error:', e);
+    res.status(500).json({ error: e.message || String(e) });
   }
 });
+
+// ⚠️ SOLO para debug temporal, quítalo luego:
+app.get('/env-check', (_req, res) => {
+  res.json({
+    MYSQLHOST: !!process.env.MYSQLHOST,
+    MYSQLPORT: process.env.MYSQLPORT,
+    MYSQLUSER: !!process.env.MYSQLUSER,
+    MYSQLPASSWORD: process.env.MYSQLPASSWORD ? 'set' : 'missing',
+    MYSQLDATABASE: !!process.env.MYSQLDATABASE
+  });
+});
+
 
 // Tu endpoint existente (ajustado a async/await)
 app.get('/employee_errors/:id', async (req, res) => {

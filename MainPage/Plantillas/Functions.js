@@ -32,7 +32,7 @@ function search_EE(){
 
 async function buscarPorID_EE(id) {
     try {
-        const response = await fetch(`http://localhost:3327/employee_errors/${id}`);
+        const response = await fetch(`https://ayeseri.onrender.com/employee_errors/${id}`);
         if (!response.ok) {
             if (response.status === 404) {
                 console.log('❗ No se encontró ningún registro con ese ID_EE');
