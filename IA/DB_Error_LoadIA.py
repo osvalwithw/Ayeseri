@@ -1,13 +1,14 @@
 import pandas as pd
 import mysql.connector
-from IA_TEST import predecir_infotipo
+from Clasificador_infotipo import predecir_infotipo
 
 def New_Error(Sel, mesage):    
     conexion = mysql.connector.connect(
-        host="192.168.18.254",
-        user="Inserter",
-        password="!G00gl3!",
-        database="dev_base"
+    host="ballast.proxy.rlwy.net", 
+    user="root",
+    password="orcwRrgSqSXVXQvheWbdQuysdWbIEzxO",
+    database="railway",
+    port=36227
     )
     mycursor = conexion.cursor()
 

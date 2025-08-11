@@ -1,13 +1,14 @@
 import pandas as pd
 import mysql.connector
 from datetime import datetime
-from Error_load_V2 import New_Error
+from IA.DB_Error_LoadIA import New_Error
 
 conexion = mysql.connector.connect(
-    host="192.168.18.254",  # Cambia a la IP del servidor si es remoto
-    user="Inserter",
-    password="!G00gl3!",
-    database="dev_base"
+    host="ballast.proxy.rlwy.net", 
+    user="root",
+    password="orcwRrgSqSXVXQvheWbdQuysdWbIEzxO",
+    database="railway",
+    port=36227
 )
 
 errors_obtain = conexion.cursor()
