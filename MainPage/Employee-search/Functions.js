@@ -67,7 +67,7 @@ function extrae() {
     } else if (! inputpss) {
         alert('Contraseñaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa?')
     } else {
-        window.open("./Main-page.html", "_self",)
+        window.open("./MainPage/Employee-search/Main-page.html", "_self",)
     }
 }
 
