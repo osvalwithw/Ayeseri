@@ -44,7 +44,7 @@ async function buscarPorID_EE(id) {
         }
         const data = await response.json();
         console.log('✅ Resultado encontrado:', data);
-        window.location.href = `./Overview/Errorsview.html?IT=${SELECTION}&ID=${id}`;
+        window.location.href = `../Overview/Errorsview.html?IT=${SELECTION}&ID=${id}`;
         return data;
     } catch (error) {
         console.error('❌ Error al conectar con la API:', error);
