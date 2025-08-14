@@ -25,6 +25,7 @@ function extrae() {
     } else if (! inputpss) {
         alert('Ingrese la contraseña')
     } else {
+        User_search()
         window.open('../MainPage/Employee-search/Main-page.html', "_self",)
     }
 }
