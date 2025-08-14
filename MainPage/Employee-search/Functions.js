@@ -44,30 +44,11 @@ async function buscarPorID_EE(id) {
         }
         const data = await response.json();
         console.log('✅ Resultado encontrado:', data);
-        window.location.href = `./Overview/Errorsview.html?IT=${SELECTION}&ID=${id}`;
+        window.location.href = `../Overview/Errorsview.html?IT=${SELECTION}&ID=${id}`;
         return data;
     } catch (error) {
         console.error('❌ Error al conectar con la API:', error);
         return null;
-    }
-}
-
-
-function extrae() {
-    event.preventDefault();
-    // Evita que el formulario se enví
-    //TEST line
-    
-    let inputNombre = document.getElementById("Usuario").value;
-    let inputpss = document.getElementById("password").value;
-    if (! inputNombre && ! inputpss) {
-        alert('Todo esta vacio, es usted imbecil?')
-    } else if (! inputNombre) {
-        alert('como se llama?? :))))')
-    } else if (! inputpss) {
-        alert('Contraseñaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa?')
-    } else {
-        window.open("./Main-page.html", "_self",)
     }
 }
 
