@@ -28,3 +28,26 @@ function extrae() {
         window.open('../MainPage/Employee-search/Main-page.html', "_self",)
     }
 }
+
+async function User_search(usertofind){
+    try{
+        const response = await fetch(`https://ayeseri.onrender.com/Users`);
+        if (!response.ok) {
+            if (response.status === 404) {
+                console.log('No hay usuarios en la base');
+            } else {
+                console.error('Error 455', response.statusText);//Error peticion
+            }
+            return null;
+        }
+        const data = await response.json();
+        alert(data)
+        
+    } catch (error) {
+        console.error('Error de conexion 468', error);//error de conexion con la API
+        return null;
+    }
+
+    }
+}
+
