@@ -11,26 +11,35 @@
 //this hace referencia al objeto en cuestion
 //Se pueden anidar objetos, respetando las mismas llamadas anteriores
 
-function extrae() {
+function User_Validation() {
+    let key = []
     event.preventDefault();
     // Evita que el formulario se enví
     //TEST line
     
-    let inputNombre = document.getElementById("Usuario").value;
+    let inputUser = document.getElementById("Usuario").value;
     let inputpss = document.getElementById("password").value;
-    if (! inputNombre && ! inputpss) {
+    if (! inputUser && ! inputpss) {
         alert('Por favor, rellene todos los campos')
-    } else if (! inputNombre) {
-        alert('Ingrese el correo')
+    } else if (! inputUser) {
+        alert('Ingrese el correo o nombre de usuario')
     } else if (! inputpss) {
         alert('Ingrese la contraseña')
     } else {
-        User_search()
-        window.open('../MainPage/Employee-search/Main-page.html', "_self",)
+        console.log("Debbuging method start")
+        key = User_search(inputUser, inputpss)
+        console.log(key[0] + key[1])
+        if(!key[0] && !key[1]){
+            //console.log("Usuario o contraseña incorrectos, por favor rectifica"
+        }else{
+            console.log("you may enter")
+        }
+        //window.open('../MainPage/Employee-search/Main-page.html', "_self",)
     }
 }
 
-async function User_search(usertofind){
+async function User_search(usertofind, passw){
+    let key = [false, false];
     try{
         const response = await fetch(`https://ayeseri.onrender.com/Users`);
         if (!response.ok) {
@@ -42,13 +51,24 @@ async function User_search(usertofind){
             return null;
         }
         const data = await response.json();
-        alert(data)
-        
+        console.log(data);
+        for (const Obj of data){
+            if((Obj.Email === usertofind) || (Obj.Username === usertofind)){
+                key[0] = true;
+                console.log(key[0]);
+            }
+            if((Obj.Password === passw && key[0])){
+                key[1] = true;
+                console.log(key[0]);
+            }
+        }
+        console.log(key)
+        return key;
+            
     } catch (error) {
         console.error('Error de conexion 468', error);//error de conexion con la API
         return null;
     }
 
-    }
 }
 
