@@ -40,18 +40,6 @@ app.get('/errors/count', async (_req, res) => {
   }
 });
 
-// ⚠️ SOLO para debug temporal, quítalo luego:
-app.get('/env-check', (_req, res) => {
-  res.json({
-    MYSQLHOST: !!process.env.MYSQLHOST,
-    MYSQLPORT: process.env.MYSQLPORT,
-    MYSQLUSER: !!process.env.MYSQLUSER,
-    MYSQLPASSWORD: process.env.MYSQLPASSWORD ? 'set' : 'missing',
-    MYSQLDATABASE: !!process.env.MYSQLDATABASE
-  });
-});
-
-
 // Tu endpoint existente (ajustado a async/await)
 app.get('/employee_errors/:id', async (req, res) => {
   const id = req.params.id;
@@ -72,7 +60,7 @@ app.get('/employee_errors/:id', async (req, res) => {
     if (!rows.length) return res.status(404).json({ message: 'No se encontró ningún registro con ese ID_EE' });
     res.json(rows);
   } catch (e) {
-    console.error('❌ /employee_errors:', e.message);
+    console.error('/employee_errors:', e.message);
     res.status(500).json({ error: e.message });
   }
 });
@@ -80,5 +68,15 @@ app.get('/employee_errors/:id', async (req, res) => {
 // Arranque
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, '0.0.0.0', () => {
-  console.log(`🚀 API escuchando en ${PORT}`);
+  console.log(`API escuchando en ${PORT}`);
+});
+
+app.get('/Users', async (req, res) => {
+  try {
+    const [rows] = await pool.query(`SELECT * FROM Users`);
+    res.json(rows);
+  } catch (e){
+    console.error('/Users:', e.message);
+    res.status(500).json({error: e.message})
+  }
 });
