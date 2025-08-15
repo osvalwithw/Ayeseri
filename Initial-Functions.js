@@ -35,6 +35,9 @@ async function User_Validation() {
         const key = await User_search(inputUser, inputpss)
         //console.log(`${key[0]} + ${key[1]}`)
         if (key[0] && key[1]) {
+            if(inputUser == 'Admin'){
+                alert("Maestro")
+            }
             window.open('../MainPage/Employee-search/Main-page.html', "_self");
         } else if (!key[0]) {
             alert("El usuario no existe");} 
