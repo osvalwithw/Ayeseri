@@ -46,7 +46,6 @@ async function User_Validation() {
     }
 }
 
-
 async function User_search(usertofind, passw){
     const key = [false, false];
     try{
@@ -81,3 +80,7 @@ async function User_search(usertofind, passw){
 
 }
 
+function CreateAccount(){
+    window.open('../MainPage/RegisterMenu/MenuView.html', "_blank", 
+        "width=600,height=400,top=100,left=100, toolbar=no,scrollbars=yes,resizable=no");
+}

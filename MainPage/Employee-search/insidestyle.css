@@ -1,7 +1,7 @@
 body {
     margin: 0;
     height: 100vh;
-    background-image: url('IMGs/Background.jpg');
+    background-image: url('Background.jpg');
     background-size: cover;
 }
 
