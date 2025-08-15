@@ -3,3 +3,30 @@
     display: grid;
     gap: 10px;
 }
+
+#page-header{
+    position:relative;
+    margin: 20px 30% 0;
+}
+
+.InsertTxt{
+    position:relative;
+    margin: 50px 10% 0;
+}
+
+#button-container{
+    
+    margin: 40px 20% 0;
+    cursor: pointer;
+    width: 100px;
+    height: 40px;
+    background-color: rgb(255, 255, 255);
+    border-radius: 20px;
+    color: rgb(255, 255, 255);
+    border: rgb(44, 89, 238) 2px groove;
+}
+
+#button-container:hover{
+    display:block;
+    background-color: rgb(101, 134, 241);
+}

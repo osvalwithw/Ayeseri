@@ -10,7 +10,7 @@
         <body>
             <div class="Mainly-box">
                 <div class="Entries">
-                    <h2>Registro</h2>
+                    <h2 id="page-header">Registro de nuevos usuarios</h2>
                     <form action="#" method="POST">
                         <div class="InsertTxt">
                             <label>Número de ticket</label> 
@@ -23,7 +23,10 @@
                             <input type="password" id="PSS" name="PSS" required placeholder="Password">
                             <label>Repetir Contraseña</label>
                             <input type="password" id="RPTPSS" name="RPTPSS" required placeholder="Password">
-                            <button style="width: 50px;"onclick="SendRequest()" type="button">Enviar</button>
+                            <div id="button-container">
+                                <!--utton id="sendbutton" onclick="SendRequest()" type="button">Enviar</button-->
+                            </div>
+                            
                         </div>
                     </form>
                 </div>
