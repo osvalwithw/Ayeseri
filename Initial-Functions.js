@@ -11,8 +11,7 @@
 //this hace referencia al objeto en cuestion
 //Se pueden anidar objetos, respetando las mismas llamadas anteriores
 
-function User_Validation() {
-    let key = []
+async function User_Validation() {
     event.preventDefault();
     // Evita que el formulario se enví
     //TEST line
@@ -21,25 +20,35 @@ function User_Validation() {
     let inputpss = document.getElementById("password").value;
     if (! inputUser && ! inputpss) {
         alert('Por favor, rellene todos los campos')
-    } else if (! inputUser) {
+        return;
+    } 
+    if (! inputUser) {
         alert('Ingrese el correo o nombre de usuario')
-    } else if (! inputpss) {
+        return;
+    } 
+    if (! inputpss) {
         alert('Ingrese la contraseña')
-    } else {
-        console.log("Debbuging method start")
-        key = User_search(inputUser, inputpss)
-        console.log(key[0] + key[1])
-        if(!key[0] && !key[1]){
-            //console.log("Usuario o contraseña incorrectos, por favor rectifica"
-        }else{
-            console.log("you may enter")
-        }
-        //window.open('../MainPage/Employee-search/Main-page.html', "_self",)
+        return;
+    } 
+    try {
+        //console.log("Debbuging method start")
+        const key = await User_search(inputUser, inputpss)
+        //console.log(`${key[0]} + ${key[1]}`)
+        if (key[0] && key[1]) {
+            window.open('../MainPage/Employee-search/Main-page.html', "_self");
+        } else if (!key[0]) {
+            alert("El usuario no existe");} 
+        else {
+            alert("Contraseña es incorrecta, por favor veifica la entrada");}
+    } catch (err) {
+      console.error("Error inesperado en validación:", err);
+      alert("Ocurrió un error inesperado. Intenta de nuevo.");
     }
 }
 
+
 async function User_search(usertofind, passw){
-    let key = [false, false];
+    const key = [false, false];
     try{
         const response = await fetch(`https://ayeseri.onrender.com/Users`);
         if (!response.ok) {
@@ -55,11 +64,11 @@ async function User_search(usertofind, passw){
         for (const Obj of data){
             if((Obj.Email === usertofind) || (Obj.Username === usertofind)){
                 key[0] = true;
-                console.log(key[0]);
+                //console.log(key[0]);
             }
             if((Obj.Password === passw && key[0])){
                 key[1] = true;
-                console.log(key[0]);
+                //console.log(key[0]);
             }
         }
         console.log(key)
