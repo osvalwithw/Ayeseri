@@ -15,18 +15,53 @@
 }
 
 #button-container{
-    
-    margin: 40px 20% 0;
-    cursor: pointer;
-    width: 100px;
-    height: 40px;
-    background-color: rgb(255, 255, 255);
-    border-radius: 20px;
-    color: rgb(255, 255, 255);
-    border: rgb(44, 89, 238) 2px groove;
+     margin: 40px 20% 0;
 }
 
-#button-container:hover{
+#border-button{
+    width: 102px;
+    height: 42px;
+    display:none;
+    background-color: rgb(255, 255, 255);
+    border: rgb(68, 127, 255) 2px groove;
+}
+
+.buttonitem{
+    position:fixed;
+    cursor: pointer;
+    border-radius: 20px;
+}
+
+#button-container:hover #border-button{
     display:block;
-    background-color: rgb(101, 134, 241);
+}
+
+#sendbutton {
+    width: 100px;
+    height: 40px;
+    margin: 3px;
+    color: rgb(0, 0, 0);
+    color: rgb(255, 255, 255);
+    background-color: rgb(37, 87, 250);
+    border: None;
+}
+
+#sendbutton:hover{
+    background-color: rgb(68, 127, 255);
+}
+
+.regindex{
+    background-color: rgb(202, 234, 240);
+    border-radius: 20px;
+    height: 20px;
+    padding: 10px 0 10px 30px;
+    border: none;
+}
+
+.regindex:hover {
+    background-color: rgb(167, 191, 196);
+}
+
+.regindex:hover::placeholder {
+    color: rgb(255, 255, 255);
 }

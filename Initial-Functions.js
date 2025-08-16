@@ -10,6 +10,7 @@
 //Se puede acceder a los elementos de un objeto usando person.lastName;, person["lastname"] o x = lastname; person[x]
 //this hace referencia al objeto en cuestion
 //Se pueden anidar objetos, respetando las mismas llamadas anteriores
+document.getElementById("Loginpage").addEventListener("click", Loginpage);
 
 async function User_Validation() {
     event.preventDefault();
@@ -84,6 +85,15 @@ async function User_search(usertofind, passw){
 }
 
 function CreateAccount(){
-    window.open('../MainPage/RegisterMenu/MenuView.html', "_blank", 
-        "width=600,height=400,top=100,left=100, toolbar=no,scrollbars=yes,resizable=no");
+    //window.open('../MainPage/RegisterMenu/MenuView.html', "_blank", 
+    //    "width=600,height=400,top=100,left=100, toolbar=no,scrollbars=yes,resizable=no");
+    document.getElementById("glass-container").style.display = "none";
+    document.getElementById("Register-box").style.display = "block";
+}
+
+function Loginpage(){
+    //window.open('../MainPage/RegisterMenu/MenuView.html', "_blank", 
+    //    "width=600,height=400,top=100,left=100, toolbar=no,scrollbars=yes,resizable=no");
+    document.getElementById("glass-container").style.display = "block";
+    document.getElementById("Register-box").style.display = "none";
 }

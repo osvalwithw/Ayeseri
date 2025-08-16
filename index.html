@@ -9,7 +9,7 @@
         </head>
     
         <body>
-            <div class="glass-container">
+            <div id="glass-container">
                 <div class="login-box">
                     <h2>Login</h2>
                     <form action="#" method="POST">
@@ -24,5 +24,35 @@
                         <button onclick="User_Validation()" type="button">Login</button>
                     </form>
                 </div>
+            </div>
+            <div id="Register-box">
+                <div class="Entries">
+                    <h2 id="page-header">Registro de nuevos usuarios</h2>
+                    <form action="#" method="POST">
+                        <div class="InsertTxt">
+                            <label id = "NoTicketlbl">Número de ticket</label> 
+                            <input class="regindex" type="text" id="NoTicket" name="NoTicket" required placeholder="RITMxxxxxx" pattern="RITM*" requiered>
+                            <label id= "Usernamelb" >Nombre de usuario</label>
+                            <input class="regindex" type="text" id="Username" name="Username" required placeholder="Username">
+                            <label id = "Emaillb">Correo</label>
+                            <input class="regindex" type="text" id="Email" name="Email" required placeholder="Email">
+                            <label id ="passwordlb">Contraseña</label>
+                            <input class="regindex" type="password" id="PSS" name="PSS" required placeholder="Password">
+                            <label id="RPTPSSlb">Repetir Contraseña</label>
+                            <input class="regindex" type="password" id="RPTPSS" name="RPTPSS" required placeholder="Password">
+                            <div class="Menubuttons">    
+                                <div id="button-container">
+                                    <div class="buttonitem" id="border-button"></div>
+                                    <button class="buttonitem" id="sendbutton" onclick="SendRequest()" type="button">Enviar</button>
+                                </div>
+                                <div id="button-container">
+                                    <div class="buttonitem" id="border-button"></div>
+                                    <button class="buttonitem" id="Loginpage" onclick="Loginpage()" type="button">Regresar</button>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
         </body>
     </html>

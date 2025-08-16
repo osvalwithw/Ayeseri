@@ -4,18 +4,19 @@
     font-family: 'montserrat', sans-serif;
 } 
 
-body { 
-    margin: 0; 
+body {  
     display: flex; 
+    flex-wrap: wrap;
+    gap: 150px;
     justify-content: center; 
     align-items: center; 
     place-items: center;
-    height: 100vh; 
+    height: 100vh;
     background-image: url('./Background.jpg'); 
     background-size: cover;
 }
 
-.glass-container {
+#glass-container {
     width: 300px; 
     height: 400px; 
     position: relative; 
@@ -26,7 +27,7 @@ body {
     border: lpx solid #ffffff;
 }
 
-.glass-container::before {
+#glass-container::before {
     content: '';
     position: absolute;
     width: 100%; 
@@ -57,7 +58,7 @@ form {
 
 input {
     padding: 10px;
-    margin-top: 25px;
+    margin-top: 15px;
     border: none;
     border-radius: 10px;
     background: transparent;
@@ -122,4 +123,86 @@ p {
 
 #register{
     cursor: pointer;
+}
+
+/*-----------*/
+
+#Register-box{
+    display:none;
+    gap: 120px;
+    justify-content: center; 
+    align-items: center; 
+    place-items: center;
+    height: 100vh;
+    z-index: 1; 
+    background: rgba(255, 255, 255, 0.1); 
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); 
+    border-radius: 10px; 
+}
+
+.InsertTxt{
+    display: grid;
+    gap: 10px;
+}
+
+#page-header{
+    position:relative;
+    margin: 20px 30% 0;
+}
+
+.InsertTxt{
+    position:relative;
+    margin: 50px 10% 0;
+}
+
+.Menubuttons{
+    display:flex;
+    flex-wrap: wrap;
+    gap:80px;
+}
+
+#button-container{
+     margin: 40px 7% 0;
+}
+
+#border-button{
+    width: 102px;
+    height: 42px;
+    display:none;
+    background-color: rgb(255, 255, 255);
+    border: rgb(68, 127, 255) 2px groove;
+}
+
+.buttonitem{
+    position:fixed;
+    cursor: pointer;
+    border-radius: 20px;
+}
+
+#button-container:hover #border-button{
+    display:block;
+}
+
+#sendbutton {
+    width: 100px;
+    height: 40px;
+    margin: 3px;
+    color: rgb(0, 0, 0);
+    color: rgb(255, 255, 255);
+    background-color: rgb(37, 87, 250);
+    border: None;
+}
+
+#sendbutton:hover{
+    background-color: rgb(68, 127, 255);
+}
+
+#Loginpage{
+    width: 100px;
+    height: 40px;
+    margin: 3px;
+    color: rgb(0, 0, 0);
+    color: rgb(255, 255, 255);
+    background-color: rgb(37, 87, 250);
+    border: None;
 }

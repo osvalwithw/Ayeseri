@@ -5,7 +5,7 @@
             <meta name="viewport" content="width=device-width, initial-scale=1.0">
             <title>Login Page</title>
             <link rel="stylesheet" href="./MenuStyle.css">
-            <script src="./Initial-Functions.js" defer></script>
+            <script src="./MenuFunctions.js" defer></script>
         </head>    
         <body>
             <div class="Mainly-box">
@@ -13,22 +13,24 @@
                     <h2 id="page-header">Registro de nuevos usuarios</h2>
                     <form action="#" method="POST">
                         <div class="InsertTxt">
-                            <label>Número de ticket</label> 
-                            <input type="text" id="NoTicket" name="NoTicket" required placeholder="RITMxxxxxx">
-                            <label>Nombre de usuario</label>
-                            <input type="text" id="Username" name="Username" required placeholder="Username">
-                            <label>Correo</label>
-                            <input type="text" id="Email" name="Email" required placeholder="Email">
-                            <label>Contraseña</label>
-                            <input type="password" id="PSS" name="PSS" required placeholder="Password">
-                            <label>Repetir Contraseña</label>
-                            <input type="password" id="RPTPSS" name="RPTPSS" required placeholder="Password">
+                            <label id = "NoTicketlbl">Número de ticket</label> 
+                            <input class="regindex" type="text" id="NoTicket" name="NoTicket" required placeholder="RITMxxxxxx" pattern="RITM*" requiered>
+                            <label id= "Usernamelb" >Nombre de usuario</label>
+                            <input class="regindex" type="text" id="Username" name="Username" required placeholder="Username">
+                            <label id = "Emaillb">Correo</label>
+                            <input class="regindex" type="text" id="Email" name="Email" required placeholder="Email">
+                            <label id ="passwordlb">Contraseña</label>
+                            <input class="regindex" type="password" id="PSS" name="PSS" required placeholder="Password">
+                            <label id="RPTPSSlb">Repetir Contraseña</label>
+                            <input class="regindex" type="password" id="RPTPSS" name="RPTPSS" required placeholder="Password">
                             <div id="button-container">
-                                <!--utton id="sendbutton" onclick="SendRequest()" type="button">Enviar</button-->
+                                <div class="buttonitem" id="border-button"></div>
+                                <button class="buttonitem" id="sendbutton" onclick="SendRequest()" type="button">Enviar</button-->
                             </div>
                             
                         </div>
                     </form>
                 </div>
+            </div>
         </body>
     </html>
