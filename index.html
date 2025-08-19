@@ -5,6 +5,7 @@
             <meta name="viewport" content="width=device-width, initial-scale=1.0">
             <title>Login Page</title>
             <link rel="stylesheet" href="style.css">
+            <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
             <script src="./Initial-Functions.js" defer></script>
         </head>
     
@@ -16,9 +17,7 @@
                         <input type="text" id="Usuario" name="Usuario" required placeholder="Usuario">
                         <input type="password" id="password" name="password" required placeholder="Password">
                         <div class="options">
-                            <input type="checkbox" id="remember" name="remember">
-                            <label for="remember">Recordarme</label><br><br>
-                            <a href="#">¿olvido tu contraseña?</a>
+                            <a id="PSSbutton" href="#">¿olvido su contraseña?</a>
                             <p>¿No tiene una cuenta? <a onclick="CreateAccount()" id="register">Registarse</a></p>
                         </div>
                         <button onclick="User_Validation()" type="button">Login</button>
@@ -35,12 +34,12 @@
                             <label id= "Usernamelb" >Nombre de usuario</label>
                             <input class="regindex" type="text" id="Username" name="Username" required placeholder="Username">
                             <label id = "Emaillb">Correo</label>
-                            <input class="regindex" type="text" id="Email" name="Email" required placeholder="Email">
+                            <input class="regindex" type="text" id="Email" name="Email" required placeholder="Example@domain.com">
                             <label id ="passwordlb">Contraseña</label>
                             <input class="regindex" type="password" id="PSS" name="PSS" required placeholder="Password">
                             <label id="RPTPSSlb">Repetir Contraseña</label>
                             <input class="regindex" type="password" id="RPTPSS" name="RPTPSS" required placeholder="Password">
-                            <div class="Menubuttons">    
+                            <div class="Menubuttons">
                                 <div id="button-container">
                                     <div class="buttonitem" id="border-button"></div>
                                     <button class="buttonitem" id="sendbutton" onclick="SendRequest()" type="button">Enviar</button>

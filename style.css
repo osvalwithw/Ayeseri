@@ -6,8 +6,6 @@
 
 body {  
     display: flex; 
-    flex-wrap: wrap;
-    gap: 150px;
     justify-content: center; 
     align-items: center; 
     place-items: center;
@@ -45,7 +43,8 @@ body {
 }  
 
 h2 {
-    color: #fff; 
+    
+    color: #ffffff; 
     margin-top: 30px; 
     margin-bottom: -20px;
 } 
@@ -68,7 +67,7 @@ input {
 }
 
 input::placeholder {
-    color: #fff;
+    color: #555555;
 }
 
 input:focus {
@@ -88,7 +87,7 @@ input:focus {
 }
 
 button {
-    background: #ffff;
+    background: #ffffff;
     color: black;
     padding: 10px;
     border: none;
@@ -100,7 +99,7 @@ button {
 button:hover {
     background: transparent;
     color:#fff;
-    outline: 1px solid #fff;
+    outline: 2px solid #fff;
 }
 
 p {
@@ -121,6 +120,14 @@ p {
     color: #fff;
 }
 
+.options{
+    margin-top: 50px;
+}
+
+#PSSbutton:hover{
+    color: rgb(164, 226, 250);
+}
+
 #register{
     cursor: pointer;
 }
@@ -129,80 +136,35 @@ p {
 
 #Register-box{
     display:none;
-    gap: 120px;
+    margin-top: 30px;
     justify-content: center; 
     align-items: center; 
     place-items: center;
-    height: 100vh;
+    height: 90vh;
+    width: 60vh;
     z-index: 1; 
     background: rgba(255, 255, 255, 0.1); 
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); 
-    border-radius: 10px; 
-}
-
-.InsertTxt{
-    display: grid;
-    gap: 10px;
+    border-radius: 10px;
+    text-align: center;
 }
 
 #page-header{
     position:relative;
-    margin: 20px 30% 0;
 }
 
 .InsertTxt{
+    text-align: left;
+    display: grid;
+    gap: 5px;
     position:relative;
-    margin: 50px 10% 0;
+    margin:0 10% 0;
 }
 
 .Menubuttons{
-    display:flex;
+    display: flex;
     flex-wrap: wrap;
-    gap:80px;
-}
-
-#button-container{
-     margin: 40px 7% 0;
-}
-
-#border-button{
-    width: 102px;
-    height: 42px;
-    display:none;
-    background-color: rgb(255, 255, 255);
-    border: rgb(68, 127, 255) 2px groove;
-}
-
-.buttonitem{
-    position:fixed;
-    cursor: pointer;
-    border-radius: 20px;
-}
-
-#button-container:hover #border-button{
-    display:block;
-}
-
-#sendbutton {
-    width: 100px;
-    height: 40px;
-    margin: 3px;
-    color: rgb(0, 0, 0);
-    color: rgb(255, 255, 255);
-    background-color: rgb(37, 87, 250);
-    border: None;
-}
-
-#sendbutton:hover{
-    background-color: rgb(68, 127, 255);
-}
-
-#Loginpage{
-    width: 100px;
-    height: 40px;
-    margin: 3px;
-    color: rgb(0, 0, 0);
-    color: rgb(255, 255, 255);
-    background-color: rgb(37, 87, 250);
-    border: None;
+    gap: 40px;
+    margin-top: 20px;
+    margin-left: 50px;
 }
