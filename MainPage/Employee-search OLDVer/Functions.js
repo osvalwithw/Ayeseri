@@ -88,7 +88,3 @@ function clean(){
     const radios = document.querySelectorAll('input[type="radio"]');
     radios.forEach(r => r.checked = false);
 }
-
-function testfunc(){
-    console.log(":)")
-}

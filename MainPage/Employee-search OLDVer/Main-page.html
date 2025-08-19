@@ -9,8 +9,8 @@
         <script src="Functions.js" defer></script>
     </head>
     <body>
-        <div class="main-bar">
-            <ul class="MbItems">
+        <div class="main-window">
+            <ul class="main-bar">
                 <li><a href="#Inicio">Inicio</a></li>
                 <li><a href="#Ayuda">Ayuda</a></li>
                 <li><a href="#Nuevo">Novedades</a></li>
@@ -23,8 +23,6 @@
                     </div>
                 </li>
             </ul>
-        </div>
-        <div class="main-window">
             <div class="display_opt">
                 <div class="Overview">
                     <button id="TOverview_icon" class="material-icons" style="font-size: 35px;" onclick="search_EE()">panorama</button>
@@ -35,18 +33,35 @@
                     <span id="report-label">Report</span>
                 </div>
             </div>
-            <div class="PInformation">
-                <label id="PIlabel" >Personel number</label>
-                <input style="width: 100px;"type="text" id="Personnel_Nmb" name="No.Empleado" required placeholder="No.Empleado"></input>
-            </div>
+<!-------------------------------------------------------------------------------------------------------------------------------------------------------->
+            <table class="PInformation">
+                <tr>
+                    <td id="pil1-txt1"><span>Personel number</span></td>
+                    <td id="pitry-1"><input style="width: 100px;"type="text" id="Personnel_Nmb" name="No.Empleado" required placeholder="No.Empleado"></td>
+                </tr>
+                <tr>
+                    <td id="pil1-txt2"><span style="width: 100%;">Name</span></td>
+                    <td id="pitry-2"><input type="text" id="Personnel_Name" name="Nombre_EE" readonly></td>
+                </tr>
+                <tr>
+                    <td id="pil1-txt3"><span>EE group</span></td>
+                    <td id="pitry-3"><input type="text" id="Employee_grp" name="Grp" readonly></td>
+                </tr>
+                <tr>
+                    <td id="pil1-txt4"><span>EE subgroup</span></td>
+                    <td id="pitry-4"><input type="text" id="Employee_sbgr" name="Sgrp" readonly></td>
+                </tr>
+                <tr>
+                    <td id="pil1-txt5"><span>Personel area</span></td>
+                    <td id="pitry-5"><input type="text" id="Personnel_area" name="Pers.Area" readonly></td>
+                </tr>
+                <tr>
+                    <td id="pil1-txt6"><span>Cost center</span></td>
+                    <td id="pitry-6"><input type="text" id="Cost_center" name="CC" readonly></td>
+                </tr>
+            </table>
 <!-------------------------------------------------------------------------------------------------------------------------------------------------------->
             <div class="Maintain-options">
-                <div class="NewInfotypeSelection">
-                    <div class="IT0000">
-                        <i onclick="testfunc()" id="ICIT0" class="material-icons" style="font-size: 60px;">tag_faces</i>
-                        <a id="ICIT0lb">0000</a>
-                    </div>
-                </div>
                 <table class="infotype_selection">
                     <tr>
                         <th id="Selector" style="width: 20px;"></th> <!--Empty-->
