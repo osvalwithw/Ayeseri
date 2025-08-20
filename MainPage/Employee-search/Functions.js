@@ -11,8 +11,33 @@
 //this hace referencia al objeto en cuestion
 //Se pueden anidar objetos, respetando las mismas llamadas anteriores
 
-const HELP_ROUTE = "./Help windows"
-let SELECTION = "X"
+const HELP_ROUTE = "../Help";
+let SELECTION = "X";
+let TIME_SELECTION = 0;
+let Prevsel= null;
+const Validroutes = ["0000", "0001", "0002", "0006", "0007", "0008", "0014", "0015", "NITR", "Others"];
+const TimeParameters = ["From current date", "Last month", "Last week", 
+                        "Today", "Current Week", "Current Month", "Current Year", 
+                        "To current date", "All"];
+
+document.addEventListener("keydown", (event) =>{
+    if(event.key === "Enter"){
+        let directsearch = document.getElementById('DirInput').value;
+        if(Validroutes.includes(directsearch)){
+            ITSelection(directsearch);
+        } else {
+            alert("Revisa la entrada 'Type Infotype'")
+        }
+    }    
+});
+
+const Timeadjust = document.getElementById('timeSelection'); //Selection
+const Timeadjustlbl = document.getElementById('Timeopc');      //Label
+Timeadjust.addEventListener("input", () =>{
+    TIME_SELECTION = Timeadjust.value;
+    let index = TimeParameters[Timeadjust.value];
+    Timeadjustlbl.innerText = `${index}`;
+});
 
 // Cierra la conexión
 
@@ -52,46 +77,68 @@ async function buscarPorID_EE(id) {
     }
 }
 
-function help(towork) {
+function help() {
+    if(SELECTION == "X"){
+        alert("Por favor Seleccione un infotipo")
+        return
+    }
     let halfroute;
-    if (towork == 0) {
-        halfroute = "/0000 help.html"
-    } else if (towork == 1) {
-        halfroute = "/0001 help.html"
-    } else if (towork == 2) {
-        halfroute = "/0002 help.html"
-    } else if (towork == 6) {
-        halfroute = "/0006 help.html"
-    } else if (towork == 7) {
-        halfroute = "/0007 help.html"
-    } else if (towork == 8) {
-        halfroute = "/0008 help.html"
-    } else if (towork == 14) {
-        halfroute = "/0014 help.html"
-    } else if (towork == 15) {
-        halfroute = "/0015 help.html"
-    } else if (towork == 99) {
-        halfroute = "/Time help.html"
+    if(Validroutes.includes(SELECTION)){
+        console.log(SELECTION)
+        halfroute = `/${SELECTION}.html`; 
     }
     let fullroute = HELP_ROUTE + halfroute
+    console.log(fullroute)
     window.open(
     fullroute,
     "_blank",
     "width=600,height=400,top=100,left=100, toolbar=no,scrollbars=yes,resizable=no");
 }
 
-function clean(){
-    const radios = document.querySelectorAll('input[type="radio"]');
-    radios.forEach(r => r.checked = false);
-}
-
 function ITSelection(ITVAL){
     let ITSelection = `IT${ITVAL}`;
-    console.log(ITSelection)
-    SELECTION = ITVAL;
+    let tittlechange = document.getElementById('InfMainTittlelbl');
+    let highlight_help = document.getElementById('helpbutton');
+    highlight_help.style.background = "rgb(1, 53, 106)";
+    highlight_help.addEventListener("mouseover", () =>{
+        highlight_help.style.background = "rgb(16, 90, 119)";
+    });
+    highlight_help.addEventListener("mouseout", () =>{
+        highlight_help.style.background = "rgb(1, 53, 106)";
+    });
+    tittlechange.innerText = `Infotype`;
+    if(Prevsel){
+        let Prevselection = document.querySelector(`.${Prevsel}`);
+        Prevselection.style.border = "none";
+        Prevselection.style.background = "rgba(255, 255, 255, 0.3)";
+    }
+    Prevsel = ITSelection;
+    SELECTION = ITVAL; //to select infotype
     let actualselection = document.querySelector(`.${ITSelection}`);
-    console.log(actualselection)
     actualselection.style.border = "4px solid white";
     actualselection.style.background = "rgba(1, 53, 106, .3)";
-    
+    //tittlechange.innerText += ` ${SELECTION}`;
+    const Tittlefields = [
+        { IT: '0000', Message: 'Actions'},
+        { IT: '0001', Message: 'Organizational Assignment'},
+        { IT: '0002', Message: 'Personal Data'},
+        { IT: '0006', Message: 'Addresses'},
+        { IT: '0007', Message: 'Planned Working Time'},
+        { IT: '0008', Message: 'Basic Pay'},
+        { IT: '0014', Message: 'Recurring Payments/Deductions'},
+        { IT: '0015', Message: 'Additional Payments'},
+        { IT: 'NITR', Message: 'No Infotype related'},
+        { IT: 'Others', Message: 'Others'},
+    ]
+    for ({IT, Message} of Tittlefields){
+        if(IT === 'Others'){
+            tittlechange.innerText += ` ${SELECTION}`;
+            break;
+        }
+        if (SELECTION === IT){ 
+            FullMSG =` ${IT} ${Message}`;
+            tittlechange.innerText += `${FullMSG}`;
+            break;
+        }
+    }
 }

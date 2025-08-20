@@ -33,7 +33,7 @@ li a,
 
 li a:hover,
 .sub-menu:hover .submenu-btn {
-    background-color: red;
+    background-color: rgb(16, 90, 119);
 }
 
 .submenu {
@@ -65,10 +65,26 @@ li a:hover,
 .submenu:hover .submenu-content {
     display: block;
 }
+
+#helpbutton{
+    cursor: pointer;
+}
+
+#helpbutton:hover{
+    background-color: rgb(16, 90, 119);
+}
+/*-----------------------------------------------------------------------------*/
+@media (min-width: 1000px){
+    .Maintain-options{
+        width: 50%;
+        margin:auto;
+    }
+}
 /*-------------Modulo de opciones---------------------------------------------*/
-.main-window{
+.headeroptions{
     display: flex;
     flex-wrap: wrap;
+    gap:50px;
 }
 
 .display_opt {
@@ -135,6 +151,7 @@ li a:hover,
     display:flex;
     align-items: center;
     margin-top: 40px;
+    margin-left: 20px;
     width: 310px;
     height: 40px;
     background: rgba(255, 255, 255, 0.3);
@@ -143,23 +160,31 @@ li a:hover,
 }
 
 /*----------------------------------------------------------*/
-.Maintain-options {
-    display:flex;
+.Maintain-options{
+    margin-left: 20px;
+}
+
+.InfMainTittle{
+    text-align: left;
+    margin-bottom: 40px;
 }
 
 .NewInfotypeSelection{
     display: flex;
-    margin-left: 20px;
+    flex-wrap: wrap;
+    column-gap:80px;
+    row-gap:40px;
+    
 }
 
-.IT0000{
+[class^="IT"]{
     width: 80px;
     height: 80px;
     background-color: rgba(255, 255, 255, 0.3);
     border-radius: 10px;
 }
 
-#ICIT0{
+[id^="ICIT"]{
     position: absolute;
     opacity: 0;
     margin: 35px;
@@ -167,49 +192,44 @@ li a:hover,
     transform: scale(3.5);
 }
 
-#ICIT0_Icon{
+[id^="IconICIT"]{
     margin: 10px;
     background-color: rgb(40, 24, 122, 0.2);
     border-radius: 10px;
 }
 
-#ICIT0lb{
+[id^="OPTITLB"]{
     display:none;
-    max-width: fit-content;
+    width: 50px;
+    text-align: center;
     color: white;
-    margin-left: 25px;
+    margin-left: 15px;
     background-color: rgba(33, 37, 33, 0.6);
 }
 
-.IT0000:hover #ICIT0lb{
+[class^="IT"]:hover [id^="OPTITLB"]{
     display: block;
+    margin-top: -2px;
 }
 
-
-
-.infotype_selection {
-    width: 330px;
-    margin-left: 20px;
-    text-align: left;
-    border-collapse: collapse;
-    border: rgb(39, 0, 148) groove 3px;
-    border-radius: 10px;
+[class^="IT"]:hover{
+    background-color: rgba(255, 255, 255, 0.6);
 }
 
-
-.infotype_selection th {
-    border-bottom: rgb(39, 0, 148) groove 3px;
-    border-left: rgb(39, 0, 148) groove 3px;
-    border-radius: 5px;
+.DirectSearch{
+    display: flex;
+    flex-wrap: wrap;
+    gap:15px;
+    align-items: center;
+    margin-top: 20px;
+    margin-bottom: 20px;
 }
 
-.infotype_selection td {
-    border-left: rgb(39, 0, 148) groove 3px;
-    border-right: rgb(39, 0, 148) groove 3px;
-}
-
-#Help_button {
-    text-align: center;
+/*--------------------------------------------------------------------------------------------------------------*/
+.NewPeriodSelection{
+    display: flex;
+    flex-wrap: wrap;
+    gap:20px;
 }
 
 .period_selection {
@@ -231,25 +251,3 @@ li a:hover,
 }
 
 /*---------------------------------------------------------------------------------------------------------------------*/
-.Direct-search {
-    display:flex;
-    width: 692px;
-    text-align: left;
-    border-collapse: collapse;
-    border: rgb(39, 0, 148) groove 3px;
-    border-radius: 5px;
-    padding-bottom: 8px;
-}
-
-.Direct-search input,
-p {
-    display: inline-block;
-    margin: 0 20px 0 22px;
-    vertical-align: middle;
-}
-
-.Direct-search h1 {
-    font-size: 15px;
-    border-bottom: rgb(39, 0, 148) groove 3px;
-    margin-bottom: 5px;
-}

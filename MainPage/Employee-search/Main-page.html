@@ -12,7 +12,7 @@
         <div class="main-bar">
             <ul class="MbItems">
                 <li><a href="#Inicio">Inicio</a></li>
-                <li><a href="#Ayuda">Ayuda</a></li>
+                <li><a id="helpbutton" onclick="help()">Ayuda</a></li>
                 <li><a href="#Nuevo">Novedades</a></li>
                 <li class="submenu">
                     <a href="#Sesión" class="submenu-btn">Sesion</a>
@@ -25,216 +25,98 @@
             </ul>
         </div>
         <div class="main-window">
-            <div class="display_opt">
-                <div class="Overview">
-                    <button id="TOverview_icon" class="material-icons" style="font-size: 35px;" onclick="search_EE()">panorama</button>
-                    <span class="OVlabel" id="overview_label">Overview</span>
+            <div class="headeroptions">
+                <div class="display_opt">
+                    <div class="Overview">
+                        <button id="TOverview_icon" class="material-icons" style="font-size: 35px;" onclick="search_EE()">panorama</button>
+                        <span class="OVlabel" id="overview_label">Overview</span>
+                    </div>
+                    <div class="Report">
+                        <button id="Report_icon" class="material-icons" style="font-size: 35px;">report_problem</button>
+                        <span id="report-label">Report</span>
+                    </div>
                 </div>
-                <div class="Report">
-                    <button id="Report_icon" class="material-icons" style="font-size: 35px;">report_problem</button>
-                    <span id="report-label">Report</span>
+                <div class="PInformation">
+                    <label id="PIlabel" >Personel number</label>
+                    <input style="width: 100px;"type="text" id="Personnel_Nmb" name="No.Empleado" required placeholder="No.Empleado"></input>
                 </div>
-            </div>
-            <div class="PInformation">
-                <label id="PIlabel" >Personel number</label>
-                <input style="width: 100px;"type="text" id="Personnel_Nmb" name="No.Empleado" required placeholder="No.Empleado"></input>
             </div>
 <!-------------------------------------------------------------------------------------------------------------------------------------------------------->
             <div class="Maintain-options">
+                <div class="InfMainTittle">
+                    <h2 id="InfMainTittlelbl">Select an infotype </h2>                        
+                </div>
                 <div class="NewInfotypeSelection">
                     <div class="IT0000">
                         <input type="radio" onclick="ITSelection('0000')" id="ICIT0">
-                            <i id="ICIT0_Icon" class="material-icons" style="font-size: 60px;">tag_faces</i>  
+                            <i id="IconICIT0" class="material-icons" style="font-size: 60px;">tag_faces</i>  
                         </input>
-                        <a id="ICIT0lb">0000</a>
+                        <p id="OPTITLB0">0000</p>
                     </div>
                     <div class="IT0001">
                         <input type="radio" onclick="ITSelection('0001')" id="ICIT1">
-                            <i id="ICIT1_Icon" class="material-icons" style="font-size: 60px;">tag_faces</i>  
+                            <i id="IconICIT1" class="material-icons" style="font-size: 60px;">tag_faces</i>  
                         </input>
-                        <a id="ICIT0lb">0001</a>
+                        <p id="OPTITLB1">0001</p>
+                    </div>
+                    <div class="IT0002">
+                        <input type="radio" onclick="ITSelection('0002')" id="ICIT2">
+                            <i id="IconICIT2" class="material-icons" style="font-size: 60px;">tag_faces</i>  
+                        </input>
+                        <p id="OPTITLB2">0002</p>
+                    </div>
+                    <div class="IT0006">
+                        <input type="radio" onclick="ITSelection('0006')" id="ICIT6">
+                            <i id="IconICIT6" class="material-icons" style="font-size: 60px;">tag_faces</i>  
+                        </input>
+                        <p id="OPTITLB6">0006</p>
+                    </div>
+                    <div class="IT0007">
+                        <input type="radio" onclick="ITSelection('0007')" id="ICIT7">
+                            <i id="IconICIT7" class="material-icons" style="font-size: 60px;">tag_faces</i>  
+                        </input>
+                        <p id="OPTITLB7">0007</p>
+                    </div>
+                    <div class="IT0008">
+                        <input type="radio" onclick="ITSelection('0008')" id="ICIT6">
+                            <i id="IconICIT8" class="material-icons" style="font-size: 60px;">tag_faces</i>  
+                        </input>
+                        <p id="OPTITLB8">0008</p>
+                    </div>
+                    <div class="IT0014">
+                        <input type="radio" onclick="ITSelection('0014')" id="ICIT14">
+                            <i id="IconICIT14" class="material-icons" style="font-size: 60px;">tag_faces</i>  
+                        </input>
+                        <p id="OPTITLB14">0014</p>
+                    </div>
+                    <div class="IT0015">
+                        <input type="radio" onclick="ITSelection('0015')" id="ICIT15">
+                            <i id="IconICIT15" class="material-icons" style="font-size: 60px;">tag_faces</i>  
+                        </input>
+                        <p id="OPTITLB15">0015</p>
+                    </div>
+                    <div class="ITNITR">
+                        <input type="radio" onclick="ITSelection('NITR')" id="ICIT_NITR">
+                            <i id="IconICIT_NITR" class="material-icons" style="font-size: 60px;">tag_faces</i>  
+                        </input>
+                        <p id="OPTITLB_NITR">No IT related</p>
+                    </div>
+                    <div class="ITOthers">
+                        <input type="radio" onclick="ITSelection('Others')" id="ICIT_Others">
+                            <i id="IconICIT_Others" class="material-icons" style="font-size: 60px;">tag_faces</i>  
+                        </input>
+                        <p id="OPTITLB_Others">Others</p>
                     </div>
                 </div>
-                <table class="infotype_selection">
-                    <tr>
-                        <th id="Selector" style="width: 20px;"></th> <!--Empty-->
-                        <th>Infotype text</th>
-                        <th>Help</th>
-                    </tr>
-                    <tr>
-                        <td>
-                            <input class="IT_button" type="radio" id="IT0000" name="IT_sel" onclick="infotype_select('0000')"></button>    
-                        </td>
-                        <td>0000 Actions</td>
-                        <td id="Help_button">
-                            <a href="#" onclick="help(0)">
-                            <i id="Overview_icon" class="material-icons" style="font-size: 20px;">help</i>
-                            </a>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>
-                            <input class="IT_button" type="radio" id="IT0001" name="IT_sel" onclick="infotype_select('0001')"></button>
-                        </td>
-                        <td>0001 Organizational Assigment</td>
-                        <td id="Help_button">
-                            <a href="#" onclick="help(1)">
-                            <i id="Overview_icon" class="material-icons" style="font-size: 20px;">help</i>
-                            </a>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>
-                            <input class="IT_button" type="radio" id="IT0002" name="IT_sel" onclick="infotype_select('0002')"></button>
-                        </td>
-                        <td>0002 Personal Data</td>
-                        <td id="Help_button">
-                            <a href="#" onclick="help(2)">
-                            <i id="Overview_icon" class="material-icons" style="font-size: 20px;">help</i>
-                            </a>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>
-                            <input class="IT_button" type="radio" id="IT0006" name="IT_sel" onclick="infotype_select('0006')"></button>
-                        </td>
-                        <td>0006 Addresses</td>
-                        <td id="Help_button">
-                            <a href="#" onclick="help(6)">
-                            <i id="Overview_icon" class="material-icons" style="font-size: 20px;">help</i>
-                            </a>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>
-                            <input class="IT_button" type="radio" id="IT0007" name="IT_sel" onclick="infotype_select('0007')"></button>
-                        </td>
-                        <td>0007 Planned working time</td>
-                        <td id="Help_button">
-                            <a href="#" onclick="help(7)">
-                            <i id="Overview_icon" class="material-icons" style="font-size: 20px;">help</i>
-                            </a>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>
-                            <input class="IT_button" type="radio" id="IT0008" name="IT_sel" onclick="infotype_select('0008')"></button>
-                        </td>
-                        <td>0008 Basic Pay</td>
-                        <td id="Help_button">
-                            <a href="#" onclick="help(8)">
-                            <i id="Overview_icon" class="material-icons" style="font-size: 20px;">help</i>
-                            </a>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>
-                            <input class="IT_button" type="radio" id="IT0014" name="IT_sel" onclick="infotype_select('0014')"></button>
-                        </td>
-                        <td>0014 Recurrent payments/deductions</th>
-                        <td id="Help_button">
-                            <a href="#" onclick="help(14)">
-                            <i id="Overview_icon" class="material-icons" style="font-size: 20px;">help</i>
-                            </a>
-                        </td>
-                    </tr>
-                    <tr style="border-bottom: rgb(39, 0, 148) groove 3px;">
-                        <td>
-                            <input class="IT_button" type="radio" id="IT0015" name="IT_sel" onclick="infotype_select('0015')"></button>
-                        </td>
-                        <td>0015 One-Time Payment</td>
-                        <td id="Help_button">
-                            <a href="#" onclick="help(15)">
-                            <i id="Overview_icon" class="material-icons" style="font-size: 20px;">help</i>
-                            </a>
-                        </td>
-                    </tr>
-                </table>
-                <table class="period_selection">
-                    <tr>
-                        <th id="main-header">Period</th>
-                        <th id="Period_help">Help
-                            <a href="#" onclick="help(99)">
-                                <i id="Overview_icon" class="material-icons" style="font-size: 20px;">help</i>
-                            </a>
-                        </th>
-                    </tr>
-                    <tr>
-                        <td id="Select-period">
-                            <input type="radio" name="Timebox" value="period">Period
-                        </td>
-                        <td></td>
-                    </tr>
-                    <tr>
-                        <td id="From-box">
-                            <input type="text" required placeholder="From">
-                        </td>
-                        <td id="To-box">
-                            <input type="text" required placeholder="To">
-                        </td>
-                    </tr>
-                    <tr>
-                        <td id="Select-today">
-                            <input type="radio" name="Timebox" value="period">Today
-                        </td>
-                        <td id="Select-curr.week">
-                            <input type="radio" name="Timebox" value="period">Curr.Week
-                        </td>
-                    </tr>
-                    <tr>
-                        <td id="Select-all">
-                            <input type="radio" name="Timebox" value="period">All
-                        </td>
-                        <td id="Select-curr.month">
-                            <input type="radio" name="Timebox" value="period">Curr.Month
-                        </td>
-                    </tr>
-                    <tr>
-                        <td id="Select-From-curr-date">
-                            <input type="radio" name="Timebox" value="period">From.Curr.Date
-                        </td>
-                        <td id="Select-last-week">
-                            <input type="radio" name="Timebox" value="period">Last week
-                        </td>
-                    </tr>
-                    <tr>
-                        <td id="Select-to-curr-date">
-                            <input type="radio" name="Timebox" value="period">To.Curr.Date
-                        </td>
-                        <td id="Select-last-month">
-                            <input type="radio" name="Timebox" value="period">Last month
-                        </td>
-                    </tr>
-                    <tr>
-                        <td id="Select-curr-period">
-                            <input type="radio" name="Timebox" value="period">Curr.Period
-                        </td>
-                        <td id="Select-curr-year">
-                            <input type="radio" name="Timebox" value="period">Curr.Year
-                        </td>
-                    </tr>
-                </table>
-                <table class="Direct-search">
-                    <tr>
-                        <th></th>
-                        <th>
-                            <h1>Other related errors</h1>
-                        </th>
-                        <th>
-                            <h1>Direct Search</h1>
-                        </th>
-                    </tr>
-                    <tr>
-                        <td>
-                            <input class="IT_button" type="radio" id="OTHR" name="IT_sel" onclick="infotype_select('OTHR')"></button>
-                        </td>
-                        <td>Configuration Issue/No Infotype related</td>
-                        <td>
-                            <p>Infotype</p>
-                            <input type="text" style="width: 50%;">
-                        </td>
-                    </tr>
-                </table>
+                <div class="DirectSearch">
+                    <p id="Dirlbl">Type Infotype</p>
+                    <input id="DirInput" type="text" style="width: 150px; height: 30px;" placeholder="0000/0001/Others.....">
+                </div>
+                <div class="NewPeriodSelection">
+                    <p id="Timelbl">Period Selection</p>
+                    <input type="range" id="timeSelection" min="0" max="8" value="3" style="width: 300px;">
+                    <p id="Timeopc">Today</p>
+                </div>
             </div>
         </div>
         <script>
