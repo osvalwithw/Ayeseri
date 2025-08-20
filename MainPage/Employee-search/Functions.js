@@ -80,15 +80,18 @@ function help(towork) {
     "width=600,height=400,top=100,left=100, toolbar=no,scrollbars=yes,resizable=no");
 }
 
-function infotype_select(opc){
-    SELECTION = opc;
-}
-
 function clean(){
     const radios = document.querySelectorAll('input[type="radio"]');
     radios.forEach(r => r.checked = false);
 }
 
-function testfunc(){
-    console.log(":)")
+function ITSelection(ITVAL){
+    let ITSelection = `IT${ITVAL}`;
+    console.log(ITSelection)
+    SELECTION = ITVAL;
+    let actualselection = document.querySelector(`.${ITSelection}`);
+    console.log(actualselection)
+    actualselection.style.border = "4px solid white";
+    actualselection.style.background = "rgba(1, 53, 106, .3)";
+    
 }

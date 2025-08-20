@@ -5,13 +5,57 @@
     <script src="script.js" defer></script>
 </head>
 <body>
-    <h1>Formulario de Ejemplo</h1>
-    <form>
-        <label for="nombre">Nombre:</label>
-        <input type="text" id="nombre" name="nombre">
-        <br><br>
-        <button type="button" onclick="extraerTexto()">Extraer Texto</button>
-    </form>
-    <p id="resultado"></p> <!-- Aquí se mostrará el texto extraído -->
+    <div class="cards">
+  <input type="radio" id="plan-a" name="plan2" checked>
+  <label for="plan-a">
+    <span class="title">Básico</span>
+    <span class="desc">Hasta 3 proyectos</span>
+  </label>
+
+  <input type="radio" id="plan-b" name="plan2">
+  <label for="plan-b">
+    <span class="title">Pro</span>
+    <span class="desc">Proyectos ilimitados</span>
+  </label>
+</div>
+
+<style>
+  .cards {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(180px,1fr));
+    gap: 12px;
+  }
+
+  .cards input[type="radio"] {
+    position: absolute;
+    opacity: 0;
+    pointer-events: none;
+  }
+
+  .cards label {
+    display: grid;
+    gap: 6px;
+    padding: 14px;
+    border: 2px solid #dfe3ea;
+    border-radius: 12px;
+    background: #fff;
+    cursor: pointer;
+    transition: border-color .2s, box-shadow .2s, transform .1s;
+  }
+  .cards label .title { font-weight: 700; }
+  .cards label .desc  { color: #6b7280; font-size: 14px; }
+
+  .cards input[type="radio"]:checked + label {
+    border-color: #2c59ee;
+    box-shadow: 0 6px 18px #2c59ee26;
+  }
+  .cards label:hover {
+    border-color: #2c59ee;
+  }
+  .cards input[type="radio"]:focus + label {
+    box-shadow: 0 0 0 3px #2c59ee33, 0 6px 18px #2c59ee26;
+  }
+  .cards label:active { transform: scale(.98); }
+</style>
 </body>
 </html>

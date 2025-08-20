@@ -160,8 +160,15 @@ li a:hover,
 }
 
 #ICIT0{
-    margin: 10px;
+    position: absolute;
+    opacity: 0;
+    margin: 35px;
     cursor:pointer;
+    transform: scale(3.5);
+}
+
+#ICIT0_Icon{
+    margin: 10px;
     background-color: rgb(40, 24, 122, 0.2);
     border-radius: 10px;
 }
@@ -174,9 +181,11 @@ li a:hover,
     background-color: rgba(33, 37, 33, 0.6);
 }
 
-#ICIT0:hover + #ICIT0lb{
+.IT0000:hover #ICIT0lb{
     display: block;
 }
+
+
 
 .infotype_selection {
     width: 330px;
