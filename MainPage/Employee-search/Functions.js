@@ -13,12 +13,19 @@
 
 const HELP_ROUTE = "../Help";
 let SELECTION = "X";
-let TIME_SELECTION = 0;
+let TIME_SELECTION = "Today";
 let Prevsel= null;
 const Validroutes = ["0000", "0001", "0002", "0006", "0007", "0008", "0014", "0015", "NITR", "Others"];
-const TimeParameters = ["From current date", "Last month", "Last week", 
-                        "Today", "Current Week", "Current Month", "Current Year", 
-                        "To current date", "All"];
+const TimeParameters = [{TID: 0, Label: "From current date", URLtime: "FRMCrDate"}, 
+                        {TID: 1, Label: "Last month", URLtime: "LstMonth"}, 
+                        {TID: 2, Label: "Last week", URLtime: "LstWeek"},
+                        {TID: 3, Label: "Today", URLtime: "Today"},
+                        {TID: 4, Label: "Current Week", URLtime: "CrrWeek"}, 
+                        {TID: 5, Label: "Current Month", URLtime: "CrrMonth"},
+                        {TID: 6, Label: "Current Year", URLtime: "CrrYear"},
+                        {TID: 7, Label: "To current date", URLtime: "ToCrrDate"}, 
+                        {TID: 8, Label: "All", URLtime: "All"},
+                    ];
 
 document.addEventListener("keydown", (event) =>{
     if(event.key === "Enter"){
@@ -34,9 +41,10 @@ document.addEventListener("keydown", (event) =>{
 const Timeadjust = document.getElementById('timeSelection'); //Selection
 const Timeadjustlbl = document.getElementById('Timeopc');      //Label
 Timeadjust.addEventListener("input", () =>{
-    TIME_SELECTION = Timeadjust.value;
-    let index = TimeParameters[Timeadjust.value];
-    Timeadjustlbl.innerText = `${index}`;
+    let Timelbl = TimeParameters[Timeadjust.value].Label;
+    Timeadjustlbl.innerText = `${Timelbl}`;
+    TIME_SELECTION = TimeParameters[Timeadjust.value].URLtime;
+    console.log(`${TIME_SELECTION}`)
 });
 
 // Cierra la conexión
@@ -57,7 +65,7 @@ function search_EE(){
 
 async function buscarPorID_EE(id) {
     try {
-        const response = await fetch(`https://ayeseri.onrender.com/employee_errors/${id}`);
+        const response = await fetch(`https://ayeseri.onrender.com/employee_errors/${id}/${TIME_SELECTION}`);
         if (!response.ok) {
             if (response.status === 404) {
                 console.log('❗ No se encontró ningún registro con ese ID_EE');

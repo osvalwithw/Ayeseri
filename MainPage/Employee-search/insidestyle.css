@@ -84,14 +84,14 @@ li a:hover,
 .headeroptions{
     display: flex;
     flex-wrap: wrap;
-    gap:50px;
+    
 }
 
 .display_opt {
     display: flex;
     width: 200px;
     height: 75px;
-    margin: 20px 20px;
+    margin: 20px 70px 0 20px;
     background: rgba(255, 255, 255, 0.1);
     border: rgb(39, 0, 148) groove 3px;
     border-radius: 15px;
@@ -152,6 +152,7 @@ li a:hover,
     align-items: center;
     margin-top: 40px;
     margin-left: 20px;
+    margin-bottom: 20px;
     width: 310px;
     height: 40px;
     background: rgba(255, 255, 255, 0.3);
