@@ -43,7 +43,7 @@ app.get('/errors/count', async (_req, res) => {
 app.get('/employee_errors/:id/:timepar', async (req, res) => {
   const id = req.params.id;
   const Timesel = req.params.timepar;
-  const page = Number.parseInt(req.query.page ?? '1', 10) || 1;
+  //const page = Number.parseInt(req.query.page ?? '1', 10) || 1;
   //const limit = Number(req.query.limit ?? '200', 10)|| 200;
   //const offset = (page - 1) * limit;
   const sql = `
@@ -63,7 +63,7 @@ app.get('/employee_errors/:id/:timepar', async (req, res) => {
   try {
     const [rows] = await pool.query(sql, SearchTimeId);
     if (!rows.length) return res.status(404).json({ message: 'No se encontró ningún registro, revisa la informacion ingresada' });
-    res.json({ id, Timesel, page, limit, count: rows.length, data: rows});
+    res.json(rows);
   } catch (e) {
     console.error('Error en /employee_errors:', e.message);
     res.status(500).json({ error: e.message });
