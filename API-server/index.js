@@ -53,7 +53,7 @@ app.get('/employee_errors/:id/:timepar', async (req, res) => {
       ee.Load_Date, 
       ee.Load_hour, 
       e.Error_message,
-      IT.ID_Infotype
+      IT.ID_Infotype AS ID_Infotype
     FROM employee_errors ee
     JOIN errors e ON ee.ID_Error = e.IDX
     lEFT JOIN infotypes IT ON e.ID_Infotype = IT.Infotype_IND
