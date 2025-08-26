@@ -44,6 +44,9 @@ app.get('/errors/count', async (_req, res) => {
 app.get('/employee_errors/:id/:timepar', async (req, res) => {
   const id = req.params.id;
   const timepar = req.params.id;
+  const page = Number(req.query.page || 1);
+  const limit = Number(req.query.limit || 200);
+  const offset = (page - 1) * limit;
   const sql = `
     SELECT 
       ee.ID_EE, 
@@ -54,14 +57,41 @@ app.get('/employee_errors/:id/:timepar', async (req, res) => {
     FROM employee_errors ee
     JOIN errors e   ON ee.ID_Error = e.IDX
     JOIN infotypes IT ON e.ID_Infotype = IT.Infotype_IND
-    WHERE ee.ID_EE = ?
-  `;
+    WHERE ee.ID_EE = ?`;
+  const SearchTimeId = [id];
+  switch(timepar){
+    case 'ToCrrDate'://To current Date
+      sql += `AND ee.Load_Date <= CURDATE()`;
+    case 'LstMonth'://Last month
+      sql += `AND ee.Load_Date BETWEEN DATE_FORMAT (DATE_SUB(CURDATE(), INTERVAL 1 MONTH), '%Y-%m-01')
+              AND LAST_DAY(DATE_SUB(CURDATE(), INTERVAL 1 MONTH))`;
+    case 'LstWeek'://Last Week
+      sql += `AND ee.load_Date BETWEEN DATE_SUB(CURDATE(), INTERVAL(WEEKDAY(CURRDATE()) + 7) DAY)
+              AND DATE_SUB(CURDATE(), INTERVAL(WEEKDAY(CURDATE) + 1) DAY)`;
+    case 'Today'://Today
+      sql += `AND ee.Load_date = CURDATE()`;
+    case 'CrrWeek'://CurrentWeek
+      sql += `AND ee.Load_Date BETWEEN DATE_SUB(CURDATE(), INTERVAL WEEK(CURDATE()) DAY) AND CURDATE()`;
+    case 'CrrMonth'://Current month
+      sql += `AND ee.Load_Date BETWEEN DATE_FORMAT(CURDATE(), '%Y-%m-01') AND CURDATE()`;
+    case 'CrrYear'://Current year
+      sql += `AND ee.Load_Date BETWEEN DATE_FORMAT(CURDATE(), '%Y-01-01') AND CURDATE()`;
+    case 'FRMCrDate'://From current date
+      sql += `AND ee.Load_Date >= CURDATE()`;
+    case 'All'://All. No filter
+      break
+  }
+  sql += `
+    ORDER BY ee.Load_Date DESC,
+    ee.Load_hour DESC
+    LIMIT ? OFFSET ?`;
+  SearchTimeId.push(limit, offset);
   try {
-    const [rows] = await pool.query(sql, [id]);
-    if (!rows.length) return res.status(404).json({ message: 'No se encontró ningún registro con ese ID_EE' });
-    res.json(rows);
+    const [rows] = await pool.query(sql, SearchTimeId);
+    if (!rows.length) return res.status(404).json({ message: 'No se encontró ningún registro, revisa la informacion ingresada' });
+    res.json({ id, timepar, page, limit, count: rows.length, data: rows});
   } catch (e) {
-    console.error('/employee_errors:', e.message);
+    console.error('Error en /employee_errors:', e.message);
     res.status(500).json({ error: e.message });
   }
 });
