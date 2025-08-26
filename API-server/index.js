@@ -46,7 +46,7 @@ app.get('/employee_errors/:id/:timepar', async (req, res) => {
   //const page = Number.parseInt(req.query.page ?? '1', 10) || 1;
   //const limit = Number(req.query.limit ?? '200', 10)|| 200;
   //const offset = (page - 1) * limit;
-  const sql = `
+  let sql = `
     SELECT 
       ee.ID_EE, 
       ee.Load_Date, 
@@ -58,8 +58,6 @@ app.get('/employee_errors/:id/:timepar', async (req, res) => {
     lEFT JOIN infotypes IT ON e.ID_Infotype = IT.Infotype_IND
     WHERE ee.ID_EE = ?`;
   const SearchTimeId = [id];
-  //SearchTimeId.push(limit, offset);
-  console.log('TEST');
   switch(Timesel){
     case 'ToCrrDate'://To current Date
       sql += `AND ee.Load_Date <= CURDATE()`;
@@ -90,6 +88,7 @@ app.get('/employee_errors/:id/:timepar', async (req, res) => {
     default://All
       break;
   }
+  
   try {
     const [rows] = await pool.query(sql, SearchTimeId);
     if (!rows.length) return res.status(404).json({ message: 'No se encontró ningún registro, revisa la informacion ingresada' });
