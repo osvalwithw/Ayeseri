@@ -63,7 +63,7 @@ app.get('/employee_errors/:id/:timepar', async (req, res) => {
   try {
     const [rows] = await pool.query(sql, SearchTimeId);
     if (!rows.length) return res.status(404).json({ message: 'No se encontró ningún registro, revisa la informacion ingresada' });
-    res.json(rows);
+    res.json({id, Timesel, rows});
   } catch (e) {
     console.error('Error en /employee_errors:', e.message);
     res.status(500).json({ error: e.message });
