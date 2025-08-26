@@ -58,8 +58,38 @@ app.get('/employee_errors/:id/:timepar', async (req, res) => {
     lEFT JOIN infotypes IT ON e.ID_Infotype = IT.Infotype_IND
     WHERE ee.ID_EE = ?`;
   const SearchTimeId = [id];
-  console.log("Aqui vamos bien");
   //SearchTimeId.push(limit, offset);
+  console.log('TEST');
+  switch(timepar){
+    case 'ToCrrDate'://To current Date
+      sql += `AND ee.Load_Date <= CURDATE()`;
+      break;
+    case 'LstMonth'://Last month
+      sql += `AND ee.Load_Date BETWEEN DATE_FORMAT (DATE_SUB(CURDATE(), INTERVAL 1 MONTH), '%Y-%m-01')
+              AND LAST_DAY(DATE_SUB(CURDATE(), INTERVAL 1 MONTH))`;
+      break;
+    case 'LstWeek'://Last Week
+      sql += `AND ee.load_Date BETWEEN DATE_SUB(CURDATE(), INTERVAL(WEEKDAY(CURRDATE()) + 7) DAY)
+              AND DATE_SUB(CURDATE(), INTERVAL(WEEKDAY(CURDATE) + 1) DAY)`;
+      break;
+    case 'Today'://Today
+      sql += `AND ee.Load_date = CURDATE()`;
+      break;
+    case 'CrrWeek'://CurrentWeek
+      sql += `AND ee.Load_Date BETWEEN DATE_SUB(CURDATE(), INTERVAL WEEK(CURDATE()) DAY) AND CURDATE()`;
+      break;  
+    case 'CrrMonth'://Current month
+      sql += `AND ee.Load_Date BETWEEN DATE_FORMAT(CURDATE(), '%Y-%m-01') AND CURDATE()`;
+      break;  
+    case 'CrrYear'://Current year
+      sql += `AND ee.Load_Date BETWEEN DATE_FORMAT(CURDATE(), '%Y-01-01') AND CURDATE()`;
+      break;
+    case 'FRMCrDate'://From current date
+      sql += `AND ee.Load_Date >= CURDATE()`;
+      break;
+    default://All
+      break;
+  }
   try {
     const [rows] = await pool.query(sql, SearchTimeId);
     if (!rows.length) return res.status(404).json({ message: 'No se encontró ningún registro, revisa la informacion ingresada' });
