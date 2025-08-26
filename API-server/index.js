@@ -43,6 +43,7 @@ app.get('/errors/count', async (_req, res) => {
 // Tu endpoint existente (ajustado a async/await)
 app.get('/employee_errors/:id/:timepar', async (req, res) => {
   const id = req.params.id;
+  const timepar = req.params.id;
   const sql = `
     SELECT 
       ee.ID_EE, 

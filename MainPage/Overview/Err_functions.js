@@ -2,6 +2,7 @@ function display_errors() {
     const params = new URLSearchParams(window.location.search);
     const id = params.get('ID');
     const it = params.get('IT');
+    const timepar = params.get('timepar');
 
     const input = document.getElementById('EE_Number');
     if (input && id) {
@@ -9,7 +10,7 @@ function display_errors() {
     }
     document.getElementById('Header_1').textContent = `Overview Infotype ${it} errors`;
 
-    fetch(`https://ayeseri.onrender.com/employee_errors/${id}`)
+    fetch(`https://ayeseri.onrender.com/employee_errors/${id}/${timepar}`)
     .then(res => {
     if (!res.ok) throw new Error('Fallo la API');
         return res.json();
