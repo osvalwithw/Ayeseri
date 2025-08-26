@@ -59,7 +59,14 @@ app.get('/employee_errors/:id/:timepar', async (req, res) => {
     WHERE ee.ID_EE = ?`;
   const SearchTimeId = [id];
   console.log("Aqui vamos bien");
-  
+  switch(timepar){
+    case 'ToCrrDate'://To current Date
+      sql += `AND ee.Load_Date <= CURDATE()`;
+      break;
+    case 'Today'://Today
+      sql += `AND ee.Load_date = CURDATE()`;
+      break;
+  }
   SearchTimeId.push(limit, offset);
   try {
     const [rows] = await pool.query(sql, SearchTimeId);
