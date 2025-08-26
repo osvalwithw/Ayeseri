@@ -59,7 +59,7 @@ app.get('/employee_errors/:id/:timepar', async (req, res) => {
     lEFT JOIN infotypes IT ON e.ID_Infotype = IT.Infotype_IND
     WHERE ee.ID_EE = ?`;
   const SearchTimeId = [id];
-  console.log("Aqui vamos bien")
+  console.log("Aqui vamos bien");
   switch(timepar){
     case 'ToCrrDate'://To current Date
       sql += `AND ee.Load_Date <= CURDATE()`;
