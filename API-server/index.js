@@ -60,7 +60,7 @@ app.get('/employee_errors/:id/:timepar', async (req, res) => {
   const SearchTimeId = [id];
   //SearchTimeId.push(limit, offset);
   console.log('TEST');
-  switch(timepar){
+  switch(Timesel){
     case 'ToCrrDate'://To current Date
       sql += `AND ee.Load_Date <= CURDATE()`;
       break;
