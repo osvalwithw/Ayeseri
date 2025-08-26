@@ -43,7 +43,7 @@ app.get('/errors/count', async (_req, res) => {
 // Tu endpoint existente (ajustado a async/await)
 app.get('/employee_errors/:id/:timepar', async (req, res) => {
   const id = req.params.id;
-  const timepar = req.params.id;
+  const timepar = req.params.timepar;
   const page = Number.parseInt(req.query.page ?? '1', 10) || 1;
   const limit = Number(req.query.limit ?? '200', 10)|| 200;
   const offset = (page - 1) * limit;
@@ -59,6 +59,7 @@ app.get('/employee_errors/:id/:timepar', async (req, res) => {
     lEFT JOIN infotypes IT ON e.ID_Infotype = IT.Infotype_IND
     WHERE ee.ID_EE = ?`;
   const SearchTimeId = [id];
+  console.log("Aqui vamos bien")
   switch(timepar){
     case 'ToCrrDate'://To current Date
       sql += `AND ee.Load_Date <= CURDATE()`;
