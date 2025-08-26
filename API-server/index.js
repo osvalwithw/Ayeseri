@@ -89,10 +89,6 @@ app.get('/employee_errors/:id/:timepar', async (req, res) => {
     case 'All'://All. No filter
       break;
   }
-  sql += `
-    ORDER BY ee.Load_Date DESC,
-    ee.Load_hour DESC
-    LIMIT ? OFFSET ?`;
   SearchTimeId.push(limit, offset);
   try {
     const [rows] = await pool.query(sql, SearchTimeId);
