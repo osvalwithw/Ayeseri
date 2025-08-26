@@ -42,10 +42,10 @@ app.get('/errors/count', async (_req, res) => {
 
 app.get('/employee_errors/:id/:timepar', async (req, res) => {
   const id = req.params.id;
-  const timepar = req.params.timepar;
+  const Timesel = req.params.timepar;
   const page = Number.parseInt(req.query.page ?? '1', 10) || 1;
-  const limit = Number(req.query.limit ?? '200', 10)|| 200;
-  const offset = (page - 1) * limit;
+  //const limit = Number(req.query.limit ?? '200', 10)|| 200;
+  //const offset = (page - 1) * limit;
   const sql = `
     SELECT 
       ee.ID_EE, 
@@ -59,19 +59,11 @@ app.get('/employee_errors/:id/:timepar', async (req, res) => {
     WHERE ee.ID_EE = ?`;
   const SearchTimeId = [id];
   console.log("Aqui vamos bien");
-  switch(timepar){
-    case 'ToCrrDate'://To current Date
-      sql += `AND ee.Load_Date <= CURDATE()`;
-      break;
-    case 'Today'://Today
-      sql += `AND ee.Load_date = CURDATE()`;
-      break;
-  }
-  SearchTimeId.push(limit, offset);
+  //SearchTimeId.push(limit, offset);
   try {
     const [rows] = await pool.query(sql, SearchTimeId);
     if (!rows.length) return res.status(404).json({ message: 'No se encontró ningún registro, revisa la informacion ingresada' });
-    res.json({ id, timepar, page, limit, count: rows.length, data: rows});
+    res.json({ id, Timesel, page, limit, count: rows.length, data: rows});
   } catch (e) {
     console.error('Error en /employee_errors:', e.message);
     res.status(500).json({ error: e.message });
