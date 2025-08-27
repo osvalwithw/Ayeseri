@@ -118,13 +118,13 @@ app.get('/Requests/:NoTicket/:Username/:Email/:PSS', async (req, res) => {
   const Email = req.params.Email;
   const PSS = req.params.PSS;
   const encrypt = await bcrypt.hash(PSS, 10);
-  sql = `
-  INSERT INTO Requests (NoTicket, User, Email, Psswd)
-  VALUES (?, ?, ?, ?)`;
-  try{
-    const [rows] = await pool.query(sql);
-  } catch {
-    console.error('/Users:', e.message);
-    res.status(500).json({error: e.message})
-  }
+  //sql = `
+  //INSERT INTO Requests (NoTicket, User, Email, Psswd)
+  //VALUES (?, ?, ?, ?)`;
+  //try{
+  //  const [rows] = await pool.query(sql);
+  //} catch {
+  //  console.error('/Users:', e.message);
+  //  res.status(500).json({error: e.message})
+  //}
 });
