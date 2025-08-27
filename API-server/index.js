@@ -118,6 +118,7 @@ app.get('/Requests/:NoTicket/:Username/:Email/:PSS', async (req, res) => {
   const Email = req.params.Email;
   const PSS = req.params.PSS;
   const encrypt = await bcrypt.hash(PSS, 10);
+  console.log(`${NoTicket}, ${Username}, ${Email}, ${PSS}`);
   //sql = `
   //INSERT INTO Requests (NoTicket, User, Email, Psswd)
   //VALUES (?, ?, ?, ?)`;
