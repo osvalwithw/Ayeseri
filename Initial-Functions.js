@@ -192,7 +192,9 @@ async function SendRequest(){
         if (lbl) lbl.style.color = 'black';
         });}, 5000);
         return false;
-    } try {
+    } 
+    console.log("ok");
+    try {
         const response = await fetch(`https://ayeseri.onrender.com/Requests/${values['#NoTicket']}/${values['#Username']}/${values['#Email']}/${values['#PSS']}`);
         if (!response.ok) {
             if (response.status === 404) {
