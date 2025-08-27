@@ -117,7 +117,7 @@ app.get('/Requests/:NoTicket/:Username/:Email/:PSS', async (req, res) => {
   const Username = req.params.Username;
   const Email = req.params.Email;
   const PSS = req.params.PSS;
-  const encrypt = await bcrypt.hash(PSS, 10);
+//  const encrypt = await bcrypt.hash(PSS, 10);
   console.log(`${NoTicket}, ${Username}, ${Email}, ${PSS}`);
   //sql = `
   //INSERT INTO Requests (NoTicket, User, Email, Psswd)
