@@ -124,8 +124,8 @@ app.get('/Requests/:NoTicket/:Username/:Email/:PSS', async (req, res) => {
   VALUES (?, ?, ?, ?)`;
   try{
     const [rows] = await pool.query(sql);
-  } catch {
+  } catch (e){
     console.error('/Users:', e.message);
-    res.status(500).json({error: e.message})
+    res.status(500).json({error: e.message});
   }
 });
