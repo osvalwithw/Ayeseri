@@ -16,14 +16,14 @@ let SELECTION = "X";
 let TIME_SELECTION = "Today";
 let Prevsel= null;
 const Validroutes = ["0000", "0001", "0002", "0006", "0007", "0008", "0014", "0015", "NITR", "Others"];
-const TimeParameters = [{TID: 0, Label: "From current date", URLtime: "FRMCrDate"}, 
+const TimeParameters = [{TID: 0, Label: "To current date", URLtime: "ToCrrDate"}, 
                         {TID: 1, Label: "Last month", URLtime: "LstMonth"}, 
                         {TID: 2, Label: "Last week", URLtime: "LstWeek"},
                         {TID: 3, Label: "Today", URLtime: "Today"},
                         {TID: 4, Label: "Current Week", URLtime: "CrrWeek"}, 
                         {TID: 5, Label: "Current Month", URLtime: "CrrMonth"},
                         {TID: 6, Label: "Current Year", URLtime: "CrrYear"},
-                        {TID: 7, Label: "To current date", URLtime: "ToCrrDate"}, 
+                        {TID: 7, Label: "From current date", URLtime: "FRMCrDate"}, 
                         {TID: 8, Label: "All", URLtime: "All"},
                     ];
 

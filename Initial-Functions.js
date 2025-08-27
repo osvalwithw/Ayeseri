@@ -33,7 +33,7 @@ async function User_Validation() {
     } 
     try {
         //console.log("Debbuging method start")
-        const key = await User_search(inputUser, inputpss)
+        const key = await User_search(inputUser, inputpss, 0)
         //console.log(`${key[0]} + ${key[1]}`)
         if (key[0] && key[1]) {
             if(inputUser == 'Admin'){
@@ -50,8 +50,8 @@ async function User_Validation() {
     }
 }
 
-async function User_search(usertofind, passw){
-    const key = [false, false];
+async function User_search(usertofind, passw, opc){
+    const key = [];
     try{
         const response = await fetch(`https://ayeseri.onrender.com/Users`);
         if (!response.ok) {
@@ -63,20 +63,32 @@ async function User_search(usertofind, passw){
             return null;
         }
         const data = await response.json();
-        console.log(data);
-        for (const Obj of data){
-            if((Obj.Email === usertofind) || (Obj.Username === usertofind)){
-                key[0] = true;
-                //console.log(key[0]);
+        //console.log(data);
+        if(opc == 0){
+            key.push(false, false);
+            for (const Obj of data){
+                if((Obj.Email === usertofind) || (Obj.Username === usertofind)){
+                    key[0] = true;
+                    //console.log(key[0]);
+                }
+                if((Obj.Password === passw && key[0])){
+                    key[1] = true;
+                    //console.log(key[0]);
+                }
             }
-            if((Obj.Password === passw && key[0])){
-                key[1] = true;
-                //console.log(key[0]);
-            }
+            //console.log(key);
+            return key;
         }
-        console.log(key)
-        return key;
-            
+        if(opc == 1){
+            key.push(0);
+            for (const Obj of data){
+                if(Obj.Username === usertofind){
+                    key[0] = 1;
+                    break;
+                }
+            }
+            return key;
+        }
     } catch (error) {
         console.error('Error de conexion 468', error);//error de conexion con la API
         return null;
@@ -98,7 +110,7 @@ function Loginpage(){
     document.getElementById("Register-box").style.display = "none";
 }
 
-function SendRequest(){
+async function SendRequest(){
     
     const fields = [
         { input: '#NoTicket', label: '#NoTicketlbl', msg: 'Coloca el número de ticket.' },
@@ -124,6 +136,7 @@ function SendRequest(){
         const val = (el?.value || '').trim();
 
         values[input] = val;
+        //console.log(values);
         const invalid = !val;
 
         if (lbl) lbl.style.color = invalid ? 'red' : 'black';
@@ -140,7 +153,15 @@ function SendRequest(){
         if (lbl) lbl.style.color = 'red';
         if (!firstInvalid) firstInvalid = document.querySelector('#NoTicket');
     }
- 
+    let Userexist = await User_search(values['#Username'], 'NA', 1);
+    if(Userexist == 1){
+        errors.push('• El nombre de usuario ya existe');
+        const lbl = document.querySelector('#Usernamelb');
+        if (lbl) lbl.style.color = 'red';
+        if (!firstInvalid) firstInvalid = document.querySelector('#Username');
+    }
+    
+
     if (values['#Email']) {
         const basicEmail = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
         if (!basicEmail.test(values['#Email'])) {
@@ -168,12 +189,21 @@ function SendRequest(){
         setTimeout(() => {
         fields.forEach(({label}) => {
         const lbl = document.querySelector(label);
-        console.log(":)")
         if (lbl) lbl.style.color = 'black';
         });}, 5000);
         return false;
+    } try {
+        const response = await fetch(`https://ayeseri.onrender.com/Requests/${values['#NoTicket']}/${values['#Username']}/${values['#Email']}/${values['#PSS']}`);
+        if (!response.ok) {
+            if (response.status === 404) {
+                console.log('Revisar conexion');
+            } else {
+                console.error('Error 455', response.statusText);//Error peticion
+            }
+            return null;
+        }
+    } catch (error) {
+        console.error('Error de conexion 468', error);//error de conexion con la API
+        return null;
     }
-
-    console.log('ok');
-    return true;
 }

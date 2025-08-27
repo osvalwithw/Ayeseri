@@ -15,17 +15,15 @@ const pool = mysql.createPool({
   waitForConnections: true,
   connectionLimit: 10,
   queueLimit: 0,
-  // Activa SSL si lo necesitas (p.ej., PlanetScale requiere; Railway a veces no)
-  ssl: process.env.MYSQL_SSL === 'true' ? { rejectUnauthorized: false } : undefined
 });
 
-
+//status de la conexion a DB
 app.get('/healthz', async (_req, res) => {
   try {
     const [rows] = await pool.query('SELECT 1 AS ok');
     res.json({ ok: rows[0].ok === 1 });
   } catch (e) {
-    console.error('❌ DB Health error:', e); // log completo
+    console.error('DB Health error:', e); // log completo
     res.status(500).json({ ok: false, error: e.message || String(e) });
   }
 });
@@ -88,7 +86,6 @@ app.get('/employee_errors/:id/:timepar', async (req, res) => {
     default://All
       break;
   }
-  
   try {
     const [rows] = await pool.query(sql, SearchTimeId);
     if (!rows.length) return res.status(404).json({ message: 'No se encontró ningún registro, revisa la informacion ingresada' });
@@ -109,7 +106,24 @@ app.get('/Users', async (req, res) => {
   try {
     const [rows] = await pool.query(`SELECT * FROM Users`);
     res.json(rows);
-  } catch (e){
+  }catch (e){
+    console.error('/Users:', e.message);
+    res.status(500).json({error: e.message})
+  }
+});
+
+app.get('/Requests/:NoTicket/:Username/:Email/:PSS', async (req, res) => {
+  const NoTicket = req.params.NoTicket;
+  const Username = req.params.Username;
+  const Email = req.params.Email;
+  const PSS = req.params.PSS;
+  const encrypt = await bcrypt.hash(PSS, 10);
+  sql = `
+  INSERT INTO Requests (NoTicket, User, Email, Psswd)
+  VALUES (?, ?, ?, ?)`;
+  try{
+    const [rows] = await pool.query(sql);
+  } catch {
     console.error('/Users:', e.message);
     res.status(500).json({error: e.message})
   }
