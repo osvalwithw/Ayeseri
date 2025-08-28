@@ -146,8 +146,8 @@ async function SendRequest(){
         }
     }
 
-    // 2) Ticket debe empezar con RITM
-    if (values['#NoTicket'] && !values['#NoTicket'].startsWith('RITM')) {
+    let ticket = values['#NoTicket'];
+    if (ticket && !ticket.startsWith('RITM')) {
         errors.push('• El número de ticket debe empezar con "RITM".');
         const lbl = document.querySelector('#NoTicketlbl');
         if (lbl) lbl.style.color = 'red';
@@ -160,7 +160,8 @@ async function SendRequest(){
         if (lbl) lbl.style.color = 'red';
         if (!firstInvalid) firstInvalid = document.querySelector('#Username');
     }
-    
+
+    let avar = await Ticketval();
 
     if (values['#Email']) {
         const basicEmail = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
@@ -194,17 +195,49 @@ async function SendRequest(){
         return false;
     } 
     console.log("ok");
-    try {
-        const response = await fetch(`https://ayeseri.onrender.com/Requests/${values['#NoTicket']}/${values['#Username']}/${values['#Email']}/${values['#PSS']}`);
+    // try {
+    //     const response = await fetch(`https://ayeseri.onrender.com/Requests/${values['#NoTicket']}/${values['#Username']}/${values['#Email']}/${values['#PSS']}`);
+    //     if (!response.ok) {
+    //         if (response.status === 404) {
+    //             console.log('Revisar conexion');
+    //         } else {
+    //             console.error('Error 455', response.statusText);//Error peticion
+    //         }
+    //         return null;
+    //     }
+    // } catch (error) {
+    //     console.error('Error de conexion 468', error);//error de conexion con la API
+    //     return null;
+    // }
+}
+
+async function Ticketval(){
+    key = [false, false];
+    try{
+        const response = await fetch(`https://ayeseri.onrender.com/Requests`);
         if (!response.ok) {
             if (response.status === 404) {
                 console.log('Revisar conexion');
             } else {
                 console.error('Error 455', response.statusText);//Error peticion
             }
+            console.error("Revisa la informacion del ticket y el usuario");
             return null;
         }
-    } catch (error) {
+        const data = await response.json();
+        console.log(data);
+        for (const Obj of data){
+                if((Obj.Email === usertofind) || (Obj.Username === usertofind)){
+                    key[0] = true;
+                    //console.log(key[0]);
+                }
+                if((Obj.Password === passw && key[0])){
+                    key[1] = true;
+                    //console.log(key[0]);
+                }
+            }
+        return key;
+    } catch(error){
         console.error('Error de conexion 468', error);//error de conexion con la API
         return null;
     }

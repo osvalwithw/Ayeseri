@@ -130,3 +130,13 @@ app.get('/Requests/:NoTicket/:Username/:Email/:PSS', async (req, res) => {
     res.status(500).json({error: e.message});
   }
 });
+
+app.get('/Requests', async (req, res) => {
+  try {
+    const [rows] = await pool.query(`SELECT * FROM Requests`);
+    res.json(rows);
+  }catch (e){
+    console.error('/Request:', e.message);
+    res.status(500).json({error: e.message})
+  }
+});
