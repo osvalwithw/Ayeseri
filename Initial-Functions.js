@@ -161,7 +161,14 @@ async function SendRequest(){
         if (!firstInvalid) firstInvalid = document.querySelector('#Username');
     }
 
-    let avar = await Ticketval();
+    let avar = await Ticketval(ticket);
+
+    if(avar == 1){
+        errors.push('• Ya existe un numero de ticket registrado, ingresa uno nuevo');
+        const lbl = document.querySelector('#NoTicketlbl');
+        if (lbl) lbl.style.color = 'red';
+        if (!firstInvalid) firstInvalid = document.querySelector('#NoTicket');
+    }
 
     if (values['#Email']) {
         const basicEmail = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
@@ -211,8 +218,8 @@ async function SendRequest(){
     // }
 }
 
-async function Ticketval(){
-    key = [false, false];
+async function Ticketval(tickettoval){
+    key = 0;
     try{
         const response = await fetch(`https://ayeseri.onrender.com/Requests`);
         if (!response.ok) {
@@ -227,13 +234,9 @@ async function Ticketval(){
         const data = await response.json();
         console.log(data);
         for (const Obj of data){
-                if((Obj.Email === usertofind) || (Obj.Username === usertofind)){
-                    key[0] = true;
-                    //console.log(key[0]);
-                }
-                if((Obj.Password === passw && key[0])){
-                    key[1] = true;
-                    //console.log(key[0]);
+                console.log(`${Obj.Noticket} == ${tickettoval}`);
+                if((Obj.NoTicket === tickettoval)){
+                    key = 1;
                 }
             }
         return key;
