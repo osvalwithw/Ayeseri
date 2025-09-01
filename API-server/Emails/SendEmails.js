@@ -1,5 +1,5 @@
 // /API-server/Emails/SendEmail.js
-import { SendEmail } from '../Libs/Sndmail_lib.js';
+import { SendMail } from '../Libs/Sndmail_lib.js';
 import express from "express";
 
 export const EmailsRouter = express.Router();
@@ -27,7 +27,7 @@ EmailsRouter.post('/SendEmail', async (req, res) => {
     subject = String(subject);
     message = typeof message === 'string' ? message : JSON.stringify(message);
  
-    const result = await SendEmail({ to: String(to), subject, message });
+    const result = await SendMail({ to: String(to), subject, message });
     console.log('✅ sendMail OK', result?.messageId);
     return res.json({ ok: true, sent_to: to });
  
