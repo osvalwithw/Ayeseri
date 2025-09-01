@@ -1,4 +1,4 @@
-import { getDB } from '../Libs/DB.js';
+import { getDB } from './Libs/DB.js';
 
 const express = require('express');
 const cors = require('cors');
