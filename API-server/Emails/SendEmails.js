@@ -25,7 +25,9 @@ EmailsRouter.post('/SendEmail', async (req, res) => {
     return res.json({ ok: true, sent_to: to });
   } catch (err) {
     console.error('SendEmail error:', err);
-    return res.status(500).json({ error: 'No se pudo enviar el correo' });
+    return res.status(500).json({ error: 'No se pudo enviar el correo',
+                                  hint: err?.code || err?.responseCode || "see server logs"
+     });
   }
 });
 
