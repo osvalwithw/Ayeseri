@@ -16,18 +16,24 @@ EmailsRouter.use((req, res, next) => {
 // POST /Emails/SendEmail
 EmailsRouter.post('/SendEmail', async (req, res) => {
   try {
-    const { to, subject, message } = req.body || {};
-    if (!to || !subject || !message) {
+    console.log('➡️ Body recibido:', req.body);
+ 
+    let { to, subject, message } = req.body || {};
+    if (!to || !subject || message == null) { // message puede ser ''
       return res.status(400).json({ error: 'Faltan campos: to, subject, message' });
     }
  
-    await SendEmail({ to, subject, message }); // 👈 usa tu función
+    // fuerza a string por si te mandan un objeto/numero
+    subject = String(subject);
+    message = typeof message === 'string' ? message : JSON.stringify(message);
+ 
+    const result = await SendEmail({ to: String(to), subject, message });
+    console.log('✅ sendMail OK', result?.messageId);
     return res.json({ ok: true, sent_to: to });
+ 
   } catch (err) {
-    console.error('SendEmail error:', err);
-    return res.status(500).json({ error: 'No se pudo enviar el correo',
-                                  hint: err?.code || err?.responseCode || "see server logs"
-     });
+    console.error('❌ SendEmail error:', err);
+    return res.status(500).json({ error: 'Fallo al enviar el correo' });
   }
 });
 
