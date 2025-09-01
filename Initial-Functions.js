@@ -39,7 +39,7 @@ async function User_Validation() {
             if(inputUser == 'Admin'){
                 alert("Maestro")
             }
-            window.open('../MainPage/Employee-search/Main-page.html', "_self");
+            window.open(`../MainPage/Employee-search/Main-page.html?User=${key[2]}`, "_self");
         } else if (!key[0]) {
             alert("El usuario no existe");} 
         else {
@@ -69,6 +69,7 @@ async function User_search(usertofind, passw, opc){
             for (const Obj of data){
                 if((Obj.Email === usertofind) || (Obj.Username === usertofind)){
                     key[0] = true;
+                    key.push(Obj.Username);
                     //console.log(key[0]);
                 }
                 if((Obj.Password === passw && key[0])){
