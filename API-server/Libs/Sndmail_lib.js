@@ -13,7 +13,7 @@ function getTransporter() {
   return _transporter;
 }
  
-export async function sendMail({ to, subject, message }) {
+export async function SendMail({ to, subject, message }) {
   const transporter = getTransporter();
  
   // 🔒 Normaliza y escapa SIEMPRE
