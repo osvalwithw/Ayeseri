@@ -28,3 +28,6 @@ EmailsRouter.post('/SendEmail', async (req, res) => {
     return res.status(500).json({ error: 'No se pudo enviar el correo' });
   }
 });
+
+EmailsRouter.get('/ping', (req, res) => 
+    res.json({ok: true}));
