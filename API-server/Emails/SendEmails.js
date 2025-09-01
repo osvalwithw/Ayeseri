@@ -4,6 +4,16 @@ import express from "express";
 
 export const EmailsRouter = express.Router();
 
+// CORS básico por si tu front está en otro dominio
+EmailsRouter.use((req, res, next) => {
+  res.setHeader('Access-Control-Allow-Origin', '*');
+  res.setHeader('Access-Control-Allow-Methods', 'POST, OPTIONS');
+  res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
+  if (req.method === 'OPTIONS') return res.sendStatus(200);
+  next();
+});
+ 
+// POST /Emails/SendEmail
 EmailsRouter.post('/SendEmail', async (req, res) => {
   try {
     const { to, subject, message } = req.body || {};
