@@ -14,7 +14,7 @@ document.getElementById("Loginpage").addEventListener("click", Loginpage);
 
 async function test(){
     try {
-        const res = await fetch('https://ayeseri.onrender.com/Emails/SendEmails', {
+        const res = await fetch('https://ayeseri.onrender.com/Emails/SendEmail', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({
