@@ -1,4 +1,4 @@
-import mysql from 'mysql/promise'
+import mysql from 'mysql2/promise'
 
 let _Pool;
 export function getDB(){
