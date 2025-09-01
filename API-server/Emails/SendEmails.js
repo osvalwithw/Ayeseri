@@ -1,26 +1,20 @@
-// /API-server/api/send-email.js
-import { sendMail } from './lib/mailer.js';
- 
-export default async function handler(req, res) {
-  if (req.method !== 'POST') {
-    return res.status(405).json({ error: 'Método no permitido' });
-  }
- 
+// /API-server/Emails/SendEmail.js
+import { SendEmail } from './Libs/Sndmail_lib.js';
+import express from "express";
+
+export const EmailsRouter = express.Router();
+
+EmailsRouter.post('/SendEmail', async (req, res) => {
   try {
     const { to, subject, message } = req.body || {};
     if (!to || !subject || !message) {
-      return res.status(400).json({ error: 'Faltan campos' });
+      return res.status(400).json({ error: 'Faltan campos: to, subject, message' });
     }
  
-    await sendMail({
-      to,
-      subject,
-      html: `<p>${message}</p>`
-    });
- 
-    res.json({ ok: true, sent_to: to });
+    await SendEmail({ to, subject, message }); // 👈 usa tu función
+    return res.json({ ok: true, sent_to: to });
   } catch (err) {
-    console.error('send-email error:', err);
-    res.status(500).json({ error: 'No se pudo enviar el correo' });
+    console.error('SendEmail error:', err);
+    return res.status(500).json({ error: 'No se pudo enviar el correo' });
   }
-}
+});

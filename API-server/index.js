@@ -1,6 +1,7 @@
 import { getDB } from './Libs/DB.js';   //conexion a bse de datos
 import express from 'express';
 import cors from'cors';
+import { EmailsRouter } from './Emails/SendEmails.js';
 
 const app = express();
 app.use(cors());
@@ -131,3 +132,5 @@ app.get('/Requests', async (req, res) => {
     res.status(500).json({error: e.message})
   }
 });
+
+app.use('/Emails', EmailsRouter);
