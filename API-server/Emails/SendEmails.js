@@ -1,5 +1,5 @@
 // /API-server/Emails/SendEmail.js
-import { SendEmail } from '.Libs/Sndmail_lib.js';
+import { SendEmail } from './Libs/Sndmail_lib.js';
 import express from "express";
 
 export const EmailsRouter = express.Router();
