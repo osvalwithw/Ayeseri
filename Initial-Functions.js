@@ -12,6 +12,30 @@
 //Se pueden anidar objetos, respetando las mismas llamadas anteriores
 document.getElementById("Loginpage").addEventListener("click", Loginpage);
 
+async function test(){
+    try {
+        const res = await fetch('/api/send-email', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            to: 'osvaldoml2010@hotmail.com',
+            subject: 'Prueba desde frontend',
+            message: '¡Hola Oswaldo! Este correo salió al presionar un botón 😺'
+          })
+        });
+ 
+        const data = await res.json();
+        if (res.ok) {
+          alert(`Correo enviado a ${data.sent_to}`);
+        } else {
+          alert(`Error: ${data.error}`);
+        }
+      } catch (e) {
+        console.error(e);
+        alert('Error inesperado');
+      }
+}
+
 async function User_Validation() {
     event.preventDefault();
     // Evita que el formulario se enví

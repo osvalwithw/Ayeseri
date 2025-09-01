@@ -1,4 +1,4 @@
-import { getDB } from './Libs/DB.js';
+import { getDB } from './Libs/DB.js';   //conexion a bse de datos
 import express from 'express';
 import cors from'cors';
 
@@ -6,19 +6,9 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 
-const pool = getDB();
-// const pool = mysql.createPool({
-//   host: process.env.MYSQLHOST,
-//   port: process.env.MYSQLPORT ? Number(process.env.MYSQLPORT) : 3306,
-//   user: process.env.MYSQLUSER,
-//   password: process.env.MYSQLPASSWORD,
-//   database: process.env.MYSQLDATABASE,
-//   waitForConnections: true,
-//   connectionLimit: 10,
-//   queueLimit: 0,
-// });
+const pool = getDB();                   //conexion a bse de datos
 
-//status de la conexion a DB
+//status de la conexion a bse de datos
 app.get('/healthz', async (_req, res) => {
   try {
     const [rows] = await pool.query('SELECT 1 AS ok');
