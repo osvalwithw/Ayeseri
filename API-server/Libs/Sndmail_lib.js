@@ -3,7 +3,7 @@ import nodemailer from 'nodemailer';
 let _transporter;
 function getTransporter() {
   if (_transporter) return _transporter;
-  const { SMTP_HOST, SMTP_PORT, SMTP_USER, SMTP_PASS } = process.env;
+  const { SMTP_HOST, SMTP_PORT, SMTP_USER, SMTP_PASS } = process.env; //Variables de la API (revisar su contenido en la pagina)
   _transporter = nodemailer.createTransport({
     host: SMTP_HOST,
     port: Number(SMTP_PORT || 587),
@@ -28,7 +28,7 @@ export async function SendMail({ to, subject, message }) {
   `;
  
   return transporter.sendMail({
-    from: process.env.MAIL_FROM || 'no-reply@tu-dominio.com',
+    from: process.env.MAIL_FROM || 'ayesericonnect@gmail.com',
     to: safeTo,
     subject: safeSubject,
     text: stripHtml(html),   // fallback texto plano

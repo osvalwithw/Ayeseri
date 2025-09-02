@@ -10,9 +10,12 @@
 //Se puede acceder a los elementos de un objeto usando person.lastName;, person["lastname"] o x = lastname; person[x]
 //this hace referencia al objeto en cuestion
 //Se pueden anidar objetos, respetando las mismas llamadas anteriores
+
+//EL directorio root de la API es API-server
+
 document.getElementById("Loginpage").addEventListener("click", Loginpage);
 
-async function test(){
+async function envio_test(){
     try {
         const res = await fetch('https://ayeseri.onrender.com/Emails/SendEmail', {
           method: 'POST',
@@ -32,7 +35,7 @@ async function test(){
         }
       } catch (e) {
         console.error(e);
-        alert('Error inesperado');
+        alert('Error inesperado, intentelo mas tarde');
       }
 }
 
@@ -227,6 +230,7 @@ async function SendRequest(){
         return false;
     } 
     console.log("ok");
+    Ticket_email();
     // try {
     //     const response = await fetch(`https://ayeseri.onrender.com/Requests/${values['#NoTicket']}/${values['#Username']}/${values['#Email']}/${values['#PSS']}`);
     //     if (!response.ok) {
@@ -269,4 +273,52 @@ async function Ticketval(tickettoval){
         console.error('Error de conexion 468', error);//error de conexion con la API
         return null;
     }
+}
+//---------------------------------------------------------------------------------------------------------------------------------------
+async function Email_send(dest, asun, mensj){ 
+    try {
+        const res = await fetch('https://ayeseri.onrender.com/Emails/SendEmail', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            to: dest,
+            subject: asun,
+            message: mensj
+          })
+        });
+ 
+        const data = await res.json();
+        if (res.ok) {
+          alert(`Correo enviado a ${data.sent_to}`);
+        } else {
+          alert(`Error: ${data.error}`);
+        }
+      } catch (e) {
+        console.error(e);
+        alert('Error inesperado, intentelo mas tarde');
+      }
+}
+//---------------------------------------------------------------------------------------------------------------------------------------
+
+
+//Enviar correo al registrar ticket
+async function Ticket_email(){
+    //const params = new URLSearchParams(window.location.search);
+    //const actualuser = params.get('User');
+    Emailtosend = document.getElementById('Email').value;
+    usercreated = document.getElementById('Username').value;
+    Ticket = document.getElementById('NoTicket').value;
+    ticket_subject = `Registro de solicitud número ${Ticket}`;
+    ticket_message = `Usted acaba de solicitar una nueva cuenta de usuario en Ayeseri con la siguiente informacion:
+
+                        Numero de ticket:   ${Ticket}
+                        Nombre de usuario:  ${usercreated}
+                        Correo asociado:    ${Emailtosend}
+                        Contraseña:         Anotada por el usuario :)
+
+                    Si necesita corregir informacion antes de proceder, acude con el administrador a la brevedad antes de las 10 AM hora del pacifico.
+
+                    Muchas gracias y que tengas buen dia!. :D
+    `;
+    Useremail = Email_send(Emailtosend, ticket_subject, ticket_message);
 }
