@@ -13,8 +13,6 @@
 
 //EL directorio root de la API es API-server
 
-document.getElementById("Loginpage").addEventListener("click", Loginpage);
-
 async function envio_test(){
     try {
         const res = await fetch('https://ayeseri.onrender.com/Emails/SendEmail', {
@@ -275,7 +273,7 @@ async function Ticketval(tickettoval){
     }
 }
 //---------------------------------------------------------------------------------------------------------------------------------------
-async function Email_send(dest, asun, mensj){ 
+export async function Email_send(dest, asun, mensj){ 
     try {
         const res = await fetch('https://ayeseri.onrender.com/Emails/SendEmail', {
           method: 'POST',
@@ -296,6 +294,7 @@ async function Email_send(dest, asun, mensj){
       } catch (e) {
         console.error(e);
         alert('Error inesperado, intentelo mas tarde');
+        return 404;
       }
 }
 //---------------------------------------------------------------------------------------------------------------------------------------
@@ -305,9 +304,9 @@ async function Email_send(dest, asun, mensj){
 async function Ticket_email(){
     //const params = new URLSearchParams(window.location.search);
     //const actualuser = params.get('User');
-    Emailtosend = document.getElementById('Email').value;
-    usercreated = document.getElementById('Username').value;
-    Ticket = document.getElementById('NoTicket').value;
+    let Emailtosend = document.getElementById('Email').value;
+    let usercreated = document.getElementById('Username').value;
+    let Ticket = document.getElementById('NoTicket').value;
     ticket_subject = `Registro de solicitud número ${Ticket}`;
     ticket_message = `Usted acaba de solicitar una nueva cuenta de usuario en Ayeseri con la siguiente informacion:
 

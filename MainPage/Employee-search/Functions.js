@@ -11,6 +11,8 @@
 //this hace referencia al objeto en cuestion
 //Se pueden anidar objetos, respetando las mismas llamadas anteriores
 
+//import {Email_send} from '../../Initial-Functions.js';
+
 const HELP_ROUTE = "../Help";
 let SELECTION = "X";
 let TIME_SELECTION = "Today";
@@ -148,5 +150,54 @@ function ITSelection(ITVAL){
             tittlechange.innerText += `${FullMSG}`;
             break;
         }
+    }
+}
+
+function show_report_register(){
+    document.getElementById("report-section").style.display = "block";
+}
+async function Email_send(dest, asun, mensj){ 
+    try {
+        const res = await fetch('https://ayeseri.onrender.com/Emails/SendEmail', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            to: dest,
+            subject: asun,
+            message: mensj
+          })
+        });
+ 
+        const data = await res.json();
+        if (!res.ok) {
+        alert(`Error: ${data.error}`);
+        }
+      } catch (e) {
+        console.error(e);
+        alert('Error inesperado, intentelo mas tarde');
+        return 404;
+      }
+}
+
+function Report_send(){
+    const params = new URLSearchParams(window.location.search);
+    const Userinvolved = params.get('User');
+    const adminemail = 'osvaldoml2010@hotmail.com';
+    let report_header = document.getElementById('rptquestion_input').value;
+    let report_time = document.getElementById('rptdate_input').value;
+    let report_details = document.getElementById('rptdetails_input').value;
+    Report_subject = `Reporte ${report_header} por ${Userinvolved}`;
+    Report_content = `Un nuevo reporte acaba de llegar de parte de ${Userinvolved} el cual fue enviado el
+                      ${report_time}, con las siguientes inquietudes:
+
+                      ${report_details}
+
+                      Por favor, recuerda dar seguimiento no mas de 7 dias despues de recibir este correo.`;
+    ReporEmail = Email_send(adminemail, Report_subject, Report_content);
+    if(ReporEmail === 404){
+        alert("No fue posible enviar el correo..");
+        console.log(err);
+    } else {
+        alert("Reporte enviado con exito!.")
     }
 }
