@@ -1,30 +1,30 @@
 Error_ID,Error_Message,Infotipo
-1,Formatting error in the field P0001-ANSVH,2
-2,Formatting error in the field P0006-STRAS,4
+X1,Formatting error in the field P0001-ANSVH,2
+X2,Formatting error in the field P0006-STRAS,4
 3,Formatting error in the field P0006-ORT01,4
 4,Formatting error in the field P0006-LAND1,4
 5,Formatting error in the field Q0006-TELNR,4
-6,Formating error in the field P0001-BTRTL ,2
+6,Formating error in the field P0001-BTRTLï¿½,2
 7,Formating error in the field P0002-GBDAT,3
-8,Formatting error in field  P0002-NACHN,3
+8,Formatting error in field ï¿½P0002-NACHN,3
 9,Formatting error in the field P0007-SCHKZ,5
 10,Formatting error in the field P0001-KOSTL,2
 11,Formatting error in the field Q0002-FATXT,3
 12,Formatting error in the field P0007-ENDDA,5
-13,Postal code GHI must have length 5,3
+13,Postal code GHI must have lengthï¿½5,3
 14,Cost center does not exist,2
 15,Cost center 0010/3211210 blocked against direct postings on 28.11.2018,2
 16,Invalid combination of action type 1G/action reason,1
-17,Invalid combination of action type 1A/action reason CA,1
+X17,Invalid combination of action type 1A/action reason CA,1
 18,Invalid combination of action type 1B/action reason,1
-19,Person is already being processed by user ,9
+X19,Person is already being processed by user ,9
 20,ID/number 2298259 already used for Person number 01691680,1
 21,ID/number JIANWEI_XIE@JABIL.COM already used for Person number 01366840 (sample data),1
 22,Do not enter a personnel action for the date of hiring/transfer,1
 23,config issue: Formatting error in the field RP50G-EINDA,10
 24,config issue: P0001-ZZWORKCENTER workcell missing,2
 25,config issue: PA30 0016 No entry in table T545T for GK,10
-26,config issue: PA40 1B No entry in table T710 for the key 420150 on 19.11.2018,10
+26,config issue: PA40 1B No entry in table T710 for the keyï¿½420150ï¿½on 19.11.2018,10
 27,No entry in table T528B for    S 52407005,10
 28,No batch input data for screen MP000800 2010,9
 29,Next pay scale increase is in the past,6
@@ -34,7 +34,7 @@ Error_ID,Error_Message,Infotipo
 33,PayrArea unchangeable for periods for which payroll has run,2
 34,"The CO account assignment object belongs to company code 0949, not 0902",2
 35,"The CO account assignment object belongs to company code 0301, not 2401",2
-36,No work schedule rule for key 0103ZY3942TW020220191014,5
+X36,No work schedule rule for key 0103ZY3942TW020220191014,5
 37,Employee active since 24.02.2019 (sample date),1
 38,Change before earliest retro. date 24.12.2017 acc. to control rec. to py area L0,2
 39,"Future Action exists, check status fields",1
