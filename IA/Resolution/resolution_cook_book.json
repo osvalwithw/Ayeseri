@@ -4,6 +4,7 @@
         "Source_Type": "Infotype",
         "Tittle": "Formatting error in the field P0001-ANSVH",
         "Severity":"Low",
+        "Summary": "Error causado cuando el contrato no se carga en SAP, debido a que en Workday este no fue cargado de forma correcta por fecha efectiva o contenido como la duracion si es ilimitado o limitado",
         "Preconditions": [
             "Contrato activo en Workday",
             "Fechas acordes a contratacion o cambio de puesto",
@@ -27,6 +28,7 @@
         "Source_Type": "Infotype",
         "Tittle": "Formatting error in the field P0006-STRAS",
         "Severity":"Low",
+        "Summary": "Ocasionado cuando se ingresan caracteres no permitidos en la entrada",
         "Preconditions": [
             "Calle registrada",
             "Ningun caracter adicional",
@@ -52,6 +54,7 @@
         "Source_Type": "Infotype",
         "Tittle": "Invalid combination of action type 1A/action reason CA",
         "Severity": "Medium",
+        "Summary": "",
         "Preconditions": [
             "El empleado fue contratado",
             "Se ingreso la contratacion en tiempo y forma",
