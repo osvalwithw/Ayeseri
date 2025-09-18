@@ -1,7 +1,23 @@
+import json
+from sentence_transformers import SentenceTransformer, util
+import torch
+import os
+
+script_dir = os.path.dirname(os.path.abspath(__file__))
+file_path = os.path.join(script_dir, 'resolution_cook_book.json')
+
+try:
+    with open(file_path, 'r', encoding='utf-8') as f:
+        error_knowledge_base = json.load(f)
+    print(f"Se cargaron {len(error_knowledge_base)} errores desde 'resolution_cook_book.json'.")
+except FileNotFoundError:
+    print("Error: El archivo 'resolution_cook_book.json' no fue encontrado. Asegúrate de que esté en la misma carpeta.")
+    exit()
+
 print("Procesando base de conocimiento...")
 corpus_completo = []
 mapeo_a_solucion = []
-for sol_id, data in knowledge_base_final.items():
+for sol_id, data in error_knowledge_base.items():
     for problema in data["consultas_de_usuario_ejemplos"]:
         corpus_completo.append(problema)
         mapeo_a_solucion.append(sol_id)
@@ -39,7 +55,7 @@ else:
         solucion_id = mapeo_a_solucion[idx.item()]
         
         # Obtenemos la información completa de esa solución
-        solucion_data = knowledge_base_final[solucion_id]
+        solucion_data = error_knowledge_base[solucion_id]
         
         if i == 0:
             print("\n--- ✅ Solución Principal ---")
