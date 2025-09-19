@@ -8,26 +8,34 @@ file_path = os.path.join(script_dir, 'resolution_cook_book.json')
 
 try:
     with open(file_path, 'r', encoding='utf-8') as f:
-        error_knowledge_base = json.load(f)
-    print(f"Se cargaron {len(error_knowledge_base)} errores desde 'resolution_cook_book.json'.")
+        file_load = json.load(f)
+    print(f"Se cargaron {len(file_load)} errores desde 'resolution_cook_book.json'.")
+    error_knowledge_base = {}
+    for error in file_load:
+        index = error["Tittle"]
+        error_knowledge_base[index] = error
 except FileNotFoundError:
     print("Error: El archivo 'resolution_cook_book.json' no fue encontrado. Asegúrate de que esté en la misma carpeta.")
     exit()
 
+
+
 print("Procesando base de conocimiento...")
 corpus_completo = []
 mapeo_a_solucion = []
-for sol_id, data in error_knowledge_base.items():
-    for problema in data["consultas_de_usuario_ejemplos"]:
-        corpus_completo.append(problema)
-        mapeo_a_solucion.append(sol_id)
+for error_obj, info in error_knowledge_base.items():
+    # sol_id = error_obj["Tittle"]
+    for issue in info["Posible_consults"]:
+        corpus_completo.append(issue)
+        mapeo_a_solucion.append(error_obj)
 
 model = SentenceTransformer('all-MiniLM-L6-v2')
 corpus_embeddings = model.encode(corpus_completo, convert_to_tensor=True)
 print("Sistema listo.")
 
 # --- 3. Simulación de una Consulta de Usuario ---
-query = "el salario de un empleado no se puede poner en el sistema"
+query = "El empleado que estoy buscando no esta"
+
 query_embedding = model.encode(query, convert_to_tensor=True)
 
 # --- 4. Búsqueda de Similitud (VERSIÓN MEJORADA: TOP-K) ---
