@@ -1,7 +1,9 @@
-body {
+html, body {
     margin: 0;
     background-image: url('Background.jpg');
     background-size: cover;
+    height: 100%;
+
 }
 
 /*-------------Barra de inicio---------------------------------------------*/
@@ -273,4 +275,32 @@ li a:hover,
     flex-direction: column;
     flex-wrap: wrap;
     row-gap: 20px;
+}
+
+/*---------------------------------------------------------------------------------------------------------------------------------------*/
+#Ayeseri_Helper{
+    background-color: rgb(255, 255, 255, 0.2);
+    margin-left: 180px;
+    margin-top: 20px;
+    width: 500px;
+    height: 700px;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+}
+
+.HelpMainbox{
+    display:flex;
+    flex-direction: column;
+    flex: 1;
+    overflow: auto;
+}
+
+.errorinput{
+    resize:none;
+    min-height: 40px;
+    max-height: 120px;
+    width:75%;
+    padding: 10px;
+    box-sizing: border-box;
 }
