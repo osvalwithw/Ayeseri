@@ -1,7 +1,6 @@
 import mysql from 'mysql2/promise'
 
-const mysql = require('mysql2/promise');
-
+let _Pool;
 export function getDB(){
     if(_Pool) return _Pool;
     _Pool = mysql.createPool({
