@@ -293,7 +293,12 @@ li a:hover,
     display:flex;
     flex-direction: column;
     flex: 1;
-    overflow: auto;
+    overflow: hidden;
+}
+
+.HelpMainbox .contenido{
+    flex:1;
+    overflow-y: auto;
 }
 
 .errorinput{
@@ -302,5 +307,14 @@ li a:hover,
     max-height: 120px;
     width:75%;
     padding: 10px;
+    margin-top: 20px;
     box-sizing: border-box;
+}
+
+.User_comunication{
+    background-color: rgb(255, 255, 255, 0.2);
+    width: 460px;
+    height: 700px;
+    margin-left: 20px;
+    margin-top: 20px;
 }
