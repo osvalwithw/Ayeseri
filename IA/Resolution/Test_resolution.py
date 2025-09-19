@@ -18,8 +18,6 @@ except FileNotFoundError:
     print("Error: El archivo 'resolution_cook_book.json' no fue encontrado. Asegúrate de que esté en la misma carpeta.")
     exit()
 
-
-
 print("Procesando base de conocimiento...")
 corpus_completo = []
 mapeo_a_solucion = []

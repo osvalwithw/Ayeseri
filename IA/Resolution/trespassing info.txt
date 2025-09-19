@@ -66,3 +66,22 @@ else:
         print(f"Similitud: {score.item():.4f}")
         # Opcional: Mostrar más detalles
         # print(f"Pasos: {solucion_data['resolution_steps']}")
+
+        import mysql from 'mysql2/promise'
+
+const mysql = require('mysql2/promise');
+
+export function getDB(){
+    if(_Pool) return _Pool;
+    _Pool = mysql.createPool({
+    host: process.env.MYSQLHOST,
+    port: process.env.MYSQLPORT ? Number(process.env.MYSQLPORT) : 3306,
+    user: process.env.MYSQLUSER,
+    password: process.env.MYSQLPASSWORD,
+    database: process.env.MYSQLDATABASE,
+    waitForConnections: true,
+    connectionLimit: 10,
+    queueLimit: 0
+    });
+    return _Pool;
+}

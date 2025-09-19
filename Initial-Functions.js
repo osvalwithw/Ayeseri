@@ -273,7 +273,7 @@ async function Ticketval(tickettoval){
     }
 }
 //---------------------------------------------------------------------------------------------------------------------------------------
-export async function Email_send(dest, asun, mensj){ 
+async function Email_send(dest, asun, mensj){ 
     try {
         const res = await fetch('https://ayeseri.onrender.com/Emails/SendEmail', {
           method: 'POST',
