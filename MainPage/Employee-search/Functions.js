@@ -201,3 +201,37 @@ function Report_send(){
         alert("Reporte enviado con exito!.")
     }
 }
+
+
+
+const chat = document.getElementById('User_chat');
+const form = document.getElementById('chat-form');
+const ta = document.getElementById('User_msg');
+
+const autoresize = (el) => {
+  el.style.height = 'auto';
+  el.style.height = el.scrollHeight + 'px';
+};
+ta.addEventListener('input', () => autoresize(ta));
+
+function addMessage(text, who = 'me') {
+  const box = document.createElement('div');
+  box.className = `msg ${who}`;
+  box.innerHTML = `${text}<span class="time">${new Date().toLocaleTimeString([], {hour:'2-digit', minute:'2-digit'})}</span>`;
+  chat.appendChild(box);
+  chat.scrollTop = chat.scrollHeight;
+}
+
+function Sendmessage(){
+    console.log("si llega aca");
+    const text = ta.value.trim();
+    if (!text) return;
+
+    addMessage(text, 'me');
+    ta.value = '';
+    setTimeout(() => {
+    addMessage('Recibido ✅. Estoy procesando tu solicitud...', 'bot');
+    }, 500);
+}
+
+addMessage('¡Hola! Soy tu asistente de errores. ¿Cómo puedo ayudarte?', 'bot');

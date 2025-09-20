@@ -6,7 +6,6 @@
         <title>Search Page</title>
         <link rel="stylesheet" href="./insidestyle.css">
         <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
-        <script src="Functions.js" defer></script>
     </head>
     <body>
         <div class="main-bar">
@@ -121,11 +120,13 @@
             </div>
             <div id="Ayeseri_Helper">
                 <div class="HelpMainbox">
-                    <label>Te puedo ayudar en algo?</label>
-                    <div class="User_comunication">
-
+                    <div id="User_chat">
+                        <form id="chat-form" class="input-row"></form>
                     </div>
-                    <textarea type="text" placeholder="Tengo un problema con...." class="errorinput"></textarea>
+                    <div id="User_operations">
+                        <textarea id="User_msg" type="text" placeholder="Tengo un problema con...." class="errorinput"></textarea>
+                        <button type="submit" class="sendbtn" onclick="Sendmessage()">Enviar</button>
+                    </div>
                 </div>
             </div>
             <div id="report-section">
@@ -141,5 +142,6 @@
                 </div>
             </div>
         </div>
+        <script src="Functions.js"></script>
     </body>
 </html>
