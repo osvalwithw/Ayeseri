@@ -153,9 +153,15 @@ function ITSelection(ITVAL){
     }
 }
 
-function show_report_register(){
-    document.getElementById("report-section").style.display = "block";
+function show_report_register(RPTopc){
+    if(RPTopc === 0){
+        document.getElementById("report-section").style.display = "block";
+    } else{
+        document.getElementById("report-section").style.display = "none";
+    }
+    
 }
+
 async function Email_send(dest, asun, mensj){ 
     try {
         const res = await fetch('https://ayeseri.onrender.com/Emails/SendEmail', {
@@ -234,4 +240,4 @@ function Sendmessage(){
     }, 500);
 }
 
-addMessage('¡Hola! Soy tu asistente de errores. ¿Cómo puedo ayudarte?', 'bot');
+addMessage('¿Necesitas ayuda con algo? :-)', 'bot');

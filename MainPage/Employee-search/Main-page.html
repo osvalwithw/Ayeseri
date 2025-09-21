@@ -31,7 +31,7 @@
                         <span class="OVlabel" id="overview_label">Overview</span>
                     </div>
                     <div class="Report">
-                        <button onclick="show_report_register()" id="Report_icon" class="material-icons" style="font-size: 35px;">report_problem</button>
+                        <button onclick="show_report_register(0)" id="Report_icon" class="material-icons" style="font-size: 35px;">report_problem</button>
                         <span id="report-label">Report</span>
                     </div>
                 </div>
@@ -41,91 +41,93 @@
                 </div>
             </div>
 <!-------------------------------------------------------------------------------------------------------------------------------------------------------->
-            <div class="Maintain-options">
-                <div class="InfMainTittle">
-                    <h2 id="InfMainTittlelbl">Select an infotype </h2>                        
+            <div class="User_tools">
+                <div class="column Maintain-options">
+                    <div class="InfMainTittle">
+                        <h2 id="InfMainTittlelbl">Select an infotype </h2>                        
+                    </div>
+                    <div class="NewInfotypeSelection">
+                        <div class="IT0000">
+                            <input type="radio" onclick="ITSelection('0000')" id="ICIT0">
+                                <i id="IconICIT0" class="material-icons" style="font-size: 60px;">tag_faces</i>  
+                            </input>
+                            <p id="OPTITLB0">0000</p>
+                        </div>
+                        <div class="IT0001">
+                            <input type="radio" onclick="ITSelection('0001')" id="ICIT1">
+                                <i id="IconICIT1" class="material-icons" style="font-size: 60px;">domain</i>  
+                            </input>
+                            <p id="OPTITLB1">0001</p>
+                        </div>
+                        <div class="IT0002">
+                            <input type="radio" onclick="ITSelection('0002')" id="ICIT2">
+                                <i id="IconICIT2" class="material-icons" style="font-size: 60px;">account_box</i>  
+                            </input>
+                            <p id="OPTITLB2">0002</p>
+                        </div>
+                        <div class="IT0006">
+                            <input type="radio" onclick="ITSelection('0006')" id="ICIT6">
+                                <i id="IconICIT6" class="material-icons" style="font-size: 60px;">directions</i>  
+                            </input>
+                            <p id="OPTITLB6">0006</p>
+                        </div>
+                        <div class="IT0007">
+                            <input type="radio" onclick="ITSelection('0007')" id="ICIT7">
+                                <i id="IconICIT7" class="material-icons" style="font-size: 60px;">timelapse</i>  
+                            </input>
+                            <p id="OPTITLB7">0007</p>
+                        </div>
+                        <div class="IT0008">
+                            <input type="radio" onclick="ITSelection('0008')" id="ICIT6">
+                                <i id="IconICIT8" class="material-icons" style="font-size: 60px;">monetization_on</i>  
+                            </input>
+                            <p id="OPTITLB8">0008</p>
+                        </div>
+                        <div class="IT0014">
+                            <input type="radio" onclick="ITSelection('0014')" id="ICIT14">
+                                <i id="IconICIT14" class="material-icons" style="font-size: 60px;">repeat</i>  
+                            </input>
+                            <p id="OPTITLB14">0014</p>
+                        </div>
+                        <div class="IT0015">
+                            <input type="radio" onclick="ITSelection('0015')" id="ICIT15">
+                                <i id="IconICIT15" class="material-icons" style="font-size: 60px;">library_add</i>  
+                            </input>
+                            <p id="OPTITLB15">0015</p>
+                        </div>
+                        <div class="ITNITR">
+                            <input type="radio" onclick="ITSelection('NITR')" id="ICIT_NITR">
+                                <i id="IconICIT_NITR" class="material-icons" style="font-size: 60px;">person</i>  
+                            </input>
+                            <p id="OPTITLB_NITR">No IT related</p>
+                        </div>
+                        <div class="ITOthers">
+                            <input type="radio" onclick="ITSelection('Others')" id="ICIT_Others">
+                                <i id="IconICIT_Others" class="material-icons" style="font-size: 60px;">settings</i>  
+                            </input>
+                            <p id="OPTITLB_Others">Others</p>
+                        </div>
+                    </div>
+                    <div class="DirectSearch">
+                        <p id="Dirlbl">Type Infotype</p>
+                        <input id="DirInput" type="text" style="width: 150px; height: 30px;" placeholder="0000/0001/Others.....">
+                    </div>
+                    <div class="NewPeriodSelection">
+                        <p id="Timelbl">Period Selection</p>
+                        <input type="range" id="timeSelection" min="0" max="8" value="3" style="width: 300px;">
+                        <p id="Timeopc">No filter selected</p>
+                        <!--button onclick="definetimeentries()"-->
+                    </div>
                 </div>
-                <div class="NewInfotypeSelection">
-                    <div class="IT0000">
-                        <input type="radio" onclick="ITSelection('0000')" id="ICIT0">
-                            <i id="IconICIT0" class="material-icons" style="font-size: 60px;">tag_faces</i>  
-                        </input>
-                        <p id="OPTITLB0">0000</p>
-                    </div>
-                    <div class="IT0001">
-                        <input type="radio" onclick="ITSelection('0001')" id="ICIT1">
-                            <i id="IconICIT1" class="material-icons" style="font-size: 60px;">domain</i>  
-                        </input>
-                        <p id="OPTITLB1">0001</p>
-                    </div>
-                    <div class="IT0002">
-                        <input type="radio" onclick="ITSelection('0002')" id="ICIT2">
-                            <i id="IconICIT2" class="material-icons" style="font-size: 60px;">account_box</i>  
-                        </input>
-                        <p id="OPTITLB2">0002</p>
-                    </div>
-                    <div class="IT0006">
-                        <input type="radio" onclick="ITSelection('0006')" id="ICIT6">
-                            <i id="IconICIT6" class="material-icons" style="font-size: 60px;">directions</i>  
-                        </input>
-                        <p id="OPTITLB6">0006</p>
-                    </div>
-                    <div class="IT0007">
-                        <input type="radio" onclick="ITSelection('0007')" id="ICIT7">
-                            <i id="IconICIT7" class="material-icons" style="font-size: 60px;">timelapse</i>  
-                        </input>
-                        <p id="OPTITLB7">0007</p>
-                    </div>
-                    <div class="IT0008">
-                        <input type="radio" onclick="ITSelection('0008')" id="ICIT6">
-                            <i id="IconICIT8" class="material-icons" style="font-size: 60px;">monetization_on</i>  
-                        </input>
-                        <p id="OPTITLB8">0008</p>
-                    </div>
-                    <div class="IT0014">
-                        <input type="radio" onclick="ITSelection('0014')" id="ICIT14">
-                            <i id="IconICIT14" class="material-icons" style="font-size: 60px;">repeat</i>  
-                        </input>
-                        <p id="OPTITLB14">0014</p>
-                    </div>
-                    <div class="IT0015">
-                        <input type="radio" onclick="ITSelection('0015')" id="ICIT15">
-                            <i id="IconICIT15" class="material-icons" style="font-size: 60px;">library_add</i>  
-                        </input>
-                        <p id="OPTITLB15">0015</p>
-                    </div>
-                    <div class="ITNITR">
-                        <input type="radio" onclick="ITSelection('NITR')" id="ICIT_NITR">
-                            <i id="IconICIT_NITR" class="material-icons" style="font-size: 60px;">person</i>  
-                        </input>
-                        <p id="OPTITLB_NITR">No IT related</p>
-                    </div>
-                    <div class="ITOthers">
-                        <input type="radio" onclick="ITSelection('Others')" id="ICIT_Others">
-                            <i id="IconICIT_Others" class="material-icons" style="font-size: 60px;">settings</i>  
-                        </input>
-                        <p id="OPTITLB_Others">Others</p>
-                    </div>
-                </div>
-                <div class="DirectSearch">
-                    <p id="Dirlbl">Type Infotype</p>
-                    <input id="DirInput" type="text" style="width: 150px; height: 30px;" placeholder="0000/0001/Others.....">
-                </div>
-                <div class="NewPeriodSelection">
-                    <p id="Timelbl">Period Selection</p>
-                    <input type="range" id="timeSelection" min="0" max="8" value="3" style="width: 300px;">
-                    <p id="Timeopc">No filter selected</p>
-                    <!--button onclick="definetimeentries()"-->
-                </div>
-            </div>
-            <div id="Ayeseri_Helper">
-                <div class="HelpMainbox">
-                    <div id="User_chat">
-                        <form id="chat-form" class="input-row"></form>
-                    </div>
-                    <div id="User_operations">
-                        <textarea id="User_msg" type="text" placeholder="Tengo un problema con...." class="errorinput"></textarea>
-                        <button type="submit" class="sendbtn" onclick="Sendmessage()">Enviar</button>
+                <div class="column Ayeseri_Helper">
+                    <div class="HelpMainbox">
+                        <div id="User_chat">
+                            <form id="chat-form" class="input-row"></form>
+                        </div>
+                        <div id="User_operations">
+                            <textarea id="User_msg" type="text" placeholder="Tengo un problema con...." class="errorinput"></textarea>
+                            <button type="submit" class="sendbtn" onclick="Sendmessage()">Enviar</button>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -139,6 +141,7 @@
                     <label id="rptdetails">Explique a detalle el problema que tiene.</label>
                     <textarea type="text" id="rptdetails_input" style="width: 300px; height: 100px; resize: none;" rows="5" cols="30"></textarea>
                     <button id="sendreport" style="width: 100px;" onclick="Report_send()">Enviar reporte</button>
+                    <button id="Cancel_Sendreport" onclick="show_report_register(1)">Cancel</button>
                 </div>
             </div>
         </div>
