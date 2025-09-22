@@ -149,7 +149,7 @@ app.post('/api/ThinkingMethod', async (req, res) => {
 
   try {
     // Hacemos una llamada POST a nuestro servicio de Python que corre en el puerto 5001.
-    const aiServiceResponse = await axios.post('http://localhost:5001/ThinkingMethod', {
+    const aiServiceResponse = await axios.post('https://iaconnection.onrender.com/ThinkingMethod', {
       query: query  // Enviamos la pregunta en el cuerpo de la petición.
     });
 
