@@ -208,11 +208,10 @@ function Report_send(){
     }
 }
 
-
-
 const chat = document.getElementById('User_chat');
 const form = document.getElementById('chat-form');
 const ta = document.getElementById('User_msg');
+const backendUrl = 'https://ayeseri.onrender.com/api/ThinkingMethod';
 
 const autoresize = (el) => {
   el.style.height = 'auto';
@@ -228,16 +227,42 @@ function addMessage(text, who = 'me') {
   chat.scrollTop = chat.scrollHeight;
 }
 
-function Sendmessage(){
-    console.log("si llega aca");
+async function Sendmessage(){
     const text = ta.value.trim();
-    if (!text) return;
+    if (!text) return; // No envía mensajes vacíos.
 
+    // Muestra el mensaje del usuario inmediatamente.
     addMessage(text, 'me');
-    ta.value = '';
-    setTimeout(() => {
-    addMessage('Recibido ✅. Estoy procesando tu solicitud...', 'bot');
-    }, 500);
+    ta.value = ''; // Limpia el campo de texto.
+
+    // Muestra un mensaje de "pensando..." para mejorar la experiencia.
+    addMessage('Pensando...', 'bot');
+
+    try {
+        // Aquí ocurre la magia: se llama a la API.
+        const response = await fetch(backendUrl, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        // Enviamos la pregunta en el formato que nuestra API de Node.js espera.
+        body: JSON.stringify({ query: text }),
+        });
+
+    const data = await response.json();
+    
+    // Quitamos el mensaje de "Pensando...".
+    chat.removeChild(chat.lastChild);
+    
+    // Añadimos la respuesta real que viene de la IA.
+    addMessage(data.answer, 'bot');
+
+  } catch (error) {
+    // Quitamos el mensaje de "Pensando...".
+    chat.removeChild(chat.lastChild);
+    console.error('Error al conectar con el backend:', error);
+    addMessage('Hubo un error al conectar con el asistente. Inténtalo de nuevo.', 'bot');
+  }
 }
 
 addMessage('¿Necesitas ayuda con algo? :-)', 'bot');
