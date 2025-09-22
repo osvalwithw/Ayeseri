@@ -255,7 +255,8 @@ async function Sendmessage(){
     chat.removeChild(chat.lastChild);
     
     // Añadimos la respuesta real que viene de la IA.
-    addMessage(data.answer, 'bot');
+    console.log(data);
+    addMessage(data.details, 'bot');
 
   } catch (error) {
     // Quitamos el mensaje de "Pensando...".
