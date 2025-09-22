@@ -2,6 +2,7 @@ import { getDB } from './Libs/DB.js';   //conexion a bse de datos
 import express from 'express';
 import cors from'cors';
 import { EmailsRouter } from './Emails/SendEmails.js';
+import axios from 'axios';
 
 const app = express();
 app.use(cors());
@@ -134,3 +135,31 @@ app.get('/Requests', async (req, res) => {
 });
 
 app.use('/Emails', EmailsRouter);
+
+//IA Section
+
+app.post('/api/ThinkingMethod', async (req, res) => {
+  const { query } = req.body;
+
+  if (!query) {
+    return res.status(400).json({ error: 'El campo "query" es requerido' });
+  }
+
+  console.log(`Recibida pregunta para la IA: "${query}"`);
+
+  try {
+    // Hacemos una llamada POST a nuestro servicio de Python que corre en el puerto 5001.
+    const aiServiceResponse = await axios.post('http://localhost:5001/ThinkingMethod', {
+      query: query  // Enviamos la pregunta en el cuerpo de la petición.
+    });
+
+    console.log('Respuesta recibida de la IA:', aiServiceResponse.data);
+    
+    // Reenviamos la respuesta que nos dio la IA directamente al frontend.
+    res.json(aiServiceResponse.data);
+
+  } catch (e) {
+    console.error('❌ Error al conectar con el servicio de IA:', e.message);
+    res.status(500).json({ error: 'No se pudo contactar al asistente de IA.' });
+  }
+});

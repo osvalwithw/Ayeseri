@@ -2,58 +2,74 @@ import json
 from sentence_transformers import SentenceTransformer, util
 import torch
 import os
+from flask import Flask, request, jsonify
+from flask_cors import CORS
 
-script_dir = os.path.dirname(os.path.abspath(__file__))
-file_path = os.path.join(script_dir, 'resolution_cook_book.json')
+app = Flask(__name__)
+CORS(app)  
+
+print("Cargando modelo de IA y base de conocimiento...")
 
 try:
-    with open(file_path, 'r', encoding='utf-8') as f:
+    script_dir = os.path.dirname(__file__)
+    json_path = os.path.join(script_dir, 'resolution_cook_book.json')
+    
+    with open(json_path, 'r', encoding='utf-8') as f:
         file_load = json.load(f)
-    print(f"Se cargaron {len(file_load)} errores desde 'resolution_cook_book.json'.")
-    error_knowledge_base = {}
-    for error in file_load:
-        index = error["Tittle"]
-        error_knowledge_base[index] = error
-except FileNotFoundError:
-    print("Error: El archivo 'resolution_cook_book.json' no fue encontrado. Asegúrate de que esté en la misma carpeta.")
+
+    error_knowledge_base = {error["Tittle"]: error for error in file_load}
+    
+    corpus_completo = []
+    mapeo_a_solucion = []
+    for tittle, info in error_knowledge_base.items():
+        for issue in info.get("Posible_consults", []):
+            corpus_completo.append(issue)
+            mapeo_a_solucion.append(tittle)
+
+    model = SentenceTransformer('all-MiniLM-L6-v2')
+    corpus_embeddings = model.encode(corpus_completo, convert_to_tensor=True)
+    
+    print("✅ Modelo de IA y base de conocimiento listos.")
+
+except Exception as e:
+    print(f"FATAL: No se pudo cargar la IA. Revisa tu archivo JSON. Error: {e}")
     exit()
 
-corpus_completo = []
-mapeo_a_solucion = []
-for error_obj, info in error_knowledge_base.items():
-    # sol_id = error_obj["Tittle"]
-    for issue in info["Posible_consults"]:
-        corpus_completo.append(issue)
-        mapeo_a_solucion.append(error_obj)
+def find_solution(query):
+    """
+    Toma la pregunta del usuario, la convierte en un vector
+    y busca la solución más similar en la base de conocimiento.
+    """
+    query_embedding = model.encode(query, convert_to_tensor=True)    
+    cos_scores = util.cos_sim(query_embedding, corpus_embeddings)[0]
+    top_result = torch.topk(cos_scores, k=1)
+    if top_result.values[0] < 0.4:
+        return None
+    best_match_idx = top_result.indices[0].item()
+    solution_tittle = mapeo_a_solucion[best_match_idx]    
+    return error_knowledge_base[solution_tittle]
 
-model = SentenceTransformer('all-MiniLM-L6-v2')
-corpus_embeddings = model.encode(corpus_completo, convert_to_tensor=True)
-
-query = "El empleado que estoy buscando no esta"
-
-query_embedding = model.encode(query, convert_to_tensor=True)
-
-print(f"\nBuscando soluciones para: '{query}'")
-
-k = 3
-
-cos_scores = util.cos_sim(query_embedding, corpus_embeddings)[0]
-
-top_k_results = torch.topk(cos_scores, k=k)
-
-if top_k_results.values[0] < 0.4:
-    print("\nNo se encontraron soluciones con un grado de confianza suficiente.")
-else:
-    print("\nSe encontraron las siguientes soluciones:")
+@app.route('/ThinkingMethod', methods=['POST'])
+def ask_ai_endpoint():
+    user_query = request.json.get('query')
     
-    for i, (score, idx) in enumerate(zip(top_k_results.values, top_k_results.indices)):
-        solucion_id = mapeo_a_solucion[idx.item()]
-        solucion_data = error_knowledge_base[solucion_id]
+    if not user_query:
+        return jsonify({"error": "No se proporcionó ninguna consulta (query)"}), 400
+    
+    solucion = find_solution(user_query)
+    
+    if solucion:
+        response = {
+            "answer": solucion.get("Tittle", "Título no encontrado"),
+            "details": solucion.get("resolution_steps", "Pasos no disponibles.")
+        }
+    else:
+        response = {
+            "answer": "Lo siento, no pude encontrar una solución relevante. ¿Puedes intentar describirlo de otra manera?",
+            "details": ""
+        }
         
-        if i == 0:
-            print("\n--- ✅ Solución Principal ---")
-        else:
-            print(f"\n--- ☑️ Solución Secundaria {i} ---")
-            
-        print(f"Título: {solucion_data['Tittle']} (ID: {solucion_id})")
-        print(f"Similitud: {score.item():.4f}")
+    return jsonify(response)
+
+if __name__ == '__main__':
+    app.run(debug=True, port=5001)
