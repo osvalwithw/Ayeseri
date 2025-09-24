@@ -39,6 +39,7 @@ async function envio_test(){
 
 async function User_Validation() {
     event.preventDefault();
+    adminkey = 0;
     // Evita que el formulario se enví
     //TEST line
     
@@ -63,9 +64,13 @@ async function User_Validation() {
         if (key[0] && key[1]) {
             if(inputUser == 'Admin'){
                 console.log("Maestro");
-                window.open(`../MainPage/AdminSpace/Adminpge.html?User=${key[2]}`, "_self");
+                adminkey = 1;
             }
-            window.open(`../MainPage/Employee-search/Main-page.html?User=${key[2]}`, "_self");
+            if(adminkey === 1){
+                window.open(`../MainPage/AdminSpace/Adminpge.html?User=${key[2]}`, "_self");
+            } else {
+               window.open(`../MainPage/Employee-search/Main-page.html?User=${key[2]}`, "_self");  
+            }
         } else if (!key[0]) {
             alert("El usuario no existe");} 
         else {
