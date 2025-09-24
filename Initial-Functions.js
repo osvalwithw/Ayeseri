@@ -62,7 +62,8 @@ async function User_Validation() {
         //console.log(`${key[0]} + ${key[1]}`)
         if (key[0] && key[1]) {
             if(inputUser == 'Admin'){
-                alert("Maestro")
+                console.log("Maestro");
+                window.open(`../MainPage/AdminSpace/Adminpge.html?User=${key[2]}`, "_self");
             }
             window.open(`../MainPage/Employee-search/Main-page.html?User=${key[2]}`, "_self");
         } else if (!key[0]) {
