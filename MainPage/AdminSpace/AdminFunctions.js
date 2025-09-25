@@ -9,21 +9,40 @@ function AdminView(ViewOPC){
     });
     if(windows[ViewOPC]){
         windows[ViewOPC].style.display = 'block';
+        if(ViewOPC === 2){
+            bringtickets();
+        }
     }
 }
 
-AdminView(1)
-
 async function bringtickets(){
-    fetch(`https://ayeseri.onrender.com/employee_errors/${id}/${Timeselect}`)
+    fetch(`https://ayeseri.onrender.com/GetTickets`)
     .then(res => { 
         if (!res.ok) throw new Error('Please review API Connection');
             return res.json();
     })
     .then(data => {
-    mostrarTabla(data.rows);
+    printingtickets(data);
     })
     .catch(err => {
     console.error("Failed to load errors, please review the API Conection or logs", err);
+    });
+}
+
+AdminView(2);
+
+function printingtickets(data){
+    const pasteinformation = document.getElementById('TableItems');
+    data.forEach(item => {
+        console.log(item);
+        let insertline = document.createElement('tr');
+        insertline.innerHTML=`
+            <td><input type="radio"></td>
+            <td>${item.NoTicket}<td/>
+            <td>${item.User}<td/>
+            <td>${item.Email}<td/>
+            <td>${item.Psswd}<td/>
+        `;
+        pasteinformation.appendChild(insertline);
     });
 }

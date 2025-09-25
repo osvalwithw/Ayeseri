@@ -103,6 +103,35 @@ li a:hover,
 
 /*-----------------------------------------------------------------------------*/
 
-/* .PT-table-entries{
-    
-} */
+#Tableheaders{
+    display: flex;
+    flex-direction: row;
+    background-color: rgba(255, 255, 255, 0.2);
+    border-radius: 5px;
+}
+
+.PT_TableEntries #TableItems{
+    display: flex;
+    flex-direction: column;
+    flex-wrap: wrap;
+}
+
+.Pending-tickets-table{
+    border: rgb(39, 0, 148) groove 3px;
+    position: relative;
+    left: 40px;
+    top: 30px;
+    border-collapse: collapse;
+}
+
+.Pending-tickets-table td{
+    border-left: rgb(39, 0, 148) groove 3px;
+    border-right: rgb(39, 0, 148) groove 3px;
+    border-bottom: rgb(39, 0, 148) groove 3px;
+}
+
+.Pending-tickets-table th {
+    border-bottom: rgb(39, 0, 148) groove 3px;
+    border-left: rgb(39, 0, 148) groove 3px;
+    border-radius: 5px;
+}

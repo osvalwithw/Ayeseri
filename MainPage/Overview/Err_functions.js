@@ -31,7 +31,7 @@ function mostrarTabla(errores) {
     const Timeselect = params.get('Timepar');
     const tbody = document.getElementById('tablaErrores');
     if (!tbody) {
-        console.error("❌ No se encontró el tbody con id 'tablaErrores'");
+        console.error("Review were is going to be created the information, missing DIV");
         return;
     }
 

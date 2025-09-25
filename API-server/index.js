@@ -142,7 +142,7 @@ app.get('/GetTickets', async (req, res) => {
     res.json(rows);
   } catch (e){
      console.error('/Request:', e.message);
-     res.status(500).json({error: e.message})
+     res.status(500).json({error: e.message});
   }
 });
 
