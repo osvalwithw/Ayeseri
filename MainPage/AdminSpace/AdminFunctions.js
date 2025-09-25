@@ -33,15 +33,16 @@ AdminView(2);
 
 function printingtickets(data){
     const pasteinformation = document.getElementById('TableItems');
+    pasteinformation.innerHTML = '';
     data.forEach(item => {
-        console.log(item);
         let insertline = document.createElement('tr');
         insertline.innerHTML=`
-            <td><input type="radio"></td>
-            <td>${item.NoTicket}<td/>
-            <td>${item.User}<td/>
-            <td>${item.Email}<td/>
-            <td>${item.Psswd}<td/>
+            <td><input type="checkbox"></td>
+            <td>${item.NoTicket}</td>
+            <td>${item.User}</td>
+            <td>${item.Email}</td>
+            <td>${item.Psswd}</td>
+            <td>${item.Upload_Time}</td>
         `;
         pasteinformation.appendChild(insertline);
     });

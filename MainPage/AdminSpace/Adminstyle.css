@@ -80,12 +80,16 @@ li a:hover,
 }
 /*-----------------------------------------------------------------------------*/
 @media (min-width: 1000px){
-    .User_tools{
+    .usercreation-window{
         display: flex;
     }
 
     .column{
         flex: 1;
+    }
+
+    .Pending-tickets{
+        margin-left: 40px;
     }
 }
 
@@ -102,36 +106,49 @@ li a:hover,
 }
 
 /*-----------------------------------------------------------------------------*/
-
-#Tableheaders{
-    display: flex;
+.usercreation-window{
     flex-direction: row;
-    background-color: rgba(255, 255, 255, 0.2);
-    border-radius: 5px;
+    flex-wrap: wrap;
+    row-gap: 30px;
+    align-items: center;
+    background-color: rgba(0, 0, 0, 0.5);
 }
 
-.PT_TableEntries #TableItems{
+.Pending-tickets{
     display: flex;
     flex-direction: column;
     flex-wrap: wrap;
-}
-
-.Pending-tickets-table{
-    border: rgb(39, 0, 148) groove 3px;
-    position: relative;
-    left: 40px;
-    top: 30px;
-    border-collapse: collapse;
-}
-
-.Pending-tickets-table td{
-    border-left: rgb(39, 0, 148) groove 3px;
-    border-right: rgb(39, 0, 148) groove 3px;
-    border-bottom: rgb(39, 0, 148) groove 3px;
-}
-
-.Pending-tickets-table th {
-    border-bottom: rgb(39, 0, 148) groove 3px;
-    border-left: rgb(39, 0, 148) groove 3px;
+    align-items: center;
+    background-color: rgba(255, 0, 179, 0.2);
+    margin-top: 20px;
     border-radius: 5px;
+    box-shadow: 0 10px 10px 10px rgba(0, 0, 0, 0.5);
+    width:fit-content;
+}
+
+.PendingTicketsTable{
+    table-layout: auto;
+    width: auto;
+    margin: 20px;
+    border-collapse: collapse;
+
+}
+
+.PendingTicketsTable th,
+.PendingTicketsTable td{
+    border: 1px solid #ccc;
+    padding: 8px 12px;
+    text-align: left;
+}
+
+.PT_Tools{
+    margin-top: 40px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    background-color: rgba(255, 0, 0, 0.2);
+    margin-top: 20px;
+    border-radius: 5px;
+    box-shadow: 0 10px 10px 10px rgba(0, 0, 0, 0.5);
+    width:fit-content;
 }

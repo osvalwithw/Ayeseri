@@ -109,13 +109,23 @@ app.get('/Requests/:NoTicket/:Username/:Email/:PSS', async (req, res) => {
   const NoTicket = req.params.NoTicket;
   const Username = req.params.Username;
   const Email = req.params.Email;
+  const timeparams = {
+    year: 'numeric',
+    month: '2-digit',
+    day: '2-digit',
+    hour: '2-digit',
+    minute: '2-digit',
+    hourformat: true
+  };
+  const ActualTimeFunc = new Intl.DateTimeFormat('es-MX', timeparams);
+  const Actualtime = ActualTimeFunc.format(newDate());
   const PSS = req.params.PSS;
-  const params = [NoTicket, Username, Email, PSS];
+  const params = [NoTicket, Username, Email, PSS, Actualtime];
   //const encrypt = await bcrypt.hash(PSS, 10);
-  console.log(`${NoTicket}, ${Username}, ${Email}, ${PSS}`);
+  console.log(`${NoTicket}, ${Username}, ${Email}, ${PSS}, ${Actualtime}`);
   sql = `
-  INSERT INTO Requests (NoTicket, User, Email, Psswd)
-  VALUES (?, ?, ?, ?)`;
+  INSERT INTO Requests (NoTicket, User, Email, Psswd, Upload_Time)
+  VALUES (?, ?, ?, ?, ?)`;
   try{
     const [rows] = await pool.query(sql, params);
   } catch (e){
