@@ -1,10 +1,11 @@
 function AdminView(ViewOPC){
     const windows = [
-    document.querySelector(".main-window"),
-    document.querySelector(".errors-window"),
-    document.querySelector(".usercreation-window")
+    document.getElementById("Usersview"),
+    document.getElementById("Errorsview"),
+    document.getElementById("UserCreationView")
     ];
     windows.forEach(window => {
+        console.log(window);
         window.style.display = 'none'
     });
     if(windows[ViewOPC]){

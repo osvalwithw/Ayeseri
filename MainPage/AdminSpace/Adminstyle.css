@@ -81,58 +81,54 @@ li a:hover,
 /*-----------------------------------------------------------------------------*/
 @media (min-width: 1000px){
     .usercreation-window{
-        display: flex;
-        background-color: rgba(255, 255, 255, 0.5);
+        display: flex !important;
+        flex-direction: row;
+        flex-wrap: wrap;
     }
 
     .column{
         flex: 1;
     }
 
-    /*.Pending-tickets{
-        margin-left: 40px;
-    } */
+    .PT_Tools{
+        margin-top: auto; 
 }
-
-/* .column{
-    width: 100%;
-    padding: 25px;
-    box-sizing: border-box;
-    font-size: 1.2em;
-    text-align: center;
 }
-
-.User_tools{
-    margin-top: 10px;
-} */
 
 /*-----------------------------------------------------------------------------*/
-.usercreation-window{
-    display: flex;
+div.usercreation-window{
     width: 100%;
     padding:20px;
     gap:20px;
     box-sizing: border-box;
-    background-color: rgba(0, 255, 42, 0.5);
+    background-color: rgba(255, 255, 255, 0.5);
 }
 
 .column{
-    flex:1;
     padding: 20px;
+    min-width: 0;
+    border-radius: 10px;
+    box-sizing: border-box;
+    box-shadow: 0 4px 8px 0 ;
 }
 
 .Pending-tickets{
-    background-color: rgb(17, 0, 255);
+    flex:2;
+    text-align: center;
+    background-color: rgba(17, 0, 255, 0.315);
+    overflow-x: auto;
 }
 
-.PT_Tools{ 
-    background-color: rgba(255, 0, 0, 0.979);
+.PT_Tools{
+    display:flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 20px;
+    margin-top: 40px; 
+    background-color: rgba(0, 102, 255, 0.267);
 }
 
-/* .PendingTicketsTable{
-    table-layout: auto;
-    width: auto;
-    margin: 20px;
+.PendingTicketsTable{
     border-collapse: collapse;
 }
 
@@ -141,6 +137,10 @@ li a:hover,
     border: 1px solid #ccc;
     padding: 8px 12px;
     text-align: left;
-} */
+}
+
+.PT_Tools #Comment{
+    resize: none;
+}
 
 
