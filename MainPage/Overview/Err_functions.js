@@ -17,7 +17,6 @@ function display_errors() {
         return res.json();
     })
     .then(data => {
-    console.log(data.rows);
     mostrarTabla(data.rows);
     })
     .catch(err => {
