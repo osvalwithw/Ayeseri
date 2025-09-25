@@ -79,19 +79,20 @@ li a:hover,
     background-color: rgb(16, 90, 119);
 }
 /*-----------------------------------------------------------------------------*/
-/* @media (min-width: 1000px){
+@media (min-width: 1000px){
     .usercreation-window{
         display: flex;
+        background-color: rgba(255, 255, 255, 0.5);
     }
 
     .column{
         flex: 1;
     }
 
-    .Pending-tickets{
+    /*.Pending-tickets{
         margin-left: 40px;
-    }
-} */
+    } */
+}
 
 /* .column{
     width: 100%;
@@ -107,35 +108,28 @@ li a:hover,
 
 /*-----------------------------------------------------------------------------*/
 .usercreation-window{
-    display:flex;
-    flex-direction: row;
-    margin-top: 20px;
-    background-color: rgba(255, 255, 255, 0.5);
+    display: flex;
+    width: 100%;
+    padding:20px;
+    gap:20px;
+    box-sizing: border-box;
+    background-color: rgba(0, 255, 42, 0.5);
+}
+
+.column{
+    flex:1;
+    padding: 20px;
 }
 
 .Pending-tickets{
-    /* display: flex;
-    flex-direction: column;
-    align-items: center; */
-    background-color: rgba(255, 0, 179, 0.2);
-    border-radius: 5px;
-    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.5);
-    width: 660px;
-    height: 400px;
+    background-color: rgb(17, 0, 255);
 }
 
-.PT_Tools{
-    /* display: flex;
-    flex-direction: column;
-    align-items: center; */
-    background-color: rgba(255, 0, 0, 0.2);
-    border-radius: 5px;
-    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.5);
-    width: 460px;
-    height: 400px;
+.PT_Tools{ 
+    background-color: rgba(255, 0, 0, 0.979);
 }
 
-.PendingTicketsTable{
+/* .PendingTicketsTable{
     table-layout: auto;
     width: auto;
     margin: 20px;
@@ -147,6 +141,6 @@ li a:hover,
     border: 1px solid #ccc;
     padding: 8px 12px;
     text-align: left;
-}
+} */
 
 
