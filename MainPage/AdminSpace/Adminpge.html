@@ -4,26 +4,28 @@
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <title>Search Page</title>
-        <link rel="stylesheet" href="./insidestyle.css">
+        <link rel="stylesheet" href="./Adminstyle.css">
         <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
     </head>
     <body>
         <div class="main-bar">
             <ul class="MbItems">
-                <li><a href="#Inicio">Inicio</a></li>
-                <li><a id="helpbutton" onclick="help()">Ayuda</a></li>
-                <li><a href="#Nuevo">Novedades</a></li>
+                <li><a onclick="AdminView(0)">Vista de usuario</a></li>
+                <li><a onclick="AdminView(1)">Carga de errores</a></li>
+                <li><a onclick="AdminView(2)">Creacion de usuarios</a></li>
                 <li class="submenu">
                     <a href="#Sesión" class="submenu-btn">Sesion</a>
                     <div class="submenu-content">
                         <a href="Perfil">Perfil</a>
-                        <a href="Sugerencias">Sugerencias</a>
                         <a href="https://ayeseri.vercel.app/">Cerrar sesión</a>
                     </div>
                 </li>
             </ul>
         </div>
-        <div class="main-window">
+    <div id="TEST" class="main-window">
+
+    </div>
+        <!--div class="main-window">
             <div class="headeroptions">
                 <div class="display_opt">
                     <div class="Overview">
@@ -40,7 +42,7 @@
                     <input style="width: 100px;"type="text" id="Personnel_Nmb" name="No.Empleado" required placeholder="No.Empleado"></input>
                 </div>
             </div>
-<!-------------------------------------------------------------------------------------------------------------------------------------------------------->
+
             <div class="User_tools">
                 <div class="column Maintain-options">
                     <div class="InfMainTittle">
@@ -116,7 +118,7 @@
                         <p id="Timelbl">Period Selection</p>
                         <input type="range" id="timeSelection" min="0" max="8" value="3" style="width: 300px;">
                         <p id="Timeopc">No filter selected</p>
-                        <!--button onclick="definetimeentries()"-->
+                        <button onclick="definetimeentries()">
                     </div>
                 </div>
                 <div class="column Ayeseri_Helper">
@@ -144,7 +146,13 @@
                     <button id="Cancel_Sendreport" onclick="show_report_register(1)">Cancel</button>
                 </div>
             </div>
+        </div-->
+        <div class="errors-window">
+            <p>Hola</p>
         </div>
-        <script src="Functions.js"></script>
+        <div class="usercreation-window">
+            <p>Adios</p>
+        </div>
+        <script src="AdminFunctions.js"></script>
     </body>
 </html>
