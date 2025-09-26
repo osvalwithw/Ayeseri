@@ -156,28 +156,37 @@ app.get('/GetTickets', async (req, res) => {
   }
 });
 
-app.post('/CreateUsers', async (req, res) => {
-  try{
+app.post('/CreateUsers/:OPC', async (req, res) => {
+  const OPC = req.params.OPC;
     const { SendTickets } = req.body
     if (!SendTickets || !Array.isArray(SendTickets) || SendTickets.length === 0) {
       return res.status(400).json({ error: 'El campo "SendTickets" es requerido y debe ser un array no vacío.' });
     }
-    const insertPromises = SendTickets.map(ticket => {
-      const { usuario, email, id, pss } = ticket;
-      console.log(`Procesando ticket ID: ${id}, Usuario: ${usuario}, Email: ${email}, Pss: ${pss}`);
-      const sql = `INSERT INTO Users (Email, Password, Username) VALUES (?, ?, ?)`;
-      return pool.query(sql, [email, pss, usuario])
-        .then(() => {
-          const deleteSql = `DELETE FROM Requests WHERE id = ?`;
-          return pool.query(deleteSql, [id]);
-        });
-    });
-    await Promise.all(insertPromises);
-    res.json({ message: 'Usuarios creados y tickets eliminados exitosamente.' });
-  } catch (e){
-      console.error('/CreateUsers:', e.message);
-      res.status(500).json({error: e.message});    
-  } 
+  if(OPC == 1){
+    try{  
+      const insertPromises = SendTickets.map(ticket => {
+        const { usuario, email, id, pss } = ticket;
+        console.log(`Procesando ticket ID: ${id}, Usuario: ${usuario}, Email: ${email}, Pss: ${pss}`);
+        const sql = `INSERT INTO Users (Email, Password, Username) VALUES (?, ?, ?)`;
+        return pool.query(sql, [email, pss, usuario])
+          .then(() => {
+            const deleteSql = `DELETE FROM Requests WHERE id = ?`;
+            return pool.query(deleteSql, [id]);
+          });
+      });
+      await Promise.all(insertPromises);
+      res.json({ message: 'Usuarios creados y tickets eliminados exitosamente.' });
+    } catch (e){
+        console.error('/CreateUsers:', e.message);
+        res.status(500).json({error: e.message});    
+    }
+  } else {
+    const DeletePromises = SendTickets.map(ticket => {
+        const { usuario, email, id, pss } = ticket;
+        console.log(`Procesando ticket ID: ${id}, Usuario: ${usuario}, Email: ${email}, Pss: ${pss}`);
+        const deleteSql = `DELETE FROM Requests WHERE id = ?`;
+        return pool.query(deleteSql, [id])});
+  }
 });
 
 //IA Section-----------------------------------------------------------------------------------------------------

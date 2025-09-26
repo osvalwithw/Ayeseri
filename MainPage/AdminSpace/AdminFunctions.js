@@ -25,6 +25,10 @@ async function bringtickets(){
             return res.json();
     })
     .then(data => {
+    console.log(data);
+        if(data.length == 0){
+            console.log("No hay nada por hacer :)")
+        }
     printingtickets(data);
     })
     .catch(err => {
@@ -74,42 +78,42 @@ tablaBody.addEventListener('change', function(event) {
     }
 });
 
-async function CreateUsers(){
+async function ProcessTickets(OPC){
     if(SelectTickets.length === 0){
         alert("No Tickets selected, please select at least one to proceed");
         return;
     }
     console.log("Enviando este cuerpo JSON a la API:", JSON.stringify({ SendTickets:SelectTickets}, null, 2));
     try {
-        // Hacemos la petición 'fetch' y esperamos la respuesta con 'await'
-        const respuesta = await fetch(`https://ayeseri.onrender.com/CreateUsers`, {
-            method: 'POST', // El método HTTP para enviar datos
+        const respuesta = await fetch(`https://ayeseri.onrender.com/CreateUsers/${OPC}`, {
+            method: 'POST', 
             headers: {
-                // Le decimos a la API que le estamos enviando datos en formato JSON
                 'Content-Type': 'application/json'
             },
-            // Convertimos nuestro array de JavaScript a una cadena de texto JSON
             body: JSON.stringify({ SendTickets:SelectTickets}) 
         });
-
-        // Verificamos si la respuesta del servidor fue exitosa (código 200-299)
         if (!respuesta.ok) {
-            // Si hubo un error en el servidor (ej: 404, 500), lanzamos un error
             throw new Error(`Error del servidor: ${respuesta.status}`);
         }
-
-        // Si la respuesta fue exitosa, la convertimos de JSON a un objeto de JavaScript
         const datosRespuesta = await respuesta.json();
-        
         console.log('Éxito! Respuesta del servidor:', datosRespuesta);
         alert('Los tickets se procesaron correctamente.');
-        
-        // Aquí podrías, por ejemplo, recargar tu tabla de pendientes
-        // recargarTabla();
-
+        bringtickets();       
+        SelectTickets = [];
     } catch (error) {
-        // Si algo falla (ej: no hay conexión a internet, la API está caída), lo capturamos aquí
         console.error('Error al enviar los datos a la API:', error);
         alert('Hubo un problema al conectar con el servidor. Inténtalo de nuevo.');
+    }
+}
+
+async function NoProcessUser(){
+    if(SelectTickets.length === 0){
+        alert("No Tickets selected, please select at least one to proceed");
+        return;
+    }
+    if(confirm("¿Seguro que quieres eliminar al/los empleado(s) seleccionado(s)?")){
+        ProcessTickets(2);
+    } else{
+        return;
     }
 }
