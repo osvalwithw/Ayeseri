@@ -1,24 +1,34 @@
-let SelectTickets = [];
-const tablaBody = document.getElementById('TableItems');
-
-function AdminView(ViewOPC){
-    const windows = [
+let Window_opc = 0;
+const windows = [
     document.getElementById("Usersview"),
     document.getElementById("Errorsview"),
     document.getElementById("UserCreationView")
     ];
-    windows.forEach(window => {
-        window.style.display = 'none';
-    });
-    if(windows[ViewOPC]){
-        windows[ViewOPC].style.display = 'block';
-        if(ViewOPC === 2){
-            bringtickets();
-        }
+
+document.addEventListener('DOMContentLoaded', windows.forEach(item =>
+    item.style.display = 'none')
+);
+
+window.addEventListener('resize', () =>{
+    windowadjust();
+});
+
+async function windowadjust(){
+    let windowsize = window.innerWidth;
+    windows.forEach(item => item.style.display = 'none');
+    if(windowsize <= 1000){
+        windows[Window_opc].style.display = 'block';
+    } else {
+        windows[Window_opc].style.display = 'flex';
     }
 }
+//--------------------------------------------User creation------------------------------------------------------------{
+let SelectTickets = [];
+const tablaBody = document.getElementById('TableItems');
 
 async function bringtickets(){
+    Window_opc = 2;
+    windowadjust();
     fetch(`https://ayeseri.onrender.com/GetTickets`)
     .then(res => { 
         if (!res.ok) throw new Error('Please review API Connection');
@@ -35,8 +45,6 @@ async function bringtickets(){
     console.error("Failed to load errors, please review the API Conection or logs", err);
     });
 }
-
-AdminView(2);
 
 function printingtickets(data){
     if(data.length === 0){
@@ -133,3 +141,12 @@ async function NoProcessUser(){
         return;
     }
 }
+
+//--------------------------------------------User creation------------------------------------------------------------}
+
+//--------------------------------------------Error Load------------------------------------------------------------
+function DBErrorUpload(){
+    Window_opc = 1;
+    windowadjust();
+}
+//--------------------------------------------Error Load------------------------------------------------------------

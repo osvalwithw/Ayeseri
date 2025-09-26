@@ -10,9 +10,10 @@
     <body>
         <div class="main-bar">
             <ul class="MbItems">
-                <li><a onclick="AdminView(0)">Vista de usuario</a></li>
-                <li><a onclick="AdminView(1)">Carga de errores</a></li>
-                <li><a onclick="AdminView(2)">Creacion de usuarios</a></li>
+                <li><a>Inicio</a></li>
+                <li><a>Vista de usuario</a></li>
+                <li><a onclick="DBErrorUpload()">Carga de errores</a></li>
+                <li><a onclick="bringtickets()">Creacion de usuarios</a></li>
                 <li class="submenu">
                     <a href="#Sesión" class="submenu-btn">Sesion</a>
                     <div class="submenu-content">
@@ -22,13 +23,25 @@
                 </li>
             </ul>
         </div>
+        <div class="HomePage" id="HomePageView">
+        </div>
         <div class="UsersWindow" id="Usersview">
-
         </div>
-        <div class="errors-window" id="Errorsview">
-
+        <div class="MainErrorsWindow" id="Errorsview">
+            <div class="column ErrorsLoadWindow">
+                <input class="LoadFiles" id="SingleLoad"></input>
+                <button class="BTNLoad" id="BTNSingleLoad">Select</button>
+                <input class="LoadFiles" id="MultipleLoad"></input>
+                <button class="BTNLoad" id="BTNMultipleLoad">Select</button>
+                <button class="BTNLoad" id="ConfirmLoad">Start</button>
+            </div>
+            <div class="column ErrosTimeModule">
+                <p>Last load: </p>
+                <p id="Lastload"></p>
+                <p>By: </p>
+                <p id="Lastloadby"></p>
+            </div>
         </div>
-        
         <div class="usercreation-window" id="UserCreationView">
             <div class="column Pending-tickets">
                 <h1>Pending Tickets</h1>
