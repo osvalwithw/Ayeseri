@@ -79,7 +79,7 @@ async function CreateUsers(){
         alert("No Tickets selected, please select at least one to proceed");
         return;
     }
-    console.log("Enviando este cuerpo JSON a la API:", JSON.stringify(SelectTickets, null, 2));
+    console.log("Enviando este cuerpo JSON a la API:", JSON.stringify({ SendTickets:SelectTickets}, null, 2));
     try {
         // Hacemos la petición 'fetch' y esperamos la respuesta con 'await'
         const respuesta = await fetch(`https://ayeseri.onrender.com/CreateUsers`, {
@@ -89,7 +89,7 @@ async function CreateUsers(){
                 'Content-Type': 'application/json'
             },
             // Convertimos nuestro array de JavaScript a una cadena de texto JSON
-            body: JSON.stringify(SelectTickets) 
+            body: JSON.stringify({ SendTickets:SelectTickets}) 
         });
 
         // Verificamos si la respuesta del servidor fue exitosa (código 200-299)

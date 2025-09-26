@@ -163,10 +163,10 @@ app.post('/CreateUsers', async (req, res) => {
       return res.status(400).json({ error: 'El campo "SendTickets" es requerido y debe ser un array no vacío.' });
     }
     const insertPromises = SendTickets.map(ticket => {
-      const { usuario, email, id } = ticket;
-      console.log(`Procesando ticket ID: ${id}, Usuario: ${usuario}, Email: ${email}`);
+      const { usuario, email, id, pss } = ticket;
+      console.log(`Procesando ticket ID: ${id}, Usuario: ${usuario}, Email: ${email}, Pss: ${pss}`);
       const sql = `INSERT INTO Users (Email, Psswd, Username) VALUES (?, ?, ?)`;
-      return pool.query(sql, [usuario, email, defaultPassword])
+      return pool.query(sql, [email, pss, usuario])
         .then(() => {
           const deleteSql = `DELETE FROM Requests WHERE id = ?`;
           return pool.query(deleteSql, [id]);
