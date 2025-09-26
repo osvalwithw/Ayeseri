@@ -1,87 +1,229 @@
-import json
-from sentence_transformers import SentenceTransformer, util
-import torch
-import os
-
-script_dir = os.path.dirname(os.path.abspath(__file__))
-file_path = os.path.join(script_dir, 'resolution_cook_book.json')
-
-try:
-    with open(file_path, 'r', encoding='utf-8') as f:
-        error_knowledge_base = json.load(f)
-    print(f"Se cargaron {len(error_knowledge_base)} errores desde 'resolution_cook_book.json'.")
-except FileNotFoundError:
-    print("Error: El archivo 'resolution_cook_book.json' no fue encontrado. Asegúrate de que esté en la misma carpeta.")
-    exit()
-
-print("Procesando base de conocimiento...")
-corpus_completo = []
-mapeo_a_solucion = []
-for sol_id, data in error_knowledge_base.items():
-    for problema in data["consultas_de_usuario_ejemplos"]:
-        corpus_completo.append(problema)
-        mapeo_a_solucion.append(sol_id)
-
-model = SentenceTransformer('all-MiniLM-L6-v2')
-corpus_embeddings = model.encode(corpus_completo, convert_to_tensor=True)
-print("Sistema listo.")
-
-# --- 3. Simulación de una Consulta de Usuario ---
-query = "el salario de un empleado no se puede poner en el sistema"
-query_embedding = model.encode(query, convert_to_tensor=True)
-
-# --- 4. Búsqueda de Similitud (VERSIÓN MEJORADA: TOP-K) ---
-print(f"\nBuscando soluciones para: '{query}'")
-
-# Definimos cuántos resultados queremos (k=3 significa el principal y dos secundarios)
-k = 3
-
-# Calculamos la similitud contra todas las variaciones
-cos_scores = util.cos_sim(query_embedding, corpus_embeddings)[0]
-
-# Usamos torch.topk para obtener los k mejores resultados
-top_k_results = torch.topk(cos_scores, k=k)
-
-# Guardia de calidad: Si ni siquiera el mejor resultado es bueno, no mostramos nada.
-if top_k_results.values[0] < 0.4:
-    print("\nNo se encontraron soluciones con un grado de confianza suficiente.")
-else:
-    print("\nSe encontraron las siguientes soluciones:")
-    
-    # Iteramos sobre los resultados encontrados
-    for i, (score, idx) in enumerate(zip(top_k_results.values, top_k_results.indices)):
-        
-        # Obtenemos el ID de la solución usando nuestro mapa
-        solucion_id = mapeo_a_solucion[idx.item()]
-        
-        # Obtenemos la información completa de esa solución
-        solucion_data = error_knowledge_base[solucion_id]
-        
-        if i == 0:
-            print("\n--- ✅ Solución Principal ---")
-        else:
-            print(f"\n--- ☑️ Solución Secundaria {i} ---")
-            
-        print(f"Título: {solucion_data['Tittle']} (ID: {solucion_id})")
-        print(f"Similitud: {score.item():.4f}")
-        # Opcional: Mostrar más detalles
-        # print(f"Pasos: {solucion_data['resolution_steps']}")
-
-        import mysql from 'mysql2/promise'
-
-const mysql = require('mysql2/promise');
-
-export function getDB(){
-    if(_Pool) return _Pool;
-    _Pool = mysql.createPool({
-    host: process.env.MYSQLHOST,
-    port: process.env.MYSQLPORT ? Number(process.env.MYSQLPORT) : 3306,
-    user: process.env.MYSQLUSER,
-    password: process.env.MYSQLPASSWORD,
-    database: process.env.MYSQLDATABASE,
-    waitForConnections: true,
-    connectionLimit: 10,
-    queueLimit: 0
-    });
-    return _Pool;
-}
+[
+    {
+        "Source_Infotype": "0001",
+        "Source_Type": "Infotype",
+        "Tittle": "Contrato no cargado en el infotipo 0001",
+        "Technical_error": "Formatting error in the field P0001-ANSVH",
+        "Posible_consults": [
+            "No se carga el contrato",
+            "me dio el siguiente error Formatting error in the field P0001-ANSVH",
+            "No me abre el infotipo 0001",
+            "problema con el contrato de un empleado",
+            "el sistema me da un error de formato",
+            "algo está mal con la pantalla del contrato",
+            "no me deja procesar la nómina por un error en el infotipo 1",
+            "¿Qué significa el error P0001-ANSVH?",
+            "¿Por qué no se refleja el nuevo contrato en el sistema?",
+            "no jala el contrato",
+            "error en infotipo 001",
+            "formating eror en campo P0001"
+        ],
+        "Severity":"Low",
+        "Summary": "Error causado cuando el contrato no se carga en el modulo de nominas, debido a que en la plataforma de RH este no fue cargado de forma correcta por fecha efectiva o contenido como la duracion si es ilimitado o limitado",
+        "Preconditions": [
+            "Contrato activo en la plataforma de RH",
+            "Fechas acordes a contratacion o cambio de puesto",
+            "Proceso terminado en tiempo y forma"
+        ],
+        "questions": [
+            "¿El contrato fue completado exitosamente en la plataforma de RH?",
+            "¿La fecha del contrato coincide con la de contratacion?"
+        ],
+        "resolution_steps": [
+            "Revisa el perfil del empleado en la plataforma de RH",
+            "Asegurate de que el tipo se acorde a lo necesitado",
+            "las fechas deben coincidir entre el ingreso/cambio y el contrato"
+        ],
+        "Fallbacks": [
+            "Si el error persiste, contacta a Recursos Humanos para validarlo"
+        ]
+    },
+    {
+        "Source_Infotype": "0006",
+        "Source_Type": "Infotype",
+        "Tittle": "Datos mal ingresados en la direccion del trabajador",
+        "Technical_error":"Formatting error in the field P0006-STRAS",
+        "Posible_consults": [
+            "Por que no esta el registro de la calle del empleado",
+            "no baja la informacion de la plataforma de recursos humanos",
+            "No me abre el infotipo 0006",
+            "No hay nada en el infotipo 0006",
+            "La dirección del empleado está vacía o incorrecta",
+            "Falta la calle en los datos personales del trabajador",
+            "Error de caracteres inválidos en el campo de dirección",
+            "El campo STRAS del infotipo 6 tiene un error",
+            "¿Qué hago si la dirección tiene caracteres especiales?",
+            "No me deja guardar la dirección",
+            "problema con el infotipo de direcciones",
+            "la direcsion no se ve bien"
+        ],
+        "Severity":"Low",
+        "Summary": "Ocasionado cuando se ingresan caracteres no permitidos en la entrada",
+        "Preconditions": [
+            "Calle registrada",
+            "Ningun caracter adicional",
+            "Proceso terminado en tiempo y forma"
+        ],
+        "questions": [
+            "¿La calle del empleado se ingreso correctamente?",
+            "¿No hay ningun caracter adicional?",
+            "¿Existe el registro actualmente en el perfil del empleado?"
+        ],
+        "resolution_steps": [
+            "Elimina cualquier caracter adicional como |, *, ?, ¿, ¡, etc. que pueda entorpecer el archivo de carga",
+            "ingresa toda la informacion relacionada con el campo",
+            "De no existir, crea la entrada que sera transferida en la siguiente integracion"
+        ],
+        "Fallbacks": [
+            "Si el error persiste, contacta a Recursos Humanos para validarlo",        
+            "Si hay algun caracter adicional, contacta al grupo de IT"
+        ]
+    },
+    {
+        "Source_Infotype": "0000",
+        "Source_Type": "Infotype",
+        "Tittle": "Conflicto en la accion y la razon al contratar/recontratar un empleado",
+        "Technical_error": "Invalid combination of action type 1A/action reason CA",
+        "Posible_consults": [
+            "No esta el empleado cargado para su revision",
+            "No cargaron los bonos del empleado que acabo de contratarar",
+            "Recontrate a alguien pero no me aparece nada buscandolo por su numero",
+            "¿Por que me da este error? Invalid combination of action type 1A/action reason CA",
+            "Error al recontratar un ex-empleado",
+            "El sistema no me deja procesar la recontratación",
+            "El nuevo empleado no aparece en nómina",
+            "No puedo dar de alta a un trabajador que ya había estado aquí",
+            "Falla la acción 1A con la razón CA",
+            "Problema con una contratación nueva",
+            "El sistema rechaza el alta del empleado",
+            "¿Qué acción debo usar para un reingreso?",
+            "No me aparece un empleado nuevo"
+        ],
+        "Severity": "Medium",
+        "Summary": "El empleado fue asignado a una rason de contratacion erronea, haciendo que no se cargue dicho empleado en el modulo de nominas",
+        "Preconditions": [
+            "El empleado fue contratado",
+            "Se ingreso la contratacion en tiempo y forma",
+            "Se usaron las condiciones exactas para cada tipo"
+        ],
+        "questions": [
+            "¿Cual es la condicion del empleado?",
+            "¿Es una recontratacion (Rehire) o contratacion (Hire)?",
+            "¿El empleado exite actualmente en el modulo de nominas?"
+        ],
+        "resolution_steps": [
+            "Revisa que las condiciones coincidan para contratacion y recontratacion",
+            "Si el empleado no esta en el modulo de nominas, se creara bajo el termino de 'contratacion'"
+        ],
+        "Fallbacks": [
+            "En caso de seguir con la falla, procura asegurarte que coincidan los terminos de la contratacion."
+        ]
+    },
+    {
+        "Source_Infotype": "NITR",
+        "Source_Type": "No Infotype Related",
+        "Tittle": "Empleado bloqueado por otro usuario",
+        "Technical_error": "Person is already being processed by user ########",
+        "Posible_consults": [
+            "¿Que significa esto? Person is already being processed by user",
+            "No me deja entrar a este empleado, y dice que lo tengo bloqueado",
+            "El registro está bloqueado por otro usuario",
+            "No puedo editar al empleado porque alguien más lo está usando",
+            "El sistema dice que el usuario ya está siendo procesado",
+            "¿Cómo desbloqueo un empleado que está siendo usado por otra persona?",
+            "Me aparece un error de que el perfil está ocupado",
+            "locked by another user error",
+            "No me deja guardar los cambios porque está bloqueado",
+            "El sistema me sacó y ahora dice que yo mismo lo tengo bloqueado"
+        ],
+        "Severity": "Low",
+        "Preconditions": [
+            "El empleado exite",
+            "El empleado esta libre para su modificacion",
+            "Nadie esta usando o editando al empleado que se intentaba integrar"
+        ],
+        "questions": [
+            "¿El empleado estaba libre para su edicion al momento de la carga?",
+            "¿Lo esta ahora?"
+        ],
+        "resolution_steps": [
+            "Valida con el usuario que esta en el error si ya no esta haciendo uso del perfil del empleado"
+        ],
+        "Fallbacks": [
+            "Consulta con el empleado directo, o en dado caso, escalar el caso"
+        ]
+    },
+    {
+        "Source_Infotype": "0002",
+        "Source_Type": "Infotype",
+        "Tittle": "Error en la CURP del empleado",
+        "Technical_error": "Incorrect date of birth in CURP",
+        "Posible_consults": [
+            "Error en el CURP del empleado",
+            "La fecha de nacimiento del CURP es incorrecta",
+            "No me deja guardar los datos personales por un error en el CURP",
+            "El sistema dice que el CURP es inválido",
+            "Problema con el infotipo 2",
+            "Los dígitos del CURP no coinciden",
+            "Me da un error en los datos personales",
+            "La CURP no es válida para la fecha de nacimiento",
+            "El sistema rechaza la CURP"
+        ],
+        "Severity": "Medium",
+        "Preconditions": [
+            "La ID fue introducida correctamente",
+            "Todos los digitos coinciden con la informacion registrada previamente",
+            "Se cargo en tiempo y forma"
+        ],
+        "questions": [
+            "¿Se cargo la ID de forma correcta, sin digitos no autorizados?",
+            "¿Los digitos de la fecha de nacimiento coinciden con los que se registraron?",
+            "¿Fue terminada al mismo tiempo que los demas procesos?"
+        ],
+        "resolution_steps": [
+            "Verifica los digitos para la fecha de nacimiento, deben coincidir con los registrados previamente"
+        ],
+        "Fallbacks": [
+            "Revisa nuevamente la informacion introducida, de lo contrario acude a recursos humanos para la validacion de la información"
+        ]
+    },
+    {
+        "Source_Infotype": "0007",
+        "Source_Type": "Infotype",
+        "Tittle": "Regla de Horario de Trabajo Inválida o Inexistente",
+        "Technical_error": "No work schedule rule for key 0103ZY3942TW020220191014",
+        "Posible_consults": [
+            "No hay nada en el infotipo 7",
+            "¿Por que el empleado no tiene otro turno distinto al que le asigne?",
+            "Le cree una promocion, pero no hay cambio de turno",
+            "Si se fue a otra compañia, ¿por que no ha cambiado su turno?",
+            "Error en el horario de trabajo del empleado",
+            "No me acepta el turno que le asigné",
+            "La regla de horario no existe en el sistema",
+            "Problema con el infotipo 0007",
+            "El calendario del empleado está mal",
+            "Work schedule rule not valid",
+            "No se actualiza el horario planeado"
+            ],
+        "Severity": "High",
+        "Preconditions": [
+            "El turno fue ingresado en la plataforma de RH",
+            "Corresponde a la compañia asignada",
+            "Se cargo en tiempo y forma"
+        ],
+        "questions": [
+            "¿El empleado esta activo para el cambio que se realizo?",
+            "¿El turno asignado corresponde a la compañia en la que el empleado esta?",
+            "¿El turno fue creado en el modulo de nominas previamente?"
+        ],
+        "resolution_steps": [
+            "Valida si el turno corresponde a la compañia, de lo contrario procede a cambiarlo",
+            "Si se cargo fuera de la ventana de integracion, espera a la siguiente",
+            "Si es un turno nuevo, valida con HRIS que se haya creado previamente"
+        ],
+        "Fallbacks": [
+            "Si el turno no existe en el modulo de nominas, pide a nominas que se cree dicho turno",
+            "Revalida si el turno que se esta asignando si es parte de los permitidos para la compañia"
+        ]
+    }
+]

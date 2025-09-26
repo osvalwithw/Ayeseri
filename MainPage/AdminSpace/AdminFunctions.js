@@ -8,7 +8,7 @@ function AdminView(ViewOPC){
     document.getElementById("UserCreationView")
     ];
     windows.forEach(window => {
-        window.style.display = 'none'
+        window.style.display = 'none';
     });
     if(windows[ViewOPC]){
         windows[ViewOPC].style.display = 'block';
@@ -27,7 +27,7 @@ async function bringtickets(){
     .then(data => {
     console.log(data);
         if(data.length == 0){
-            console.log("No hay nada por hacer :)")
+            document.getElementById('TableItems').style.display = "none";
         }
     printingtickets(data);
     })
@@ -39,8 +39,23 @@ async function bringtickets(){
 AdminView(2);
 
 function printingtickets(data){
+    if(data.length === 0){
+        alert("No hay tickets por procesar :D")
+        return;
+    }
     const pasteinformation = document.getElementById('TableItems');
+    const headerinformation = document.getElementById('Tableheaders');
     pasteinformation.innerHTML = '';
+    let insertheader = document.createElement('tr');
+    insertheader.innerHTML=`
+        <th></th>
+        <th>Ticket Number</th>
+        <th>User Name</th>
+        <th>Email</th>
+        <th>Password</th>
+        <th>Upload Time</th>
+    `;
+    headerinformation.appendChild(insertheader);
     data.forEach(item => {
         let insertline = document.createElement('tr');
         insertline.innerHTML=`
@@ -112,8 +127,9 @@ async function NoProcessUser(){
         return;
     }
     if(confirm("¿Seguro que quieres eliminar al/los empleado(s) seleccionado(s)?")){
+        console.log(":)")
         ProcessTickets(2);
-    } else{
+    } else {
         return;
     }
 }
