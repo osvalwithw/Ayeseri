@@ -1,229 +1,275 @@
-[
-    {
-        "Source_Infotype": "0001",
-        "Source_Type": "Infotype",
-        "Tittle": "Contrato no cargado en el infotipo 0001",
-        "Technical_error": "Formatting error in the field P0001-ANSVH",
-        "Posible_consults": [
-            "No se carga el contrato",
-            "me dio el siguiente error Formatting error in the field P0001-ANSVH",
-            "No me abre el infotipo 0001",
-            "problema con el contrato de un empleado",
-            "el sistema me da un error de formato",
-            "algo está mal con la pantalla del contrato",
-            "no me deja procesar la nómina por un error en el infotipo 1",
-            "¿Qué significa el error P0001-ANSVH?",
-            "¿Por qué no se refleja el nuevo contrato en el sistema?",
-            "no jala el contrato",
-            "error en infotipo 001",
-            "formating eror en campo P0001"
-        ],
-        "Severity":"Low",
-        "Summary": "Error causado cuando el contrato no se carga en el modulo de nominas, debido a que en la plataforma de RH este no fue cargado de forma correcta por fecha efectiva o contenido como la duracion si es ilimitado o limitado",
-        "Preconditions": [
-            "Contrato activo en la plataforma de RH",
-            "Fechas acordes a contratacion o cambio de puesto",
-            "Proceso terminado en tiempo y forma"
-        ],
-        "questions": [
-            "¿El contrato fue completado exitosamente en la plataforma de RH?",
-            "¿La fecha del contrato coincide con la de contratacion?"
-        ],
-        "resolution_steps": [
-            "Revisa el perfil del empleado en la plataforma de RH",
-            "Asegurate de que el tipo se acorde a lo necesitado",
-            "las fechas deben coincidir entre el ingreso/cambio y el contrato"
-        ],
-        "Fallbacks": [
-            "Si el error persiste, contacta a Recursos Humanos para validarlo"
-        ]
-    },
-    {
-        "Source_Infotype": "0006",
-        "Source_Type": "Infotype",
-        "Tittle": "Datos mal ingresados en la direccion del trabajador",
-        "Technical_error":"Formatting error in the field P0006-STRAS",
-        "Posible_consults": [
-            "Por que no esta el registro de la calle del empleado",
-            "no baja la informacion de la plataforma de recursos humanos",
-            "No me abre el infotipo 0006",
-            "No hay nada en el infotipo 0006",
-            "La dirección del empleado está vacía o incorrecta",
-            "Falta la calle en los datos personales del trabajador",
-            "Error de caracteres inválidos en el campo de dirección",
-            "El campo STRAS del infotipo 6 tiene un error",
-            "¿Qué hago si la dirección tiene caracteres especiales?",
-            "No me deja guardar la dirección",
-            "problema con el infotipo de direcciones",
-            "la direcsion no se ve bien"
-        ],
-        "Severity":"Low",
-        "Summary": "Ocasionado cuando se ingresan caracteres no permitidos en la entrada",
-        "Preconditions": [
-            "Calle registrada",
-            "Ningun caracter adicional",
-            "Proceso terminado en tiempo y forma"
-        ],
-        "questions": [
-            "¿La calle del empleado se ingreso correctamente?",
-            "¿No hay ningun caracter adicional?",
-            "¿Existe el registro actualmente en el perfil del empleado?"
-        ],
-        "resolution_steps": [
-            "Elimina cualquier caracter adicional como |, *, ?, ¿, ¡, etc. que pueda entorpecer el archivo de carga",
-            "ingresa toda la informacion relacionada con el campo",
-            "De no existir, crea la entrada que sera transferida en la siguiente integracion"
-        ],
-        "Fallbacks": [
-            "Si el error persiste, contacta a Recursos Humanos para validarlo",        
-            "Si hay algun caracter adicional, contacta al grupo de IT"
-        ]
-    },
-    {
-        "Source_Infotype": "0000",
-        "Source_Type": "Infotype",
-        "Tittle": "Conflicto en la accion y la razon al contratar/recontratar un empleado",
-        "Technical_error": "Invalid combination of action type 1A/action reason CA",
-        "Posible_consults": [
-            "No esta el empleado cargado para su revision",
-            "No cargaron los bonos del empleado que acabo de contratarar",
-            "Recontrate a alguien pero no me aparece nada buscandolo por su numero",
-            "¿Por que me da este error? Invalid combination of action type 1A/action reason CA",
-            "Error al recontratar un ex-empleado",
-            "El sistema no me deja procesar la recontratación",
-            "El nuevo empleado no aparece en nómina",
-            "No puedo dar de alta a un trabajador que ya había estado aquí",
-            "Falla la acción 1A con la razón CA",
-            "Problema con una contratación nueva",
-            "El sistema rechaza el alta del empleado",
-            "¿Qué acción debo usar para un reingreso?",
-            "No me aparece un empleado nuevo"
-        ],
-        "Severity": "Medium",
-        "Summary": "El empleado fue asignado a una rason de contratacion erronea, haciendo que no se cargue dicho empleado en el modulo de nominas",
-        "Preconditions": [
-            "El empleado fue contratado",
-            "Se ingreso la contratacion en tiempo y forma",
-            "Se usaron las condiciones exactas para cada tipo"
-        ],
-        "questions": [
-            "¿Cual es la condicion del empleado?",
-            "¿Es una recontratacion (Rehire) o contratacion (Hire)?",
-            "¿El empleado exite actualmente en el modulo de nominas?"
-        ],
-        "resolution_steps": [
-            "Revisa que las condiciones coincidan para contratacion y recontratacion",
-            "Si el empleado no esta en el modulo de nominas, se creara bajo el termino de 'contratacion'"
-        ],
-        "Fallbacks": [
-            "En caso de seguir con la falla, procura asegurarte que coincidan los terminos de la contratacion."
-        ]
-    },
-    {
-        "Source_Infotype": "NITR",
-        "Source_Type": "No Infotype Related",
-        "Tittle": "Empleado bloqueado por otro usuario",
-        "Technical_error": "Person is already being processed by user ########",
-        "Posible_consults": [
-            "¿Que significa esto? Person is already being processed by user",
-            "No me deja entrar a este empleado, y dice que lo tengo bloqueado",
-            "El registro está bloqueado por otro usuario",
-            "No puedo editar al empleado porque alguien más lo está usando",
-            "El sistema dice que el usuario ya está siendo procesado",
-            "¿Cómo desbloqueo un empleado que está siendo usado por otra persona?",
-            "Me aparece un error de que el perfil está ocupado",
-            "locked by another user error",
-            "No me deja guardar los cambios porque está bloqueado",
-            "El sistema me sacó y ahora dice que yo mismo lo tengo bloqueado"
-        ],
-        "Severity": "Low",
-        "Preconditions": [
-            "El empleado exite",
-            "El empleado esta libre para su modificacion",
-            "Nadie esta usando o editando al empleado que se intentaba integrar"
-        ],
-        "questions": [
-            "¿El empleado estaba libre para su edicion al momento de la carga?",
-            "¿Lo esta ahora?"
-        ],
-        "resolution_steps": [
-            "Valida con el usuario que esta en el error si ya no esta haciendo uso del perfil del empleado"
-        ],
-        "Fallbacks": [
-            "Consulta con el empleado directo, o en dado caso, escalar el caso"
-        ]
-    },
-    {
-        "Source_Infotype": "0002",
-        "Source_Type": "Infotype",
-        "Tittle": "Error en la CURP del empleado",
-        "Technical_error": "Incorrect date of birth in CURP",
-        "Posible_consults": [
-            "Error en el CURP del empleado",
-            "La fecha de nacimiento del CURP es incorrecta",
-            "No me deja guardar los datos personales por un error en el CURP",
-            "El sistema dice que el CURP es inválido",
-            "Problema con el infotipo 2",
-            "Los dígitos del CURP no coinciden",
-            "Me da un error en los datos personales",
-            "La CURP no es válida para la fecha de nacimiento",
-            "El sistema rechaza la CURP"
-        ],
-        "Severity": "Medium",
-        "Preconditions": [
-            "La ID fue introducida correctamente",
-            "Todos los digitos coinciden con la informacion registrada previamente",
-            "Se cargo en tiempo y forma"
-        ],
-        "questions": [
-            "¿Se cargo la ID de forma correcta, sin digitos no autorizados?",
-            "¿Los digitos de la fecha de nacimiento coinciden con los que se registraron?",
-            "¿Fue terminada al mismo tiempo que los demas procesos?"
-        ],
-        "resolution_steps": [
-            "Verifica los digitos para la fecha de nacimiento, deben coincidir con los registrados previamente"
-        ],
-        "Fallbacks": [
-            "Revisa nuevamente la informacion introducida, de lo contrario acude a recursos humanos para la validacion de la información"
-        ]
-    },
-    {
-        "Source_Infotype": "0007",
-        "Source_Type": "Infotype",
-        "Tittle": "Regla de Horario de Trabajo Inválida o Inexistente",
-        "Technical_error": "No work schedule rule for key 0103ZY3942TW020220191014",
-        "Posible_consults": [
-            "No hay nada en el infotipo 7",
-            "¿Por que el empleado no tiene otro turno distinto al que le asigne?",
-            "Le cree una promocion, pero no hay cambio de turno",
-            "Si se fue a otra compañia, ¿por que no ha cambiado su turno?",
-            "Error en el horario de trabajo del empleado",
-            "No me acepta el turno que le asigné",
-            "La regla de horario no existe en el sistema",
-            "Problema con el infotipo 0007",
-            "El calendario del empleado está mal",
-            "Work schedule rule not valid",
-            "No se actualiza el horario planeado"
-            ],
-        "Severity": "High",
-        "Preconditions": [
-            "El turno fue ingresado en la plataforma de RH",
-            "Corresponde a la compañia asignada",
-            "Se cargo en tiempo y forma"
-        ],
-        "questions": [
-            "¿El empleado esta activo para el cambio que se realizo?",
-            "¿El turno asignado corresponde a la compañia en la que el empleado esta?",
-            "¿El turno fue creado en el modulo de nominas previamente?"
-        ],
-        "resolution_steps": [
-            "Valida si el turno corresponde a la compañia, de lo contrario procede a cambiarlo",
-            "Si se cargo fuera de la ventana de integracion, espera a la siguiente",
-            "Si es un turno nuevo, valida con HRIS que se haya creado previamente"
-        ],
-        "Fallbacks": [
-            "Si el turno no existe en el modulo de nominas, pide a nominas que se cree dicho turno",
-            "Revalida si el turno que se esta asignando si es parte de los permitidos para la compañia"
-        ]
+import json
+import os
+import re
+from dataclasses import dataclass
+from typing import List, Dict, Any, Tuple, Optional
+
+from flask import Flask, request, jsonify
+from flask_cors import CORS
+
+import torch
+from sentence_transformers import SentenceTransformer, util
+
+# =====================
+# Config
+# =====================
+MODEL_NAME = os.getenv("EMBEDDINGS_MODEL", "sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2")
+JSON_FILENAME = os.getenv("KB_JSON", "resolution_cook_book.json")
+TOP_K = int(os.getenv("TOP_K", "5"))                 # Candidatos que se devuelven para aclaración
+CONF_LOW = float(os.getenv("CONF_LOW", "0.45"))      # < -> pedir aclaración
+CONF_OK  = float(os.getenv("CONF_OK",  "0.68"))      # >= -> responder directo (y quizás sugerir alternativas)
+
+# =====================
+# Texto utils (ES)
+# =====================
+_ws_re = re.compile(r"\s+")
+_url_re = re.compile(r"http\S+|www\.\S+", re.I)
+_punct_re = re.compile(r"[^\w\sáéíóúñüÁÉÍÓÚÑÜ]", re.U)
+
+def normalize_es(text: str) -> str:
+    t = text.strip().lower()
+    t = _url_re.sub(" ", t)
+    t = _punct_re.sub(" ", t)
+    t = _ws_re.sub(" ", t)
+    return t.strip()
+
+# =====================
+# Estructuras
+# =====================
+@dataclass
+class KBItem:
+    # Campos presentes en tu JSON
+    Source_Infotype: Optional[str]
+    Source_Type: Optional[str]
+    Tittle: str
+    Technical_error: Optional[str]
+    Posible_consults: List[str]
+    Severity: Optional[str]
+    Summary: Optional[str]
+    Preconditions: List[str]
+    questions: List[str]
+    resolution_steps: List[str]
+    Fallbacks: List[str]
+    # Opcional: Slots para futuras plantillas
+    Slots: Optional[Dict[str, str]] = None
+
+# =====================
+# Carga y búsqueda
+# =====================
+class KBRetriever:
+    def __init__(self, json_path: str):
+        self.json_path = json_path
+        self.model = SentenceTransformer(MODEL_NAME)
+        self._load_kb()
+
+    def _load_kb(self):
+        if not os.path.exists(self.json_path):
+            raise FileNotFoundError(f"No se encontró {self.json_path}")
+        with open(self.json_path, "r", encoding="utf-8") as f:
+            raw = json.load(f)
+
+        self.kb: Dict[str, KBItem] = {}
+        self.corpus: List[str] = []
+        self.map_idx_to_title: List[str] = []
+
+        for obj in raw:
+            item = KBItem(
+                Source_Infotype=obj.get("Source_Infotype"),
+                Source_Type=obj.get("Source_Type"),
+                Tittle=obj.get("Tittle", "(sin_titulo)"),
+                Technical_error=obj.get("Technical_error"),
+                Posible_consults=obj.get("Posible_consults", []) or [],
+                Severity=obj.get("Severity"),
+                Summary=obj.get("Summary"),
+                Preconditions=obj.get("Preconditions", []) or [],
+                questions=obj.get("questions", []) or [],
+                resolution_steps=obj.get("resolution_steps", []) or [],
+                Fallbacks=obj.get("Fallbacks", []) or [],
+                Slots=obj.get("Slots")
+            )
+            self.kb[item.Tittle] = item
+
+            # Índice semántico: título + posibles consultas + error técnico
+            queries = [item.Tittle] + item.Posible_consults
+            if item.Technical_error:
+                queries.append(item.Technical_error)
+            for q in queries:
+                qn = normalize_es(q)
+                if not qn:
+                    continue
+                self.corpus.append(qn)
+                self.map_idx_to_title.append(item.Tittle)
+
+        # Embeddings normalizados para coseno estable
+        self.corpus_embeddings = self.model.encode(
+            self.corpus, convert_to_tensor=True, normalize_embeddings=True
+        )
+        self.last_mtime = os.path.getmtime(self.json_path)
+
+    def maybe_reload(self):
+        try:
+            mtime = os.path.getmtime(self.json_path)
+            if mtime != self.last_mtime:
+                self._load_kb()
+        except Exception:
+            pass
+
+    def search(self, query: str, top_k: int = 5) -> List[Tuple[KBItem, float]]:
+        q = normalize_es(query)
+        q_emb = self.model.encode(q, convert_to_tensor=True, normalize_embeddings=True)
+        scores = util.cos_sim(q_emb, self.corpus_embeddings)[0]
+        top = torch.topk(scores, k=min(top_k, len(self.corpus)))
+        results: List[Tuple[KBItem, float]] = []
+        seen = set()
+        for score, idx in zip(top.values.tolist(), top.indices.tolist()):
+            title = self.map_idx_to_title[idx]
+            if title in seen:
+                continue
+            seen.add(title)
+            results.append((self.kb[title], float(score)))
+        return results
+
+    def get_by_title(self, title: str) -> Optional[KBItem]:
+        return self.kb.get(title)
+
+# =====================
+# Entidades simples (opcional)
+# =====================
+_id_re = re.compile(r"\b(\d{3,10})\b")
+_email_re = re.compile(r"\b[\w\.-]+@[\w\.-]+\.[a-zA-Z]{2,}\b")
+_date_re = re.compile(r"\b(\d{1,2}[/-]\d{1,2}[/-]\d{2,4})\b")
+
+def extract_entities(text: str) -> Dict[str, Optional[str]]:
+    return {
+        "id_ee": (_id_re.search(text).group(1) if _id_re.search(text) else None),
+        "email": (_email_re.search(text).group(0) if _email_re.search(text) else None),
+        "date":  (_date_re.search(text).group(1) if _date_re.search(text) else None),
     }
-]
+
+def fill_slots(template_steps: List[str], slots: Dict[str, Optional[str]]) -> List[str]:
+    """
+    Si empiezas a usar plantillas como "Revisa empleado {id_ee}",
+    esto las rellenará si el usuario proporciona esos datos.
+    """
+    out = []
+    for s in template_steps:
+        try:
+            out.append(s.format(**{k: (v or "") for k, v in slots.items()}))
+        except KeyError:
+            out.append(s)
+    return out
+
+# =====================
+# Flask App
+# =====================
+app = Flask(__name__)
+CORS(app, resources={r"/*": {"origins": "*"}})
+
+retriever = KBRetriever(JSON_FILENAME)
+
+def build_payload_from_item(item: KBItem, user_query: Optional[str], confidence: Optional[float] = None) -> Dict[str, Any]:
+    ents = extract_entities(user_query or "")
+    slots: Dict[str, Optional[str]] = {"id_ee": ents.get("id_ee"), "email": ents.get("email"), "date": ents.get("date")}
+    # Si el item trae Slots predefinidos, las mezclamos
+    if item.Slots:
+        slots.update({k: v for k, v in item.Slots.items() if k not in slots})
+
+    pre = fill_slots(item.Preconditions or [], slots)
+    steps = fill_slots(item.resolution_steps or [], slots)
+    fbs = fill_slots(item.Fallbacks or [], slots)
+
+    payload: Dict[str, Any] = {
+        "answer": item.Tittle,
+        "preconditions": pre,
+        "details": steps,
+        "fallbacks": fbs
+    }
+    if item.Severity: payload["severity"] = item.Severity
+    if item.Summary:  payload["summary"]  = item.Summary
+    if item.questions: payload["questions"] = item.questions
+    if confidence is not None:
+        payload["confidence"] = round(float(confidence), 3)
+    return payload
+
+@app.route("/health", methods=["GET"])
+def health():
+    retriever.maybe_reload()
+    return jsonify({
+        "status": "ok",
+        "model": MODEL_NAME,
+        "items": len(retriever.kb)
+    })
+
+@app.route("/reload", methods=["POST"])
+def reload_kb():
+    retriever._load_kb()
+    return jsonify({"reloaded": True, "items": len(retriever.kb)})
+
+@app.route("/ThinkingMethod", methods=["POST"])
+def thinking_method():
+    data = request.get_json(silent=True) or {}
+    user_query = data.get("query", "")
+    if not user_query:
+        return jsonify({"error": "No se proporcionó ninguna consulta (query)"}), 400
+
+    retriever.maybe_reload()
+
+    # Recupera candidatos
+    candidates = retriever.search(user_query, top_k=TOP_K)
+    if not candidates:
+        return jsonify({
+            "answer": "No encontré coincidencias 🤔. ¿Puedes describirlo con otras palabras o pegar el mensaje exacto del error?",
+            "details": []
+        })
+
+    best_item, best_score = candidates[0]
+
+    # Banda de baja confianza -> aclaración
+    if best_score < CONF_LOW:
+        opts = [c[0].Tittle for c in candidates[:TOP_K]]
+        return jsonify({
+            "answer": "No estoy 100% seguro de lo que necesitas.",
+            "confidence": round(best_score, 3),
+            "clarify_options": opts,
+            "details": [
+                "¿Te refieres a alguno de estos temas? Elige uno por título usando /clarify o dame más contexto (ID empleado, módulo, fecha)."
+            ]
+        })
+
+    # Construcción de respuesta
+    payload = build_payload_from_item(best_item, user_query, confidence=best_score)
+    # Sugerencias adicionales si la confianza no es súper alta
+    if CONF_LOW <= best_score < CONF_OK and len(candidates) > 1:
+        payload["did_you_mean"] = [c[0].Tittle for c in candidates[1:min(len(candidates), TOP_K)]]
+    return jsonify(payload)
+
+@app.route("/clarify", methods=["POST"])
+def clarify():
+    """
+    Forzar una de las opciones sugeridas (o cualquier título existente).
+    Body:
+      {
+        "title": "Contrato no cargado en el infotipo 0001",
+        "query": "opcional, texto del usuario para rellenar slots si existen"
+      }
+    """
+    data = request.get_json(silent=True) or {}
+    chosen_title = data.get("title")
+    user_query = data.get("query", "")
+
+    if not chosen_title:
+        return jsonify({"error": "Falta 'title' en el cuerpo de la petición"}), 400
+
+    retriever.maybe_reload()
+
+    item = retriever.get_by_title(chosen_title)
+    if not item:
+        return jsonify({"error": f"No existe un item con Tittle='{chosen_title}'"}), 404
+
+    payload = build_payload_from_item(item, user_query, confidence=None)
+    # Por conveniencia, regresamos también el listado de títulos válidos si el usuario se equivocó
+    return jsonify(payload)
+
+if __name__ == "__main__":
+    port = int(os.getenv("PORT", "5001"))
+    app.run(debug=True, host="0.0.0.0", port=port)
