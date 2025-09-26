@@ -59,10 +59,12 @@ tablaBody.addEventListener('change', function(event) {
             const fila = checkbox.closest('tr');
             const usuario = fila.querySelector('.User_Row').textContent;
             const email = fila.querySelector('.Email_Row').textContent;
+            const pss = fila.querySelector('.Pss_row').textContent;
             const infoTicket = {
                 id: ticketId,
                 usuario: usuario,
-                email: email
+                email: email,
+                pss: pss
             };
             SelectTickets.push(infoTicket);
         } else {
