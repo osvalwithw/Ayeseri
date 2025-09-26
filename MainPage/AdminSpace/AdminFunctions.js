@@ -77,6 +77,7 @@ async function CreateUsers(){
         alert("No Tickets selected, please select at least one to proceed");
         return;
     }
+    console.log("Enviando este cuerpo JSON a la API:", JSON.stringify(SelectTickets, null, 2));
     try {
         // Hacemos la petición 'fetch' y esperamos la respuesta con 'await'
         const respuesta = await fetch(`https://ayeseri.onrender.com/CreateUsers`, {
