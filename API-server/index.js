@@ -156,6 +156,29 @@ app.get('/GetTickets', async (req, res) => {
   }
 });
 
+app.post('/CreateUsers', async (req, res) => {
+  try{
+    const { SendTickets } = req.body
+    if (!SendTickets || !Array.isArray(SendTickets) || SendTickets.length === 0) {
+      return res.status(400).json({ error: 'El campo "SendTickets" es requerido y debe ser un array no vacío.' });
+    }
+    const insertPromises = SendTickets.map(ticket => {
+      const { usuario, email, id } = ticket;
+      const sql = `INSERT INTO Users (Email, Psswd, Username) VALUES (?, ?, ?)`;
+      return pool.query(sql, [usuario, email, defaultPassword])
+        .then(() => {
+          const deleteSql = `DELETE FROM Requests WHERE id = ?`;
+          return pool.query(deleteSql, [id]);
+        });
+    });
+    await Promise.all(insertPromises);
+    res.json({ message: 'Usuarios creados y tickets eliminados exitosamente.' });
+  } catch (e){
+      console.error('/CreateUsers:', e.message);
+      res.status(500).json({error: e.message});    
+  } 
+});
+
 //IA Section-----------------------------------------------------------------------------------------------------
 
 app.post('/api/ThinkingMethod', async (req, res) => {
