@@ -77,12 +77,36 @@ async function CreateUsers(){
         alert("No Tickets selected, please select at least one to proceed");
         return;
     }
-    SelectTickets.forEach(element => {
-        console.log(`Creating user: ${element.usuario} with email: ${element.email}`)
-    });
-    // try{
-    //     const response = await fetch(`https://ayeseri.onrender.com/InsertUsers/`);
-    // } catch(error){
-    //     console.error("Error inserting users:", error);
-    // }
+    try {
+        // Hacemos la petición 'fetch' y esperamos la respuesta con 'await'
+        const respuesta = await fetch(urlDeTuApi, {
+            method: 'POST', // El método HTTP para enviar datos
+            headers: {
+                // Le decimos a la API que le estamos enviando datos en formato JSON
+                'Content-Type': 'application/json'
+            },
+            // Convertimos nuestro array de JavaScript a una cadena de texto JSON
+            body: JSON.stringify(SelectTickets) 
+        });
+
+        // Verificamos si la respuesta del servidor fue exitosa (código 200-299)
+        if (!respuesta.ok) {
+            // Si hubo un error en el servidor (ej: 404, 500), lanzamos un error
+            throw new Error(`Error del servidor: ${respuesta.status}`);
+        }
+
+        // Si la respuesta fue exitosa, la convertimos de JSON a un objeto de JavaScript
+        const datosRespuesta = await respuesta.json();
+        
+        console.log('Éxito! Respuesta del servidor:', datosRespuesta);
+        alert('Los tickets se procesaron correctamente.');
+        
+        // Aquí podrías, por ejemplo, recargar tu tabla de pendientes
+        // recargarTabla();
+
+    } catch (error) {
+        // Si algo falla (ej: no hay conexión a internet, la API está caída), lo capturamos aquí
+        console.error('Error al enviar los datos a la API:', error);
+        alert('Hubo un problema al conectar con el servidor. Inténtalo de nuevo.');
+    }
 }
