@@ -165,7 +165,7 @@ app.post('/CreateUsers', async (req, res) => {
     const insertPromises = SendTickets.map(ticket => {
       const { usuario, email, id, pss } = ticket;
       console.log(`Procesando ticket ID: ${id}, Usuario: ${usuario}, Email: ${email}, Pss: ${pss}`);
-      const sql = `INSERT INTO Users (Email, Psswd, Username) VALUES (?, ?, ?)`;
+      const sql = `INSERT INTO Users (Email, Password, Username) VALUES (?, ?, ?)`;
       return pool.query(sql, [email, pss, usuario])
         .then(() => {
           const deleteSql = `DELETE FROM Requests WHERE id = ?`;
