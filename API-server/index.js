@@ -3,6 +3,8 @@ import express from 'express';
 import cors from'cors';
 import { EmailsRouter } from './Emails/SendEmails.js';
 import axios from 'axios';
+import multer from 'multer';
+import { parsestring } from 'fast-csv';
 
 const app = express();
 app.use(cors());
@@ -201,14 +203,13 @@ app.post('/api/ThinkingMethod', async (req, res) => {
   console.log(`Recibida pregunta para la IA: "${query}"`);
 
   try {
-    // Hacemos una llamada POST a nuestro servicio de Python que corre en el puerto 5001.
     const aiServiceResponse = await axios.post('https://oswal2-ayeseri-is-thinking.hf.space/ThinkingMethod', {
-      query: query  // Enviamos la pregunta en el cuerpo de la petición.
+      query: query  // Envio
     });
 
-    console.log('Respuesta recibida de la IA:', aiServiceResponse.data);
+    console.log('Respuesta recibida:', aiServiceResponse.data);
     
-    // Reenviamos la respuesta que nos dio la IA directamente al frontend.
+    // Reenvio
     res.json(aiServiceResponse.data);
 
   } catch (e) {

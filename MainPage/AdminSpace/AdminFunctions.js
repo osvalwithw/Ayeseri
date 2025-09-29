@@ -192,22 +192,24 @@ Proceedbutton.addEventListener('click', () =>{
 });
 
 async function Files2Send() {
-    try {
-        const respuesta = await fetch(`https://ayeseri.onrender.com/ClasifyMethod`, {
-            method: 'POST', 
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: packing
-        });
-        if (!respuesta.ok) {
-            throw new Error(`Error del servidor: ${respuesta.status}`);
-        }
-        console.log('Archivo enviado con exito');
-    } catch (error) {
-        console.error('Error al enviar los datos a la API:', error);
-        alert('Hubo un problema al conectar con el servidor. Inténtalo de nuevo.');
-    }
+    // try {
+    //     const respuesta = await fetch(`https://ayeseri.onrender.com/ClasifyMethod`, {
+    //         method: 'POST', 
+    //         headers: {
+    //             'Content-Type': 'application/json'
+    //         },
+    //         body: packing
+    //     });
+    //     if (!respuesta.ok) {
+    //         throw new Error(`Error del servidor: ${respuesta.status}`);
+    //     }
+    //     console.log('Archivo enviado con exito');
+    // } catch (error) {
+    //     console.error('Error al enviar los datos a la API:', error);
+    //     alert('Hubo un problema al conectar con el servidor. Inténtalo de nuevo.');
+    // }
+
+    
 }
 
 //--------------------------------------------Error Load------------------------------------------------------------
