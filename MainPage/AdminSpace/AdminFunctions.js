@@ -1,4 +1,4 @@
-let Window_opc = 0;
+let Window_opc = 2;
 const windows = [
     document.getElementById("Usersview"),
     document.getElementById("Errorsview"),
@@ -145,23 +145,69 @@ async function NoProcessUser(){
 //--------------------------------------------User creation------------------------------------------------------------}
 
 //--------------------------------------------Error Load------------------------------------------------------------
+function DBErrorUpload(){
+    Window_opc = 1;
+    windowadjust();
+}
+
+const FakeEntrySingleFileLoad = document.getElementById('FakeSingleLoad');
 const EntrySingleFileLoad = document.getElementById('SingleLoad');
 const ButtonSingleFileLoad = document.getElementById('BTNSingleLoad');
 const EntryMultipleFileLoad = document.getElementById('MultipleLoad');
 const ButtonMultiplleFileLoad = document.getElementById('BTNMultipleLoad');
 const Proceedbutton = document.getElementById('ConfirmLoad');
+let packing = new FormData();
 
 ButtonSingleFileLoad.addEventListener('click',() =>{
     EntrySingleFileLoad.click();
 });
 
 EntrySingleFileLoad.addEventListener('change', () =>{
-    console.log("jeje");
+    const Filetoprocess = EntrySingleFileLoad.files[0];
+    if(EntrySingleFileLoad.isDefaultNamespace.length > 0){
+        FakeEntrySingleFileLoad.value = Filetoprocess.name;
+        
+        packing.append('File2process', Filetoprocess);
+        console.log("Archivo enpaquetado, listo para transferir");
+    } else {
+        FakeEntrySingleFileLoad.value = 'No has seleccionado ningun archivo...';
+        return;
+    }
 });
-function DBErrorUpload(){
-    Window_opc = 1;
-    windowadjust();
-}
 
+Proceedbutton.addEventListener('click', () =>{
+    const Files = EntrySingleFileLoad.files;
+    if(Files.length === 0){
+        alert("No hay archivos seleccionados")
+        return;
+    } else {
+        if(confirm(`se ha seleccionado un archivo, ¿desea proceder?`)){
+            console.log("Sending File..");
+        } else{
+            console.log("Aborting load..");
+            return;
+        }
+    }
+    Files2Send();
+});
+
+async function Files2Send() {
+    try {
+        const respuesta = await fetch(`https://ayeseri.onrender.com/ClasifyMethod`, {
+            method: 'POST', 
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: packing
+        });
+        if (!respuesta.ok) {
+            throw new Error(`Error del servidor: ${respuesta.status}`);
+        }
+        console.log('Archivo enviado con exito');
+    } catch (error) {
+        console.error('Error al enviar los datos a la API:', error);
+        alert('Hubo un problema al conectar con el servidor. Inténtalo de nuevo.');
+    }
+}
 
 //--------------------------------------------Error Load------------------------------------------------------------

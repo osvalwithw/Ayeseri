@@ -216,3 +216,8 @@ app.post('/api/ThinkingMethod', async (req, res) => {
     res.status(500).json({ error: 'No se pudo contactar al asistente de IA.' });
   }
 });
+
+//IA Clasifying Section-----------------------------------------------------------------------------------------------------
+app.post('/ClasifyMethod', async (req, res) =>{
+  console.log("Se recibio la informacion ;)")
+});
