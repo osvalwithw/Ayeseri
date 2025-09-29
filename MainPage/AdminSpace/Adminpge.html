@@ -29,9 +29,10 @@
         </div>
         <div class="MainErrorsWindow" id="Errorsview">
             <div class="column ErrorsLoadWindow">
-                <input class="LoadFiles" id="SingleLoad"></input>
+                <input type="file" class="LoadFiles" id="SingleLoad" hidden accept=".xslt"></input>
+                <input class="LoadFiles" id="FakeSingleLoad" readony></input>
                 <button class="BTNLoad" id="BTNSingleLoad">Select</button>
-                <input class="LoadFiles" id="MultipleLoad"></input>
+                <input class="LoadFiles" id="MultipleLoad" readonly webkitirectory directory multiple></input>
                 <button class="BTNLoad" id="BTNMultipleLoad">Select</button>
                 <button class="BTNLoad" id="ConfirmLoad">Start</button>
             </div>

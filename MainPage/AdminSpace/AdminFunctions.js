@@ -145,8 +145,23 @@ async function NoProcessUser(){
 //--------------------------------------------User creation------------------------------------------------------------}
 
 //--------------------------------------------Error Load------------------------------------------------------------
+const EntrySingleFileLoad = document.getElementById('SingleLoad');
+const ButtonSingleFileLoad = document.getElementById('BTNSingleLoad');
+const EntryMultipleFileLoad = document.getElementById('MultipleLoad');
+const ButtonMultiplleFileLoad = document.getElementById('BTNMultipleLoad');
+const Proceedbutton = document.getElementById('ConfirmLoad');
+
+ButtonSingleFileLoad.addEventListener('click',() =>{
+    EntrySingleFileLoad.click();
+});
+
+EntrySingleFileLoad.addEventListener('change', () =>{
+    console.log("jeje");
+});
 function DBErrorUpload(){
     Window_opc = 1;
     windowadjust();
 }
+
+
 //--------------------------------------------Error Load------------------------------------------------------------
