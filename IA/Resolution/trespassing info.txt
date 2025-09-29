@@ -1,275 +1,117 @@
-import json
-import os
-import re
-from dataclasses import dataclass
-from typing import List, Dict, Any, Tuple, Optional
+ <!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Ayeseri · Clasificar</title>
+  <style>
+    body{font-family:system-ui,Segoe UI,Roboto,Arial;margin:24px}
+    .row{display:flex;gap:12px;align-items:center;margin-bottom:12px}
+    #status{margin-top:8px}
+    table{border-collapse:collapse;margin-top:12px;width:100%}
+    th,td{border:1px solid #ddd;padding:8px}
+    th{text-align:left;background:#f5f5f5}
+    progress{width:220px;height:10px}
+  </style>
+</head>
+<body>
+  <h1>Clasificar errores</h1>
+  <div class="row">
+    <input id="file" type="file" accept=".csv" />
+    <button id="send">Enviar</button>
+    <progress id="pg" max="100" value="0" hidden></progress>
+  </div>
+  <div id="status"></div>
+  <div id="preview"></div>
 
-from flask import Flask, request, jsonify
-from flask_cors import CORS
+  <script type="module">
+    // Si tu API vive en otro dominio, pon su URL aquí:
+    const BASE_URL = ""; // "" usa mismo dominio; o por ejemplo "https://tu-api.com"
 
-import torch
-from sentence_transformers import SentenceTransformer, util
+    const $file   = document.getElementById('file');
+    const $send   = document.getElementById('send');
+    const $status = document.getElementById('status');
+    const $pg     = document.getElementById('pg');
+    const $prev   = document.getElementById('preview');
 
-# =====================
-# Config
-# =====================
-MODEL_NAME = os.getenv("EMBEDDINGS_MODEL", "sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2")
-JSON_FILENAME = os.getenv("KB_JSON", "resolution_cook_book.json")
-TOP_K = int(os.getenv("TOP_K", "5"))                 # Candidatos que se devuelven para aclaración
-CONF_LOW = float(os.getenv("CONF_LOW", "0.45"))      # < -> pedir aclaración
-CONF_OK  = float(os.getenv("CONF_OK",  "0.68"))      # >= -> responder directo (y quizás sugerir alternativas)
-
-# =====================
-# Texto utils (ES)
-# =====================
-_ws_re = re.compile(r"\s+")
-_url_re = re.compile(r"http\S+|www\.\S+", re.I)
-_punct_re = re.compile(r"[^\w\sáéíóúñüÁÉÍÓÚÑÜ]", re.U)
-
-def normalize_es(text: str) -> str:
-    t = text.strip().lower()
-    t = _url_re.sub(" ", t)
-    t = _punct_re.sub(" ", t)
-    t = _ws_re.sub(" ", t)
-    return t.strip()
-
-# =====================
-# Estructuras
-# =====================
-@dataclass
-class KBItem:
-    # Campos presentes en tu JSON
-    Source_Infotype: Optional[str]
-    Source_Type: Optional[str]
-    Tittle: str
-    Technical_error: Optional[str]
-    Posible_consults: List[str]
-    Severity: Optional[str]
-    Summary: Optional[str]
-    Preconditions: List[str]
-    questions: List[str]
-    resolution_steps: List[str]
-    Fallbacks: List[str]
-    # Opcional: Slots para futuras plantillas
-    Slots: Optional[Dict[str, str]] = None
-
-# =====================
-# Carga y búsqueda
-# =====================
-class KBRetriever:
-    def __init__(self, json_path: str):
-        self.json_path = json_path
-        self.model = SentenceTransformer(MODEL_NAME)
-        self._load_kb()
-
-    def _load_kb(self):
-        if not os.path.exists(self.json_path):
-            raise FileNotFoundError(f"No se encontró {self.json_path}")
-        with open(self.json_path, "r", encoding="utf-8") as f:
-            raw = json.load(f)
-
-        self.kb: Dict[str, KBItem] = {}
-        self.corpus: List[str] = []
-        self.map_idx_to_title: List[str] = []
-
-        for obj in raw:
-            item = KBItem(
-                Source_Infotype=obj.get("Source_Infotype"),
-                Source_Type=obj.get("Source_Type"),
-                Tittle=obj.get("Tittle", "(sin_titulo)"),
-                Technical_error=obj.get("Technical_error"),
-                Posible_consults=obj.get("Posible_consults", []) or [],
-                Severity=obj.get("Severity"),
-                Summary=obj.get("Summary"),
-                Preconditions=obj.get("Preconditions", []) or [],
-                questions=obj.get("questions", []) or [],
-                resolution_steps=obj.get("resolution_steps", []) or [],
-                Fallbacks=obj.get("Fallbacks", []) or [],
-                Slots=obj.get("Slots")
-            )
-            self.kb[item.Tittle] = item
-
-            # Índice semántico: título + posibles consultas + error técnico
-            queries = [item.Tittle] + item.Posible_consults
-            if item.Technical_error:
-                queries.append(item.Technical_error)
-            for q in queries:
-                qn = normalize_es(q)
-                if not qn:
-                    continue
-                self.corpus.append(qn)
-                self.map_idx_to_title.append(item.Tittle)
-
-        # Embeddings normalizados para coseno estable
-        self.corpus_embeddings = self.model.encode(
-            self.corpus, convert_to_tensor=True, normalize_embeddings=True
-        )
-        self.last_mtime = os.path.getmtime(self.json_path)
-
-    def maybe_reload(self):
-        try:
-            mtime = os.path.getmtime(self.json_path)
-            if mtime != self.last_mtime:
-                self._load_kb()
-        except Exception:
-            pass
-
-    def search(self, query: str, top_k: int = 5) -> List[Tuple[KBItem, float]]:
-        q = normalize_es(query)
-        q_emb = self.model.encode(q, convert_to_tensor=True, normalize_embeddings=True)
-        scores = util.cos_sim(q_emb, self.corpus_embeddings)[0]
-        top = torch.topk(scores, k=min(top_k, len(self.corpus)))
-        results: List[Tuple[KBItem, float]] = []
-        seen = set()
-        for score, idx in zip(top.values.tolist(), top.indices.tolist()):
-            title = self.map_idx_to_title[idx]
-            if title in seen:
-                continue
-            seen.add(title)
-            results.append((self.kb[title], float(score)))
-        return results
-
-    def get_by_title(self, title: str) -> Optional[KBItem]:
-        return self.kb.get(title)
-
-# =====================
-# Entidades simples (opcional)
-# =====================
-_id_re = re.compile(r"\b(\d{3,10})\b")
-_email_re = re.compile(r"\b[\w\.-]+@[\w\.-]+\.[a-zA-Z]{2,}\b")
-_date_re = re.compile(r"\b(\d{1,2}[/-]\d{1,2}[/-]\d{2,4})\b")
-
-def extract_entities(text: str) -> Dict[str, Optional[str]]:
-    return {
-        "id_ee": (_id_re.search(text).group(1) if _id_re.search(text) else None),
-        "email": (_email_re.search(text).group(0) if _email_re.search(text) else None),
-        "date":  (_date_re.search(text).group(1) if _date_re.search(text) else None),
+    function msg(text, type='info'){
+      const color = type==='error' ? '#b00020' : type==='ok' ? '#0a8f08' : '#333';
+      $status.textContent = text;
+      $status.style.color = color;
     }
 
-def fill_slots(template_steps: List[str], slots: Dict[str, Optional[str]]) -> List[str]:
-    """
-    Si empiezas a usar plantillas como "Revisa empleado {id_ee}",
-    esto las rellenará si el usuario proporciona esos datos.
-    """
-    out = []
-    for s in template_steps:
-        try:
-            out.append(s.format(**{k: (v or "") for k, v in slots.items()}))
-        except KeyError:
-            out.append(s)
-    return out
+    function renderPreview(data){
+      // data esperado desde tu API:
+      // { ok: true, sent: N, preview_sent: {texts:[...]}, preview_result: [...] }
+      const rows = (data.preview_result || []).map(r => `
+        <tr>
+          <td>${r.ID_EE ?? ''}</td>
+          <td>${escapeHtml(r.message ?? '')}</td>
+          <td>${r.label ?? ''}</td>
+          <td>${r.confidence ?? ''}</td>
+          <td>${r.Load_Date ?? ''} ${r.Load_hour ?? ''}</td>
+        </tr>
+      `).join('') || `<tr><td colspan="5">Sin preview</td></tr>`;
 
-# =====================
-# Flask App
-# =====================
-app = Flask(__name__)
-CORS(app, resources={r"/*": {"origins": "*"}})
-
-retriever = KBRetriever(JSON_FILENAME)
-
-def build_payload_from_item(item: KBItem, user_query: Optional[str], confidence: Optional[float] = None) -> Dict[str, Any]:
-    ents = extract_entities(user_query or "")
-    slots: Dict[str, Optional[str]] = {"id_ee": ents.get("id_ee"), "email": ents.get("email"), "date": ents.get("date")}
-    # Si el item trae Slots predefinidos, las mezclamos
-    if item.Slots:
-        slots.update({k: v for k, v in item.Slots.items() if k not in slots})
-
-    pre = fill_slots(item.Preconditions or [], slots)
-    steps = fill_slots(item.resolution_steps or [], slots)
-    fbs = fill_slots(item.Fallbacks or [], slots)
-
-    payload: Dict[str, Any] = {
-        "answer": item.Tittle,
-        "preconditions": pre,
-        "details": steps,
-        "fallbacks": fbs
+      $prev.innerHTML = `
+        <p><strong>Textos enviados:</strong> ${data.sent ?? '-'}</p>
+        <table>
+          <thead>
+            <tr><th>ID_EE</th><th>Mensaje</th><th>Infotipo</th><th>Conf.</th><th>Fecha/Hora</th></tr>
+          </thead>
+          <tbody>${rows}</tbody>
+        </table>
+      `;
     }
-    if item.Severity: payload["severity"] = item.Severity
-    if item.Summary:  payload["summary"]  = item.Summary
-    if item.questions: payload["questions"] = item.questions
-    if confidence is not None:
-        payload["confidence"] = round(float(confidence), 3)
-    return payload
 
-@app.route("/health", methods=["GET"])
-def health():
-    retriever.maybe_reload()
-    return jsonify({
-        "status": "ok",
-        "model": MODEL_NAME,
-        "items": len(retriever.kb)
-    })
+    function escapeHtml(s){
+      return String(s).replace(/[&<>"']/g, m => ({
+        '&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'
+      }[m]));
+    }
 
-@app.route("/reload", methods=["POST"])
-def reload_kb():
-    retriever._load_kb()
-    return jsonify({"reloaded": True, "items": len(retriever.kb)})
+    async function uploadCsv(file){
+      // Validaciones básicas
+      if (!file) throw new Error('Selecciona un archivo .csv');
+      if (!file.name.toLowerCase().endsWith('.csv')) throw new Error('El archivo debe ser .csv');
+      if (file.size > 20 * 1024 * 1024) throw new Error('El CSV no puede exceder 20 MB');
 
-@app.route("/ThinkingMethod", methods=["POST"])
-def thinking_method():
-    data = request.get_json(silent=True) or {}
-    user_query = data.get("query", "")
-    if not user_query:
-        return jsonify({"error": "No se proporcionó ninguna consulta (query)"}), 400
+      const fd = new FormData();
+      fd.append('file', file);
 
-    retriever.maybe_reload()
+      // Mostrar “progreso” aproximado (no hay progreso real con fetch sin streams)
+      $pg.hidden = false; $pg.value = 25; msg('Subiendo archivo…');
 
-    # Recupera candidatos
-    candidates = retriever.search(user_query, top_k=TOP_K)
-    if not candidates:
-        return jsonify({
-            "answer": "No encontré coincidencias 🤔. ¿Puedes describirlo con otras palabras o pegar el mensaje exacto del error?",
-            "details": []
-        })
+      const res = await fetch((BASE_URL || '') + '/ClasifyMethod', {
+        method: 'POST',
+        body: fd,
+      });
 
-    best_item, best_score = candidates[0]
+      $pg.value = 75; msg('Procesando…');
 
-    # Banda de baja confianza -> aclaración
-    if best_score < CONF_LOW:
-        opts = [c[0].Tittle for c in candidates[:TOP_K]]
-        return jsonify({
-            "answer": "No estoy 100% seguro de lo que necesitas.",
-            "confidence": round(best_score, 3),
-            "clarify_options": opts,
-            "details": [
-                "¿Te refieres a alguno de estos temas? Elige uno por título usando /clarify o dame más contexto (ID empleado, módulo, fecha)."
-            ]
-        })
-
-    # Construcción de respuesta
-    payload = build_payload_from_item(best_item, user_query, confidence=best_score)
-    # Sugerencias adicionales si la confianza no es súper alta
-    if CONF_LOW <= best_score < CONF_OK and len(candidates) > 1:
-        payload["did_you_mean"] = [c[0].Tittle for c in candidates[1:min(len(candidates), TOP_K)]]
-    return jsonify(payload)
-
-@app.route("/clarify", methods=["POST"])
-def clarify():
-    """
-    Forzar una de las opciones sugeridas (o cualquier título existente).
-    Body:
-      {
-        "title": "Contrato no cargado en el infotipo 0001",
-        "query": "opcional, texto del usuario para rellenar slots si existen"
+      const data = await res.json().catch(() => ({}));
+      if (!res.ok) {
+        throw new Error(data?.error || `HTTP ${res.status}`);
       }
-    """
-    data = request.get_json(silent=True) or {}
-    chosen_title = data.get("title")
-    user_query = data.get("query", "")
 
-    if not chosen_title:
-        return jsonify({"error": "Falta 'title' en el cuerpo de la petición"}), 400
+      $pg.value = 100; setTimeout(()=>{$pg.hidden = true; $pg.value = 0;}, 300);
+      return data;
+    }
 
-    retriever.maybe_reload()
-
-    item = retriever.get_by_title(chosen_title)
-    if not item:
-        return jsonify({"error": f"No existe un item con Tittle='{chosen_title}'"}), 404
-
-    payload = build_payload_from_item(item, user_query, confidence=None)
-    # Por conveniencia, regresamos también el listado de títulos válidos si el usuario se equivocó
-    return jsonify(payload)
-
-if __name__ == "__main__":
-    port = int(os.getenv("PORT", "5001"))
-    app.run(debug=True, host="0.0.0.0", port=port)
+    $send.addEventListener('click', async () => {
+      try {
+        $prev.innerHTML = '';
+        const file = $file.files[0];
+        const data = await uploadCsv(file);
+        msg('Listo 🎉', 'ok');
+        renderPreview(data);
+        console.log('Respuesta API:', data);
+      } catch (e) {
+        console.error(e);
+        msg(e.message || 'Error al enviar', 'error');
+        $pg.hidden = true; $pg.value = 0;
+      }
+    });
+  </script>
+</body>
+</html>
