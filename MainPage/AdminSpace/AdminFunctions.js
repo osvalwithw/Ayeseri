@@ -174,7 +174,7 @@ EntrySingleFileLoad.addEventListener('change', () =>{
 
 Proceedbutton.addEventListener('click', () =>{
     console.log(Filetoprocess.name);
-    if(Filetoprocess.length === 0){
+    if(!Filetoprocess){
         alert("No hay archivos seleccionados")
         return;
     } else {
@@ -217,14 +217,14 @@ function renderPreview(file) {
             });
             return obj;
         });
-        let packing = JSON.stringify(dta, null, 2);
-        console.log(packing);
-        Files2Send(packing);
+        // console.log(packing);
+        Files2Send(dta);
     };
     reader.readAsText(file);
 }
 
 async function Files2Send(pack) { //https://ayeseri.onrender.com/ClasifyMethod
+    console.log(typeof(pack), pack);
     try {
         const respuesta = await fetch(`https://supreme-winner-v4j64j4r6vrh99-5001.app.github.dev/ObtainErrors`, {
             method: 'POST', 

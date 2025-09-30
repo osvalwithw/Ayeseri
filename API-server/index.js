@@ -200,6 +200,26 @@ app.post('/CreateUsers/:OPC', async (req, res) => {
   }
 });
 
+app.post('/InsertErrors', async (req, res) =>{
+  const { Toload } = req.body;
+  if (!Toload || !Array.isArray(Toload) || Toload.length === 0) {
+    return res.status(400).json({ error: 'El campo "Toload" es requerido y debe ser un array no vacío.' });
+  }
+  try {
+    const insertPromises = Toload.map(error => {
+      const { Error_Message, ID_Infotype } = error;
+      console.log(`Procesando Error: ${Error_Message}, Infotype: ${ID_Infotype}`);
+      const sql = `INSERT INTO errors (Error_message, ID_Infotype) VALUES (?, ?)`;
+      return pool.query(sql, [Error_Message, ID_Infotype]);
+    });
+    await Promise.all(insertPromises);
+    res.json({ message: 'Errores insertados exitosamente.' });
+  } catch (e){
+    console.error('/InsertErrors:', e.message);
+    res.status(500).json({error: e.message});
+  }
+});
+
 //IA Section-----------------------------------------------------------------------------------------------------
 
 app.post('/api/ThinkingMethod', async (req, res) => {
