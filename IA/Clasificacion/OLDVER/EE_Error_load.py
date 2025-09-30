@@ -1,8 +1,30 @@
 import pandas as pd
+import mysql.connector
 from datetime import datetime
-from IA.Clasificacion.DB_Error_LoadIA import New_Error
+from IA.DB_Error_LoadIA import New_Error
 
-# test = 'C:\\Users\\osval\\OneDrive\\Escritorio\\Testeo\\WD2SAP_Error_3309711.csv'
+conexion = mysql.connector.connect(
+    host="ballast.proxy.rlwy.net", 
+    user="root",
+    password="orcwRrgSqSXVXQvheWbdQuysdWbIEzxO",
+    database="railway",
+    port=36227
+)
+
+errors_obtain = conexion.cursor()
+
+# para ver todos los errores disponibles
+
+sql = "SELECT * FROM errors"
+errors_obtain.execute(sql)
+res = errors_obtain.fetchall()
+# conexion.close()
+errors_obtain.close()
+
+errores_db = {(file[1], file[0]) for file in res}
+
+
+test = 'C:\\Users\\osval\\OneDrive\\Escritorio\\Testeo\\WD2SAP_Error_3309711.csv'
 
 df = pd.read_csv(test, encoding="ISO-8859-1")
 df["Employee ID"] = df["Employee ID"].astype(str).apply(lambda x: x.replace(".0", ""))

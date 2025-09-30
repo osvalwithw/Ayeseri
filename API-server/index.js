@@ -234,7 +234,7 @@ app.post('/ClasifyMethod', async (req, res) =>{
     return res.status(400).json({ error: 'No se recivio la informacion' });
   }
   try {
-    const Clasifyerrors = await axios.post('https://oswal2-ayeseri-is-thinking.hf.space/ThinkingMethod', {
+    const Clasifyerrors = await axios.post('http://127.0.0.1:5000/ObtainErrors', {
       query: Toload  // Envio
     });
 
