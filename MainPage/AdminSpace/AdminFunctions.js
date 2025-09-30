@@ -156,19 +156,16 @@ const ButtonSingleFileLoad = document.getElementById('BTNSingleLoad');
 const EntryMultipleFileLoad = document.getElementById('MultipleLoad');
 const ButtonMultiplleFileLoad = document.getElementById('BTNMultipleLoad');
 const Proceedbutton = document.getElementById('ConfirmLoad');
-let packing = new FormData();
+let Filetoprocess = "";
 
 ButtonSingleFileLoad.addEventListener('click',() =>{
     EntrySingleFileLoad.click();
 });
 
 EntrySingleFileLoad.addEventListener('change', () =>{
-    const Filetoprocess = EntrySingleFileLoad.files[0];
-    if(EntrySingleFileLoad.isDefaultNamespace.length > 0){
+    if(EntrySingleFileLoad.files.length > 0){
+        Filetoprocess = EntrySingleFileLoad.files[0];
         FakeEntrySingleFileLoad.value = Filetoprocess.name;
-        
-        packing.append('File2process', Filetoprocess);
-        console.log("Archivo enpaquetado, listo para transferir");
     } else {
         FakeEntrySingleFileLoad.value = 'No has seleccionado ningun archivo...';
         return;
@@ -176,8 +173,8 @@ EntrySingleFileLoad.addEventListener('change', () =>{
 });
 
 Proceedbutton.addEventListener('click', () =>{
-    const Files = EntrySingleFileLoad.files;
-    if(Files.length === 0){
+    console.log(Filetoprocess.name);
+    if(Filetoprocess.length === 0){
         alert("No hay archivos seleccionados")
         return;
     } else {
@@ -188,28 +185,63 @@ Proceedbutton.addEventListener('click', () =>{
             return;
         }
     }
-    Files2Send();
+    renderPreview(Filetoprocess);
 });
 
-async function Files2Send() {
-    // try {
-    //     const respuesta = await fetch(`https://ayeseri.onrender.com/ClasifyMethod`, {
-    //         method: 'POST', 
-    //         headers: {
-    //             'Content-Type': 'application/json'
-    //         },
-    //         body: packing
-    //     });
-    //     if (!respuesta.ok) {
-    //         throw new Error(`Error del servidor: ${respuesta.status}`);
-    //     }
-    //     console.log('Archivo enviado con exito');
-    // } catch (error) {
-    //     console.error('Error al enviar los datos a la API:', error);
-    //     alert('Hubo un problema al conectar con el servidor. Inténtalo de nuevo.');
-    // }
+function renderPreview(file) {
+    if (!file) {
+        console.error("No se proporcionó ningún archivo a la función renderPreview.");
+        return;
+    }
+    const reader = new FileReader();
+    reader.onerror = (e) => {
+        console.error("Ocurrió un error al leer el archivo:", e);
+    };
 
-    
+    // 4. Definimos qué hacer cuando la lectura sea exitosa.
+    reader.onload = (e) => {
+        const text = e.target.result;
+        const lines = text.split(/\r?\n/).filter(l => l.trim() !== "");
+
+        if (lines.length < 2) {
+            alert("El archivo no contiene datos suficientes.");
+            return;
+        }
+
+        const headers = lines[0].split(",").map(h => h.trim());
+        const dta = lines.slice(1).map(line => {
+            const values = line.split(",");
+            const obj = {};
+            headers.forEach((h, i) => {
+                obj[h] = values[i] ? values[i].trim() : null;
+            });
+            return obj;
+        });
+        let packing = JSON.stringify(dta, null, 2);
+        console.log(packing);
+        Files2Send(packing);
+    };
+    reader.readAsText(file);
+}
+
+async function Files2Send(pack) {
+    console.log("Recibido: ",pack.name);
+    try {
+        const respuesta = await fetch(`https://ayeseri.onrender.com/ClasifyMethod`, {
+            method: 'POST', 
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: pack
+        });
+        if (!respuesta.ok) {
+            throw new Error(`Error del servidor: ${respuesta.status}`);
+        }
+        console.log('Archivo enviado con exito');
+    } catch (error) {
+        console.error('Error al enviar los datos a la API:', error);
+        alert('Hubo un problema al conectar con el servidor. Inténtalo de nuevo.');
+    }
 }
 
 //--------------------------------------------Error Load------------------------------------------------------------

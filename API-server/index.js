@@ -220,5 +220,5 @@ app.post('/api/ThinkingMethod', async (req, res) => {
 
 //IA Clasifying Section-----------------------------------------------------------------------------------------------------
 app.post('/ClasifyMethod', async (req, res) =>{
-  console.log("Se recibio la informacion ;)")
+  console.log("Se recibio la informacion ;)", req);
 });
