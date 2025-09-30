@@ -3,6 +3,7 @@ import express from 'express';
 import cors from'cors';
 import { EmailsRouter } from './Emails/SendEmails.js';
 import axios from 'axios';
+import e from 'express';
 
 const app = express();
 app.use(cors());
@@ -18,6 +19,16 @@ app.get('/healthz', async (_req, res) => {
   } catch (e) {
     console.error('DB Health error:', e); // log completo
     res.status(500).json({ ok: false, error: e.message || String(e) });
+  }
+});
+
+app.get('/getErrors', async (req, res) => {
+  try{
+    const [rows] = await pool.query('SELECT * FROM errors');
+    res.json([rows]);
+  } catch {
+    console.error('API connection failure', e);
+    res.status(500).json({error: e.message || String(e)});
   }
 });
 
@@ -218,5 +229,23 @@ app.post('/api/ThinkingMethod', async (req, res) => {
 
 //IA Clasifying Section-----------------------------------------------------------------------------------------------------
 app.post('/ClasifyMethod', async (req, res) =>{
-  console.log("Se recibio la informacion ;)", req.body);
+  const { Toload } = req.body;
+  if (!Toload) {
+    return res.status(400).json({ error: 'No se recivio la informacion' });
+  }
+  try {
+    const Clasifyerrors = await axios.post('https://oswal2-ayeseri-is-thinking.hf.space/ThinkingMethod', {
+      query: Toload  // Envio
+    });
+
+    console.log('Respuesta recibida:', aiServiceResponse.data);
+    
+    // Reenvio
+    res.json(aiServiceResponse.data);
+
+  } catch (e) {
+    console.error('❌ Error al conectar con el servicio de IA:', e.message);
+    res.status(500).json({ error: 'No se pudo contactar al asistente de IA.' });
+  }
+  // console.log("Se recibio la informacion ;)", req.body);
 });
