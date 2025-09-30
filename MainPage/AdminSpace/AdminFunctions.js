@@ -226,12 +226,12 @@ function renderPreview(file) {
 
 async function Files2Send(pack) { //https://ayeseri.onrender.com/ClasifyMethod
     try {
-        const respuesta = await fetch(`http://127.0.0.1:5000/ObtainErrors`, {
+        const respuesta = await fetch(`https://supreme-winner-v4j64j4r6vrh99-5001.app.github.dev/ObtainErrors`, {
             method: 'POST', 
             headers: {
                 'Content-Type': 'application/json'
             },
-            body: pack
+            body: JSON.stringify(pack)
         });
         if (!respuesta.ok) {
             throw new Error(`Error del servidor: ${respuesta.status}`);
