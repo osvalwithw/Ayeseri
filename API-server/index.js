@@ -3,8 +3,6 @@ import express from 'express';
 import cors from'cors';
 import { EmailsRouter } from './Emails/SendEmails.js';
 import axios from 'axios';
-import multer from 'multer';
-import { parsestring } from 'fast-csv';
 
 const app = express();
 app.use(cors());
