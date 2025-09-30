@@ -244,8 +244,8 @@ app.post('/ClasifyMethod', async (req, res) =>{
     res.json(aiServiceResponse.data);
 
   } catch (e) {
-    console.error('❌ Error al conectar con el servicio de IA:', e.message);
-    res.status(500).json({ error: 'No se pudo contactar al asistente de IA.' });
+    console.error('❌ Error al conectar con el servicio de clasificacion:', e.message);
+    res.status(500).json({ error: 'No se pudo contactar al serivico de clasificacion.' });
   }
   // console.log("Se recibio la informacion ;)", req.body);
 });
