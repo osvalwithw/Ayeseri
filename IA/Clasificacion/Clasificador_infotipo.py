@@ -1,3 +1,11 @@
+# -*- coding: utf-8 -*-
+"""
+classifier.py
+- Entrena/carga un Pipeline (TF-IDF + ComplementNB) para clasificar ID_infotype
+- Exponer: reentrenar_modelo(), cargar_modelo(), predecir_infotipo()
+- Lee datos desde tu API (GetErros_FromAPI) con campos variables.
+"""
+
 import os
 import re
 import unicodedata
@@ -9,12 +17,14 @@ from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.naive_bayes import ComplementNB
 from sklearn.pipeline import Pipeline
 from sklearn.model_selection import train_test_split
-from sklearn.metrics import (
-    accuracy_score, f1_score, classification_report, confusion_matrix
-)
+from sklearn.metrics import accuracy_score, f1_score, classification_report, confusion_matrix
+
+# ---- Conector de datos (ajusta al tuyo) ----
+from API_connection import GetErros_FromAPI  # Debe devolver lista[dict]
 
 PIPELINE_PATH = "modelo_infotipo_pipeline.pkl"
 
+# ---- Stopwords bilingües y stemmer ----
 from nltk.corpus import stopwords
 from nltk.stem import PorterStemmer
 
@@ -46,14 +56,12 @@ def _normalize(text: str) -> str:
     text = re.sub(r"\s+", " ", text).strip()
     return text
 
-def _analyzer(doc: str) -> List[str]:
+def _analyzer(doc: str):
     doc = _normalize(doc)
-    tokens = doc.split()
     toks = []
-    for t in tokens:
-        if not t or t in STOP_WORDS:
-            continue
-        toks.append(STEMMER.stem(t))
+    for t in doc.split():
+        if t and t not in STOP_WORDS:
+            toks.append(STEMMER.stem(t))
     return toks
 
 def _extract_error_message(item: Dict[str, Any]) -> str:
@@ -65,6 +73,7 @@ def _extract_error_message(item: Dict[str, Any]) -> str:
 
 def _extract_label(item: Dict[str, Any]):
     return (item.get("ID_Infotype")
+            or item.get("ID_infotype")
             or item.get("Infotype_IND")
             or item.get("Infotype")
             or item.get("IT_affected"))
@@ -72,23 +81,19 @@ def _extract_label(item: Dict[str, Any]):
 def _load_training_data() -> Tuple[List[str], List[Any]]:
     data = GetErros_FromAPI()
     if not data:
-        raise ValueError("GetErros_FromAPI() devolvió vacío. No hay datos para entrenar.")
-
-    X_text, y = [], []
+        raise ValueError("GetErros_FromAPI() devolvió vacío.")
+    X, y = [], []
     for it in data:
         msg = _extract_error_message(it)
         lbl = _extract_label(it)
-        if not msg or lbl is None:
-            continue
-        X_text.append(msg)
-        y.append(lbl)
-
-    if len(X_text) < 2:
-        raise ValueError("Datos insuficientes para entrenar (se requieren al menos 2 ejemplos).")
+        if msg and lbl is not None:
+            X.append(msg)
+            y.append(lbl)
+    if len(X) < 2:
+        raise ValueError("Datos insuficientes para entrenar (≥2 ejemplos).")
     if len(set(y)) < 2:
-        raise ValueError("Solo hay una clase en las etiquetas; se requieren al menos 2 clases.")
-
-    return X_text, y
+        raise ValueError("Se requiere ≥2 clases para entrenar.")
+    return X, y
 
 def _build_pipeline() -> Pipeline:
     vect = TfidfVectorizer(
@@ -98,41 +103,30 @@ def _build_pipeline() -> Pipeline:
         max_df=0.90,
     )
     clf = ComplementNB()
-    pipe = Pipeline([
-        ("vect", vect),
-        ("clf", clf),
-    ])
-    return pipe
+    return Pipeline([("vect", vect), ("clf", clf)])
 
 def reentrenar_modelo(test_size: float = 0.2, random_state: int = 42) -> dict:
     X, y = _load_training_data()
-    X_train, X_test, y_train, y_test = train_test_split(
+    Xtr, Xte, ytr, yte = train_test_split(
         X, y, test_size=test_size, random_state=random_state, stratify=y
     )
-
     pipe = _build_pipeline()
-    pipe.fit(X_train, y_train)
+    pipe.fit(Xtr, ytr)
 
-    y_pred = pipe.predict(X_test)
-    acc = accuracy_score(y_test, y_pred)
-    f1_macro = f1_score(y_test, y_pred, average="macro", zero_division=0)
-    f1_weighted = f1_score(y_test, y_pred, average="weighted", zero_division=0)
-    cls_report = classification_report(y_test, y_pred, zero_division=0)
-    cm = confusion_matrix(y_test, y_pred)
+    ypred = pipe.predict(Xte)
+    metrics = {
+        "accuracy": float(accuracy_score(yte, ypred)),
+        "f1_macro": float(f1_score(yte, ypred, average="macro", zero_division=0)),
+        "f1_weighted": float(f1_score(yte, ypred, average="weighted", zero_division=0)),
+        "classification_report": classification_report(yte, ypred, zero_division=0),
+        "confusion_matrix": confusion_matrix(yte, ypred).tolist(),
+        "n_samples_train": len(Xtr),
+        "n_samples_test": len(Xte),
+        "n_classes": len(set(y)),
+    }
 
     joblib.dump(pipe, PIPELINE_PATH)
-
-    return {
-        "accuracy": acc,
-        "f1_macro": f1_macro,
-        "f1_weighted": f1_weighted,
-        "classification_report": cls_report,
-        "confusion_matrix": cm.tolist(),
-        "test_size": test_size,
-        "n_samples_train": len(X_train),
-        "n_samples_test": len(X_test),
-        "n_classes": len(set(y))
-    }
+    return metrics
 
 def cargar_modelo() -> Pipeline:
     if not os.path.exists(PIPELINE_PATH):
@@ -141,24 +135,23 @@ def cargar_modelo() -> Pipeline:
 
 def predecir_infotipo(mensaje_error: str):
     if not mensaje_error:
-        raise ValueError("mensaje_error está vacío o None.")
+        raise ValueError("mensaje_error vacío.")
     pipe = cargar_modelo()
     return pipe.predict([mensaje_error])[0]
 
 # if __name__ == "__main__":
 #     try:
-#         metrics = reentrenar_modelo()
-#         print("\n=== Métricas de evaluación ===")
-#         print(f"Accuracy: {metrics['accuracy']:.4f}")
-#         print(f"F1-macro: {metrics['f1_macro']:.4f}")
-#         print(f"F1-weighted: {metrics['f1_weighted']:.4f}")
-#         print("\nClassification Report:\n", metrics["classification_report"])
-#         print("Confusion Matrix:", metrics["confusion_matrix"])
+#         m = reentrenar_modelo()
+#         print("== Métricas ==\n", m["classification_report"])
+#         print("Accuracy:", m["accuracy"])
+#         print("F1-macro:", m["f1_macro"])
+#         print("F1-weighted:", m["f1_weighted"])
+#         print("Confusion matrix:", m["confusion_matrix"])
 #     except Exception as e:
-#         print("No se pudo reentrenar:", e)
+#         print("⚠️ No se pudo reentrenar:", e)
 
 #     try:
 #         ejemplo = "Formatting error in the field P0001-ANSVH"
-#         print("\nPredicción de ejemplo ->", predecir_infotipo(ejemplo))
+#         print("Predicción ejemplo:", predecir_infotipo(ejemplo))
 #     except Exception as e:
-#         print("No se pudo predecir:", e)
+#         print("⚠️ Predicción falló:", e)

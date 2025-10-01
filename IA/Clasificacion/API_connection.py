@@ -3,7 +3,9 @@ import json
 from flask import Flask, request, jsonify
 from flask_cors import CORS
 from datetime import datetime
-
+from DB_Error_LoadIA import process_errors_to_payload
+from Clasificador_infotipo import predecir_infotipo
+from API_connection import GetErros_FromAPI, UploadList
 
 app = Flask(__name__)
 CORS(app, resources={r"/*": {"origins": "*"}})
