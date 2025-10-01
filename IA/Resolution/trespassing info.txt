@@ -1,3 +1,162 @@
+from typing import List, Dict, Any, Callable, Tuple, Union
+
+# ---------- Helpers de normalización ----------
+def _normalize(s: str) -> str:
+    return (s or "").strip().lower()
+
+def _get_msg(item: Dict[str, Any]) -> str:
+    return (item.get("Error Message")
+            or item.get("Error_Message")
+            or item.get("Error_message")
+            or item.get("Error")
+            or "")
+
+def _build_messages_set(ErrorsFromDB: Union[List[Dict[str, Any]], List[str], set]) -> set:
+    """
+    Acepta:
+      - lista de dicts con campo de mensaje (Error_Message / Error Message / Error)
+      - lista de strings
+      - set de strings
+    Devuelve un set de mensajes normalizados.
+    """
+    if isinstance(ErrorsFromDB, set):
+        return {_normalize(x) for x in ErrorsFromDB}
+    if not ErrorsFromDB:
+        return set()
+    first = ErrorsFromDB[0]
+    if isinstance(first, dict):
+        msgs = []
+        for row in ErrorsFromDB:
+            msg = (row.get("Error_Message") or row.get("Error Message")
+                   or row.get("Error_message") or row.get("Error") or "")
+            if msg:
+                msgs.append(_normalize(msg))
+        return set(msgs)
+    else:
+        # lista de strings
+        return {_normalize(x) for x in ErrorsFromDB}
+
+def build_db_lookup_by_message(ErrorsCatalog: List[Dict[str, Any]]) -> Dict[str, int]:
+    """
+    Construye mapping mensaje_normalizado -> IDX usando el catálogo 'errors'.
+    Espera campos: IDX y alguno de Error_Message / Error Message / Error.
+    """
+    lookup = {}
+    for row in ErrorsCatalog:
+        idx = row.get("IDX") or row.get("Id") or row.get("ID") or row.get("id")
+        msg = (row.get("Error_Message") or row.get("Error Message")
+               or row.get("Error_message") or row.get("Error") or "")
+        if idx is not None and msg:
+            lookup[_normalize(msg)] = int(idx)
+    return lookup
+
+# ---------- 1) SOLO detectar nuevos y (opcional) predecir ----------
+def collect_new_errors(
+    ErrorsFromFN: List[Dict[str, Any]],
+    ErrorsFromDB: Union[List[Dict[str, Any]], List[str], set],
+    predecir_infotipo: Callable[[str], Any] = None
+) -> List[Dict[str, Any]]:
+    """
+    Devuelve lista de dicts SOLO para los errores que NO están en DB.
+    Mantiene el título como 'Error_Message' y opcionalmente añade 'ID_infotype'.
+    """
+    existing = _build_messages_set(ErrorsFromDB)
+    seen_batch = set()
+    nuevos = []
+
+    for item in ErrorsFromFN:
+        mensaje = _get_msg(item)
+        key = _normalize(mensaje)
+        if not key:
+            continue
+        if key in existing or key in seen_batch:
+            continue
+        seen_batch.add(key)
+
+        payload = {"Error_Message": mensaje}
+        if predecir_infotipo is not None:
+            try:
+                payload["ID_infotype"] = int(predecir_infotipo(mensaje))
+            except Exception:
+                # si falla la predicción, puedes decidir omitir o marcar
+                payload["ID_infotype"] = None
+        nuevos.append(payload)
+
+    return nuevos
+
+# ---------- 2) Reemplazar título por IDX del catálogo ----------
+def map_titles_to_idx(
+    new_errors: List[Dict[str, Any]],
+    ErrorsCatalog: List[Dict[str, Any]],
+    get_or_create_error_idx: Callable[[str], int] = None,
+    allow_create_missing: bool = True,
+    remove_title: bool = True
+) -> Tuple[List[Dict[str, Any]], int]:
+    """
+    Toma la lista de 'new_errors' (con 'Error_Message') y devuelve otra lista donde
+    ese campo se reemplaza por 'ID_Error' (IDX de la tabla 'errors').
+
+    Returns:
+      (final_list, nuevos_en_catalogo)
+    """
+    lookup = build_db_lookup_by_message(ErrorsCatalog)
+    final_list = []
+    nuevos_en_catalogo = 0
+
+    for item in new_errors:
+        msg = item.get("Error_Message") or item.get("Error") or ""
+        key = _normalize(msg)
+        if not key:
+            continue
+
+        idx = lookup.get(key)
+        if idx is None:
+            if allow_create_missing and get_or_create_error_idx is not None:
+                idx = int(get_or_create_error_idx(msg))
+                lookup[key] = idx
+                nuevos_en_catalogo += 1
+            else:
+                # Si no permites crear, lo saltamos
+                continue
+
+        # armamos el registro final
+        new_item = {**item}
+        new_item["ID_Error"] = int(idx)
+        if remove_title:
+            new_item.pop("Error_Message", None)  # ya no guardes el texto en la tabla relacional
+        final_list.append(new_item)
+
+    return final_list, nuevos_en_catalogo
+
+# 1) Detecta nuevos + predice (sin tocar el catálogo)
+nuevos = collect_new_errors(
+    ErrorsFromFN=errors_front,            # lista de dicts del front
+    ErrorsFromDB=errors_existentes_db,    # puede ser set/lista de mensajes o lista de dicts
+    predecir_infotipo=predecir_infotipo   # opcional
+)
+
+# 2) Cambia título por IDX del catálogo (y crea si falta)
+def get_or_create_error_idx_api(mensaje: str) -> int:
+    # Llama tu API Node/Express o DB y regresa el IDX.
+    # Implementación real va aquí.
+    raise NotImplementedError
+
+to_insert, nuevos_en_catalogo = map_titles_to_idx(
+    new_errors=nuevos,
+    ErrorsCatalog=errors_catalog_db,         # SELECT IDX, Error_Message FROM errors
+    get_or_create_error_idx=get_or_create_error_idx_api,
+    allow_create_missing=True,               # crea en catálogo si no existe
+    remove_title=True                        # ya no mandas el texto al insertar
+)
+
+print("Listos para insertar:", len(to_insert))
+print("Nuevos agregados al catálogo 'errors':", nuevos_en_catalogo)
+
+# Ahora 'to_insert' trae algo como:
+# [{"ID_Error": 123, "ID_infotype": 1}, {"ID_Error": 456, "ID_infotype": 6}, ...]
+# y ya lo posteas a tu endpoint para insertar en employee_errors.
+
+
 # -*- coding: utf-8 -*-
 import os
 import re
