@@ -226,7 +226,7 @@ function renderPreview(file) {
 async function Files2Send(pack) { //https://ayeseri.onrender.com/ClasifyMethod
     // console.log(typeof(pack), pack);
     try {
-        const respuesta = await fetch(`https://supreme-winner-v4j64j4r6vrh99-5001.app.github.dev/ObtainErrors`, {
+        const respuesta = await fetch(`https://supreme-winner-v4j64j4r6vrh99-5001.app.github.dev/ObtainErrorsFN`, {
             method: 'POST', 
             headers: {
                 'Content-Type': 'application/json'

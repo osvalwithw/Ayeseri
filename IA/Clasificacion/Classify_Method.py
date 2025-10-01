@@ -20,13 +20,19 @@ from sklearn.model_selection import train_test_split
 from sklearn.metrics import accuracy_score, f1_score, classification_report, confusion_matrix
 
 # ---- Conector de datos (ajusta al tuyo) ----
-from API_connection import GetErros_FromAPI  # Debe devolver lista[dict]
+from API_requests import GetErros_FromAPI  # Debe devolver lista[dict]
 
 PIPELINE_PATH = "modelo_infotipo_pipeline.pkl"
 
 # ---- Stopwords bilingües y stemmer ----
 from nltk.corpus import stopwords
 from nltk.stem import PorterStemmer
+
+def _as4(label) -> str:
+    s = str(label).strip()
+
+    digits = "".join(ch for ch in s if ch.isdigit())
+    return digits.zfill(4)[:4]
 
 def _ensure_stopwords() -> set:
     try:
@@ -89,10 +95,10 @@ def _load_training_data() -> Tuple[List[str], List[Any]]:
         if msg and lbl is not None:
             X.append(msg)
             y.append(lbl)
-    if len(X) < 2:
-        raise ValueError("Datos insuficientes para entrenar (≥2 ejemplos).")
-    if len(set(y)) < 2:
-        raise ValueError("Se requiere ≥2 clases para entrenar.")
+    # if len(X) < 2:
+    #     raise ValueError("Datos insuficientes para entrenar (≥2 ejemplos).")
+    # if len(set(y)) < 2:
+    #     raise ValueError("Se requiere ≥2 clases para entrenar.")
     return X, y
 
 def _build_pipeline() -> Pipeline:
@@ -133,25 +139,27 @@ def cargar_modelo() -> Pipeline:
         reentrenar_modelo()
     return joblib.load(PIPELINE_PATH)
 
-def predecir_infotipo(mensaje_error: str):
+def predecir_infotipo(mensaje_error: str) -> str:
     if not mensaje_error:
         raise ValueError("mensaje_error vacío.")
     pipe = cargar_modelo()
-    return pipe.predict([mensaje_error])[0]
+    y = pipe.predict([mensaje_error])[0]
+    print(y)
+    return _as4(y)
 
-# if __name__ == "__main__":
-#     try:
-#         m = reentrenar_modelo()
-#         print("== Métricas ==\n", m["classification_report"])
-#         print("Accuracy:", m["accuracy"])
-#         print("F1-macro:", m["f1_macro"])
-#         print("F1-weighted:", m["f1_weighted"])
-#         print("Confusion matrix:", m["confusion_matrix"])
-#     except Exception as e:
-#         print("⚠️ No se pudo reentrenar:", e)
+if __name__ == "__main__":
+    try:
+        m = reentrenar_modelo()
+        print("== Métricas ==\n", m["classification_report"])
+        print("Accuracy:", m["accuracy"])
+        print("F1-macro:", m["f1_macro"])
+        print("F1-weighted:", m["f1_weighted"])
+        print("Confusion matrix:", m["confusion_matrix"])
+    except Exception as e:
+        print("⚠️ No se pudo reentrenar:", e)
 
-#     try:
-#         ejemplo = "Formatting error in the field P0001-ANSVH"
-#         print("Predicción ejemplo:", predecir_infotipo(ejemplo))
-#     except Exception as e:
-#         print("⚠️ Predicción falló:", e)
+    try:
+        ejemplo = ["Formatting error in the field P0001-ANSVH", 'Invalid combination of action type 1B/action reason']
+        print("Predicción ejemplo:", predecir_infotipo(ejemplo))
+    except Exception as e:
+        print("⚠️ Predicción falló:", e)
