@@ -1,5 +1,5 @@
 # from Clasificador_infotipo import predecir_infotipo
-from API_connection import GetErros_FromAPI, ObtainErrors
+from Clasificador_infotipo import predecir_infotipo
 
 # if __name__ == "__main__":
 #     DB_data = GetErros_FromAPI()
@@ -10,57 +10,15 @@ from API_connection import GetErros_FromAPI, ObtainErrors
 #     # for item in DB_data:
 #     #     print(item['Error_Message'])
 
-def New_Error(ErrorFromFN, ErrorsFromDB):    
-    # Insertar nuevos errores
+def Processing_NewErrors(ErrorsFromFN, ErrorsFromDB):
+    to_insert = []
     insertados = 0
-    for Item in ErrorFromFN:
-        mensaje = Item['Error_Message']
+    for Item in ErrorsFromFN:
+        mensaje = Item['Error Message']
             
         if mensaje in ErrorsFromDB:
             continue  # ya existe
-
-        # id_infotipo = predecir_infotipo(mensaje)
-        # consulta = "INSERT INTO errors (Error_Message, ID_infotype) VALUES (%s, %s)"
-        # datos = (mensaje,int(id_infotipo))
-            
+        id_infotipo = predecir_infotipo(mensaje)
         insertados += 1
-        # else:
-        # id_infotipo = predecir_infotipo(mesage)
-        # consulta = "INSERT INTO errors (Error_Message, ID_infotype) VALUES (%s, %s)"
-        # datos = (mesage,int(id_infotipo))
-            
-
-        # insertados += 1
-    
-    print(f"{insertados} errores nuevos insertados correctamente.")
-    
-    return 0
-
-# def New_Error(Sel, mesage):    
-#     # Insertar nuevos errores
-#     insertados = 0
-#     if Sel ==1:
-#         for index, row in df.iterrows():
-#             mensaje = row['Error_Message']
-            
-#             if mensaje in DB_data:
-#                 continue  # ya existe
-
-#             id_infotipo = predecir_infotipo(mensaje)
-#             consulta = "INSERT INTO errors (Error_Message, ID_infotype) VALUES (%s, %s)"
-#             datos = (mensaje,int(id_infotipo))
-            
-#             insertados += 1
-#     else:
-#         id_infotipo = predecir_infotipo(mesage)
-#         consulta = "INSERT INTO errors (Error_Message, ID_infotype) VALUES (%s, %s)"
-#         datos = (mesage,int(id_infotipo))
-            
-
-#         insertados += 1
-    
-#     print(f"✅ {insertados} errores nuevos insertados correctamente.")
-    
-#     return 0
-    
-# New_Error(1, 0)
+        to_insert.append({"Error_Message": mensaje, "ID_infotype": int(id_infotipo)})
+    return to_insert, insertados

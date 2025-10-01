@@ -1,5 +1,4 @@
 # clasificador_infotipo.py
-import pandas as pd
 import nltk
 import string
 from nltk.corpus import stopwords
@@ -15,7 +14,7 @@ vector_path = "vectorizador.pkl"
 
 if not os.path.exists(modelo_path):
     nltk.download("stopwords")
-    df = pd.read_csv("WD2SAP_COMMON_ERRORS_HR.csv", encoding="ISO-8859-1")
+    # df = pd.read_csv("WD2SAP_COMMON_ERRORS_HR.csv", encoding="ISO-8859-1")
     
     stemmer = PorterStemmer()
     stop_words = set(stopwords.words("english"))
@@ -53,7 +52,6 @@ else:
         filtered_words = [stemmer.stem(word) for word in words if word not in stop_words]
         return " ".join(filtered_words)
 
-# 👉 Esta es la función que puedes importar
 def predecir_infotipo(mensaje_error):
     texto_procesado = preprocess(mensaje_error)
     vectorizado = vectorizer.transform([texto_procesado])

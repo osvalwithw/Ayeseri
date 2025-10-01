@@ -2,15 +2,13 @@ import requests
 import json
 from flask import Flask, request, jsonify
 from flask_cors import CORS
-from Clasificador_infotipo import predecir_infotipo
+from DB_Error_LoadIA import Processing_NewErrors
 
 app = Flask(__name__)
 CORS(app, resources={r"/*": {"origins": "*"}})
 
 @app.route('/ObtainErrors', methods=['POST', 'OPTIONS'])
 def obtain_errors():
-    print("METHOD:", request.method)
-    print("CT:", request.headers.get('Content-Type'))
     if request.method == 'OPTIONS':
         return ('', 204)
 
@@ -34,19 +32,9 @@ def obtain_errors():
 
     # print("OK JSON list, n=", len(ErrorsFromFN))
     ErrorsFromDB = GetErros_FromAPI()
-    to_insert = []
-    insertados = 0
-    for Item in ErrorsFromFN:
-        print(Item)
-        mensaje = Item['Error Message']
-            
-        if mensaje in ErrorsFromDB:
-            continue  # ya existe
-        id_infotipo = predecir_infotipo(mensaje)
-        insertados += 1
-        to_insert.append({"Error_Message": mensaje, "ID_infotype": int(id_infotipo)})
-        if to_insert:
-            UploadList(to_insert)
+    List, insertados = Processing_NewErrors(ErrorsFromFN, ErrorsFromDB)
+    if List:
+        UploadList(List)
     print(f"{insertados} errores nuevos insertados correctamente.")
     return 0
 
