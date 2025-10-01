@@ -3,7 +3,7 @@ import json
 from flask import Flask, request, jsonify
 from flask_cors import CORS
 from datetime import datetime
-# from DB_Error_LoadIA import Processing_NewErrors
+
 
 app = Flask(__name__)
 CORS(app, resources={r"/*": {"origins": "*"}})
@@ -36,17 +36,23 @@ def obtain_errors():
 
     # print("OK JSON list, n=", len(ErrorsFromFN))
     ErrorsFromDB = GetErros_FromAPI()
+    Errortobeadded = []
     print("Errores en DB:", len(ErrorsFromDB))
     for art in ErrorsFromFN:
         for file in ErrorsFromDB:
             if art['Error Message'] == file['Error_Message']:
-                print("Error ya existe en DB:", art['Error Message'])
+                art['Error Message'] = file['IDX']
             else:
-                print("Error nuevo a insertar:", art['Error Message'])
+                if art['Error Message'] not in Errortobeadded:
+                    Errortobeadded.append(art['Error Message'])
+                else:
+                    continue
     # ErrorList, insertados = Processing_NewErrors(ErrorsFromFN, ErrorsFromDB)
     # if ErrorList:
     #     UploadList(ErrorList)
-    #     print(f"{insertados} errores nuevos insertados correctamente.")   
+    #     print(f"{insertados} errores nuevos insertados correctamente.")
+    # print(ErrorsFromFN)
+    print("Lista de errores: ", Errortobeadded)   
     return jsonify({"message": "Datos recibidos correctamente"}), 200
 
 # def Processing_NewErrors(ErrorsFromFN, ErrorsFromDB):

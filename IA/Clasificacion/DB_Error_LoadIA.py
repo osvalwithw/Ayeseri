@@ -15,7 +15,7 @@ from sklearn.metrics import (
     accuracy_score, f1_score, classification_report, confusion_matrix
 )
 
-from API_connection import GetErros_FromAPI
+# from API_connection import GetErros_FromAPI
 
 PIPELINE_PATH = "modelo_infotipo_pipeline.pkl"
 
@@ -31,18 +31,18 @@ from nltk.stem import PorterStemmer
 #     # for item in DB_data:
 #     #     print(item['Error_Message'])
 
-def Processing_NewErrors(ErrorsFromFN, ErrorsFromDB):
-    to_insert = []
-    insertados = 0
-    for Item in ErrorsFromFN:
-        mensaje = Item['Error_Message']
+# def Processing_NewErrors(ErrorsFromFN, ErrorsFromDB):
+#     to_insert = []
+#     insertados = 0
+#     for Item in ErrorsFromFN:
+#         mensaje = Item['Error_Message']
             
-        if mensaje in ErrorsFromDB:
-            continue  # ya existe
-        id_infotipo = predecir_infotipo(mensaje)
-        insertados += 1
-        to_insert.append({"Error_Message": mensaje, "ID_infotype": int(id_infotipo)})
-    return to_insert, insertados
+#         if mensaje in ErrorsFromDB:
+#             continue  # ya existe
+#         id_infotipo = predecir_infotipo(mensaje)
+#         insertados += 1
+#         to_insert.append({"Error_Message": mensaje, "ID_infotype": int(id_infotipo)})
+#     return to_insert, insertados
 
 PIPELINE_PATH = "modelo_infotipo_pipeline.pkl"
 
