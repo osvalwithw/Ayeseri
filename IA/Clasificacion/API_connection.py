@@ -2,10 +2,15 @@ import requests
 import json
 from flask import Flask, request, jsonify
 from flask_cors import CORS
+from datetime import datetime
 from DB_Error_LoadIA import Processing_NewErrors
 
 app = Flask(__name__)
 CORS(app, resources={r"/*": {"origins": "*"}})
+
+@app.route('/ping')
+def ping():
+    return "pong", 200
 
 @app.route('/ObtainErrors', methods=['POST', 'OPTIONS'])
 def obtain_errors():
@@ -32,15 +37,12 @@ def obtain_errors():
 
     # print("OK JSON list, n=", len(ErrorsFromFN))
     ErrorsFromDB = GetErros_FromAPI()
-    List, insertados = Processing_NewErrors(ErrorsFromFN, ErrorsFromDB)
-    if List:
-        UploadList(List)
-    print(f"{insertados} errores nuevos insertados correctamente.")
-    return 0
+    ErrorList, insertados = Processing_NewErrors(ErrorsFromFN, ErrorsFromDB)
+    if ErrorList:
+        UploadList(ErrorList)
+        print(f"{insertados} errores nuevos insertados correctamente.")   
 
-@app.route('/ping')
-def ping():
-    return "pong", 200
+    return 0
 
 def GetErros_FromAPI():
     ErrorsfromDB = []
@@ -81,6 +83,30 @@ def UploadList(ListToUpload):
     except requests.exceptions.RequestException as RQSError:
         print(f"Please review following error: {RQSError}")
     return
+
+def EEDB_Load():
+    insert = []
+    url = f"https://ayeseri.onrender.com/EEInsertErrors"
+    system_date = datetime.now()
+    actual_date = system_date.date()
+    actual_hour = system_date.time()
+    bs_date = actual_date.strftime('%Y-%m-%d')
+    bs_hour = actual_hour.strftime('%H:%M:%S')
+    try:
+        headers = {'Content-Type': 'application/json'}
+        response = requests.post(url, json=ListToUpload, headers=headers)
+        response.raise_for_status()
+        print("Datos enviados correctamente a la API.")
+    except requests.exceptions.HTTPError as HttpError:
+        print(f"Error HTTP: {HttpError}")
+    except requests.exceptions.ConnectionError as CNTError:
+        print(f"Error Conexion: {CNTError}")
+    except requests.exceptions.Timeout as TMError:
+        print(f"Respuesta no encontrada: {TMError}")
+    except requests.exceptions.RequestException as RQSError:
+        print(f"Please review following error: {RQSError}")
+    return
+    
 
 if __name__ == "__main__":
     app.run(host="0.0.0.0", port=5001, debug=True)

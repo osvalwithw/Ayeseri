@@ -100,12 +100,6 @@ app.get('/employee_errors/:id/:timepar', async (req, res) => {
   }
 });
 
-// Arranque
-const PORT = process.env.PORT || 3000;
-app.listen(PORT, '0.0.0.0', () => {
-  console.log(`API escuchando en ${PORT}`);
-});
-
 app.get('/Users', async (req, res) => {
   try {
     const [rows] = await pool.query(`SELECT * FROM Users`);
@@ -200,26 +194,6 @@ app.post('/CreateUsers/:OPC', async (req, res) => {
   }
 });
 
-app.post('/InsertErrors', async (req, res) =>{
-  const { Toload } = req.body;
-  if (!Toload || !Array.isArray(Toload) || Toload.length === 0) {
-    return res.status(400).json({ error: 'El campo "Toload" es requerido y debe ser un array no vacío.' });
-  }
-  try {
-    const insertPromises = Toload.map(error => {
-      const { Error_Message, ID_Infotype } = error;
-      console.log(`Procesando Error: ${Error_Message}, Infotype: ${ID_Infotype}`);
-      const sql = `INSERT INTO errors (Error_message, ID_Infotype) VALUES (?, ?)`;
-      return pool.query(sql, [Error_Message, ID_Infotype]);
-    });
-    await Promise.all(insertPromises);
-    res.json({ message: 'Errores insertados exitosamente.' });
-  } catch (e){
-    console.error('/InsertErrors:', e.message);
-    res.status(500).json({error: e.message});
-  }
-});
-
 //IA Section-----------------------------------------------------------------------------------------------------
 
 app.post('/api/ThinkingMethod', async (req, res) => {
@@ -248,24 +222,48 @@ app.post('/api/ThinkingMethod', async (req, res) => {
 });
 
 //IA Clasifying Section-----------------------------------------------------------------------------------------------------
-app.post('/ClasifyMethod', async (req, res) =>{
+app.post('/InsertErrors', async (req, res) =>{
   const { Toload } = req.body;
-  if (!Toload) {
-    return res.status(400).json({ error: 'No se recivio la informacion' });
+  if (!Toload || !Array.isArray(Toload) || Toload.length === 0) {
+    return res.status(400).json({ error: 'El campo "Toload" es requerido y debe ser un array no vacío.' });
   }
   try {
-    const Clasifyerrors = await axios.post('http://127.0.0.1:5000/ObtainErrors', {
-      query: Toload  // Envio
+    const insertPromises = Toload.map(error => {
+      const { Error_Message, ID_Infotype } = error;
+      console.log(`Procesando Error: ${Error_Message}, Infotype: ${ID_Infotype}`);
+      const sql = `INSERT INTO errors (Error_message, ID_Infotype) VALUES (?, ?)`;
+      return pool.query(sql, [Error_Message, ID_Infotype]);
     });
-
-    console.log('Respuesta recibida:', aiServiceResponse.data);
-    
-    // Reenvio
-    res.json(aiServiceResponse.data);
-
-  } catch (e) {
-    console.error('❌ Error al conectar con el servicio de clasificacion:', e.message);
-    res.status(500).json({ error: 'No se pudo contactar al serivico de clasificacion.' });
+    await Promise.all(insertPromises);
+    res.json({ message: 'Errores insertados exitosamente.' });
+  } catch (e){
+    console.error('/InsertErrors:', e.message);
+    res.status(500).json({error: e.message});
   }
-  // console.log("Se recibio la informacion ;)", req.body);
+});
+
+app.post('/EEInsertErrors', async (req, res) =>{
+  const { Toload } = req.body;
+  if (!Toload || !Array.isArray(Toload) || Toload.length === 0) {
+    return res.status(400).json({ error: 'El campo "Toload" es requerido y debe ser un array no vacío.' });
+  }
+  try {
+    const insertPromises = Toload.map(error => {
+      const { ID_EE, ID_Error, Load_Date, Load_hour } = error;
+      console.log(`Procesando Error para: ${ID_EE}, Infotype: ${ID_Infotype}, `);
+      const sql = `INSERT INTO employee_errors (ID_EE, ID_Error, Load_Date, Load_hour) VALUES (%s, %s, %s, %s)`;
+      return pool.query(sql, [ID_EE, ID_Error, Load_Date, Load_hour]);
+    });
+    await Promise.all(insertPromises);
+    res.json({ message: 'Errores de EE insertados exitosamente.' });
+  } catch (e){
+    console.error('/InsertErrors:', e.message);
+    res.status(500).json({error: e.message});
+  }
+});
+
+// Arranque
+const PORT = process.env.PORT || 3000;
+app.listen(PORT, '0.0.0.0', () => {
+  console.log(`API escuchando en ${PORT}`);
 });

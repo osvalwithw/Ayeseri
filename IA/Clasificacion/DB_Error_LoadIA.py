@@ -22,3 +22,5 @@ def Processing_NewErrors(ErrorsFromFN, ErrorsFromDB):
         insertados += 1
         to_insert.append({"Error_Message": mensaje, "ID_infotype": int(id_infotipo)})
     return to_insert, insertados
+
+
