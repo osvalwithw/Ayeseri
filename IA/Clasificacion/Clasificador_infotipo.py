@@ -1,12 +1,14 @@
 # clasificador_infotipo.py
 import nltk
 import string
+import joblib
+import os
+
 from nltk.corpus import stopwords
 from nltk.stem import PorterStemmer
 from sklearn.feature_extraction.text import CountVectorizer
 from sklearn.naive_bayes import MultinomialNB
-import joblib
-import os
+
 from API_connection import GetErros_FromAPI
 
 # Verifica si el modelo ya está entrenado
