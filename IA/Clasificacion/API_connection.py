@@ -3,7 +3,7 @@ import json
 from flask import Flask, request, jsonify
 from flask_cors import CORS
 from datetime import datetime
-from DB_Error_LoadIA import Processing_NewErrors
+# from DB_Error_LoadIA import Processing_NewErrors
 
 app = Flask(__name__)
 CORS(app, resources={r"/*": {"origins": "*"}})
@@ -16,7 +16,6 @@ def ping():
 def obtain_errors():
     if request.method == 'OPTIONS':
         return ('', 204)
-
     ErrorsFromFN = request.get_json(silent=True)
     if ErrorsFromFN is None:
         raw = request.get_ErrorsFromFN(cache=False, as_text=True)  # string
@@ -37,12 +36,31 @@ def obtain_errors():
 
     # print("OK JSON list, n=", len(ErrorsFromFN))
     ErrorsFromDB = GetErros_FromAPI()
-    ErrorList, insertados = Processing_NewErrors(ErrorsFromFN, ErrorsFromDB)
-    if ErrorList:
-        UploadList(ErrorList)
-        print(f"{insertados} errores nuevos insertados correctamente.")   
+    print("Errores en DB:", len(ErrorsFromDB))
+    for art in ErrorsFromFN:
+        for file in ErrorsFromDB:
+            if art['Error Message'] == file['Error_Message']:
+                print("Error ya existe en DB:", art['Error Message'])
+            else:
+                print("Error nuevo a insertar:", art['Error Message'])
+    # ErrorList, insertados = Processing_NewErrors(ErrorsFromFN, ErrorsFromDB)
+    # if ErrorList:
+    #     UploadList(ErrorList)
+    #     print(f"{insertados} errores nuevos insertados correctamente.")   
+    return jsonify({"message": "Datos recibidos correctamente"}), 200
 
-    return 0
+# def Processing_NewErrors(ErrorsFromFN, ErrorsFromDB):
+#     to_insert = []
+#     insertados = 0
+#     mensajes_db = {item['Error_Message'] for item in ErrorsFromDB}
+#     for Item in ErrorsFromFN:
+#         mensaje = Item['Error Message']
+#         if mensaje in mensajes_db:
+#             continue  # ya existe
+#         id_infotipo = predecir_infotipo(mensaje)
+#         insertados += 1
+#         to_insert.append({"Error_Message": mensaje, "ID_infotype": int(id_infotipo)})
+#     return to_insert, insertados
 
 def GetErros_FromAPI():
     ErrorsfromDB = []
@@ -94,8 +112,8 @@ def EEDB_Load():
     bs_hour = actual_hour.strftime('%H:%M:%S')
     try:
         headers = {'Content-Type': 'application/json'}
-        response = requests.post(url, json=ListToUpload, headers=headers)
-        response.raise_for_status()
+        # response = requests.post(url, json=ListToUpload, headers=headers)
+        # response.raise_for_status()
         print("Datos enviados correctamente a la API.")
     except requests.exceptions.HTTPError as HttpError:
         print(f"Error HTTP: {HttpError}")
@@ -110,4 +128,3 @@ def EEDB_Load():
 
 if __name__ == "__main__":
     app.run(host="0.0.0.0", port=5001, debug=True)
-

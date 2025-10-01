@@ -13,8 +13,6 @@ from sklearn.metrics import (
     accuracy_score, f1_score, classification_report, confusion_matrix
 )
 
-from API_connection import GetErros_FromAPI
-
 PIPELINE_PATH = "modelo_infotipo_pipeline.pkl"
 
 from nltk.corpus import stopwords
