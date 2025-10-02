@@ -23,18 +23,18 @@ app.get('/healthz', async (_req, res) => {
 });
 
 app.get('/getErrors', async (req, res) => {
-  let sql = `
+  const sql = `
       SELECT 
       e.IDX AS ID_Error,
       e.Error_Message,
       i.ID_Infotype AS ID_Infotype,
-      i.Infotype_IND AS Infotype_IDX,
+      i.Infotype_IND AS Infotype_IDX
       FROM errors e
-      JOIN infotypes i ON e.ID_Infotype = i.ID_Infotype`;
+      JOIN infotypes i ON e.ID_Infotype = i.Infotype_IND`;
   try{
     const [rows] = await pool.query(sql);
-    res.json([rows]);
-  } catch {
+    res.json(rows);
+  } catch (e) {
     console.error('API connection failure', e);
     res.status(500).json({error: e.message || String(e)});
   }
