@@ -1,9 +1,2 @@
-Traceback (most recent call last):
-  File "/workspaces/Ayeseri/IA/Clasificacion/API_connection.py", line 7, in <module>
-    from Clasificador_infotipo import predecir_infotipo
-  File "/workspaces/Ayeseri/IA/Clasificacion/Clasificador_infotipo.py", line 23, in <module>
-    from API_connection import GetErros_FromAPI  # Debe devolver lista[dict]
-    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-  File "/workspaces/Ayeseri/IA/Clasificacion/API_connection.py", line 7, in <module>
-    from Clasificador_infotipo import predecir_infotipo
-ImportError: cannot import name 'predecir_infotipo' from partially initialized module 'Clasificador_infotipo' (most likely due to a circular import) (/workspaces/Ayeseri/IA/Clasificacion/Clasificador_infotipo.py)
+Tokens: ['postal', 'code', 'ghi', 'must', 'length', '5']
+[('3', 0.1836418602164971), ('2', 0.130801895577402), ('6', 0.12131154671307366), ('9', 0.1169122074612612), ('4', 0.11492180131124193)]

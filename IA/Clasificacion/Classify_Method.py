@@ -1,17 +1,12 @@
-# -*- coding: utf-8 -*-
-"""
-classifier.py
-- Entrena/carga un Pipeline (TF-IDF + ComplementNB) para clasificar ID_infotype
-- Exponer: reentrenar_modelo(), cargar_modelo(), predecir_infotipo()
-- Lee datos desde tu API (GetErros_FromAPI) con campos variables.
-"""
-
 import os
 import re
 import unicodedata
+import numpy as np
 import joblib
 import nltk
 from typing import List, Dict, Any, Tuple
+from collections import Counter
+
 
 from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.naive_bayes import ComplementNB
@@ -19,12 +14,10 @@ from sklearn.pipeline import Pipeline
 from sklearn.model_selection import train_test_split
 from sklearn.metrics import accuracy_score, f1_score, classification_report, confusion_matrix
 
-# ---- Conector de datos (ajusta al tuyo) ----
-from API_requests import GetErros_FromAPI  # Debe devolver lista[dict]
+from API_requests import GetErros_FromAPI
 
 PIPELINE_PATH = "modelo_infotipo_pipeline.pkl"
 
-# ---- Stopwords bilingües y stemmer ----
 from nltk.corpus import stopwords
 from nltk.stem import PorterStemmer
 
@@ -95,10 +88,10 @@ def _load_training_data() -> Tuple[List[str], List[Any]]:
         if msg and lbl is not None:
             X.append(msg)
             y.append(lbl)
-    # if len(X) < 2:
-    #     raise ValueError("Datos insuficientes para entrenar (≥2 ejemplos).")
-    # if len(set(y)) < 2:
-    #     raise ValueError("Se requiere ≥2 clases para entrenar.")
+    if len(X) < 2:
+        raise ValueError("Datos insuficientes para entrenar (≥2 ejemplos).")
+    if len(set(y)) < 2:
+        raise ValueError("Se requiere ≥2 clases para entrenar.")
     return X, y
 
 def _build_pipeline() -> Pipeline:
@@ -112,14 +105,48 @@ def _build_pipeline() -> Pipeline:
     return Pipeline([("vect", vect), ("clf", clf)])
 
 def reentrenar_modelo(test_size: float = 0.2, random_state: int = 42) -> dict:
-    X, y = _load_training_data()
+    X, y = _load_training_data()  # <- tu loader actual (asegúrate que trae etiquetas reales)
+    # Si usas etiquetas string tipo "0001", normalízalas:
+    # y = [_as4(lbl) for lbl in y]
+ 
+    counts = Counter(y)
+    n_classes = len(counts)
+    min_count = min(counts.values())
+    print(f"[DEBUG] clases={n_classes} | min_count={min_count} | total={len(y)}")
+    print(f"[DEBUG] distribución por clase: {dict(counts)}")
+ 
+    pipe = Pipeline([
+        ("tfidf", TfidfVectorizer(analyzer=_analyzer, ngram_range=(1, 2), min_df=2, max_df=0.90)),
+        ("clf", ComplementNB())
+    ])
+ 
+    # Caso 1: dataset no apto para split (una sola clase o alguna clase con 1 muestra)
+    if n_classes < 2 or min_count < 2:
+        note = "Dataset sin condiciones para split (una clase o min_count<2). Entrenando con TODO el set."
+        print("[WARN]", note)
+        pipe.fit(X, y)
+        joblib.dump(pipe, PIPELINE_PATH)
+        return {
+            "note": note,
+            "accuracy": None,
+            "f1_macro": None,
+            "f1_weighted": None,
+            "classification_report": None,
+            "confusion_matrix": None,
+            "n_samples_train": len(X),
+            "n_samples_test": 0,
+            "n_classes": n_classes,
+            "class_counts": dict(counts),
+            "split_stratified": False
+        }
+ 
+    # Caso 2: OK para split estratificado
     Xtr, Xte, ytr, yte = train_test_split(
         X, y, test_size=test_size, random_state=random_state, stratify=y
     )
-    pipe = _build_pipeline()
     pipe.fit(Xtr, ytr)
-
     ypred = pipe.predict(Xte)
+ 
     metrics = {
         "accuracy": float(accuracy_score(yte, ypred)),
         "f1_macro": float(f1_score(yte, ypred, average="macro", zero_division=0)),
@@ -128,8 +155,13 @@ def reentrenar_modelo(test_size: float = 0.2, random_state: int = 42) -> dict:
         "confusion_matrix": confusion_matrix(yte, ypred).tolist(),
         "n_samples_train": len(Xtr),
         "n_samples_test": len(Xte),
-        "n_classes": len(set(y)),
+        "n_classes": n_classes,
+        "class_counts": dict(counts),
+        "split_stratified": True
     }
+ 
+    joblib.dump(pipe, PIPELINE_PATH)
+    return metrics
 
     joblib.dump(pipe, PIPELINE_PATH)
     return metrics
@@ -146,6 +178,17 @@ def predecir_infotipo(mensaje_error: str) -> str:
     y = pipe.predict([mensaje_error])[0]
     print(y)
     return _as4(y)
+
+def debugging_tokens(text: str):
+    tocs = _analyzer(text)
+    print("Tokens:", tocs)
+
+def tocs_predictions(text: str, k: int = 5):
+    pipe = cargar_modelo()
+    proba = pipe.named_steps["clf"].predict_proba(pipe.named_steps["tfidf"].transform([text]))[0]
+    classes = pipe.named_steps["clf"].classes_
+    idxs = np.argsort(proba)[::-1][:k]
+    return [(str(classes[i]), float(proba[i])) for i in idxs]
 
 if __name__ == "__main__":
     try:
