@@ -23,7 +23,7 @@ app.get('/healthz', async (_req, res) => {
 });
 
 app.get('/getErrors', async (req, res) => {
-  sql = `
+  let sql = `
       SELECT 
       e.IDX AS ID_Error,
       e.Error_Message,
