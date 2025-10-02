@@ -1,2 +1,17 @@
-Tokens: ['postal', 'code', 'ghi', 'must', 'length', '5']
-[('3', 0.1836418602164971), ('2', 0.130801895577402), ('6', 0.12131154671307366), ('9', 0.1169122074612612), ('4', 0.11492180131124193)]
+app.get('/getErrors', async (req, res) => {
+  let sql = `
+      SELECT 
+      e.IDX AS ID_Error,
+      e.Error_Message,
+      i.ID_Infotype AS ID_Infotype,
+      i.Infotype_IND AS Infotype_IDX,
+      FROM errors e
+      JOIN infotypes i ON e.ID_Infotype = i.ID_Infotype`;
+  try{
+    const [rows] = await pool.query(sql);
+    res.json([rows]);
+  } catch {
+    console.error('API connection failure', e);
+    res.status(500).json({error: e.message || String(e)});
+  }
+});
