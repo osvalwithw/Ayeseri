@@ -231,11 +231,12 @@ app.post('/api/ThinkingMethod', async (req, res) => {
 
 //IA Clasifying Section-----------------------------------------------------------------------------------------------------
 app.post('/InsertErrors', async (req, res) =>{
-  const { Toload } = req.body;
+  console.log(req.body);
   if (!Toload || !Array.isArray(Toload) || Toload.length === 0) {
     return res.status(400).json({ error: 'El campo "Toload" es requerido y debe ser un array no vacío.' });
   }
   try {
+    const Toload = Array.isArray(req.body) ? req.body : [req.body];
     const insertPromises = Toload.map(error => {
       const { Error_Message, ID_Infotype } = error;
       console.log(`Procesando Error: ${Error_Message}, Infotype: ${ID_Infotype}`);

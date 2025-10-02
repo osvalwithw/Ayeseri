@@ -25,22 +25,23 @@ def GetErros_FromAPI():
     return None
 
 def UploadList(ListToUpload):
+    print('Uploading list to BD...')
     print(ListToUpload)
-    # try:
-    #     url = f"https://ayeseri.onrender.com/InsertErrors"
-    #     headers = {'Content-Type': 'application/json'}
-    #     response = requests.post(url, json=ListToUpload, headers=headers)
-    #     response.raise_for_status()
-    #     print("Datos enviados correctamente a la API.")
-    # except requests.exceptions.HTTPError as HttpError:
-    #     print(f"Error HTTP: {HttpError}")
-    # except requests.exceptions.ConnectionError as CNTError:
-    #     print(f"Error Conexion: {CNTError}")
-    # except requests.exceptions.Timeout as TMError:
-    #     print(f"Respuesta no encontrada: {TMError}")
-    # except requests.exceptions.RequestException as RQSError:
-    #     print(f"Please review following error: {RQSError}")
-    # return
+    try:
+        url = f"https://ayeseri.onrender.com/InsertErrors"
+        headers = {'Content-Type': 'application/json'}
+        response = requests.post(url, json=ListToUpload, headers=headers)
+        response.raise_for_status()
+        print("Datos enviados correctamente a la API.")
+    except requests.exceptions.HTTPError as HttpError:
+        print(f"Error HTTP: {HttpError}")
+    except requests.exceptions.ConnectionError as CNTError:
+        print(f"Error Conexion: {CNTError}")
+    except requests.exceptions.Timeout as TMError:
+        print(f"Respuesta no encontrada: {TMError}")
+    except requests.exceptions.RequestException as RQSError:
+        print(f"Please review following error: {RQSError}")
+    return
 
 def EEDB_Load():
     insert = []
