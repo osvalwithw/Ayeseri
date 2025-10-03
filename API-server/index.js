@@ -264,6 +264,7 @@ app.post('/InsertErrors', async (req, res) =>{
 });
 
 app.post('/EEInsertErrors', async (req, res) =>{
+  console.log(req.body);
   try {
     const { Toload } = req.body;
     if (!Toload || !Array.isArray(Toload) || Toload.length === 0) {
