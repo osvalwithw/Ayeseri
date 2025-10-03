@@ -273,7 +273,7 @@ app.post('/EEInsertErrors', async (req, res) =>{
     const insertPromises = Toload.map(error => {
       const { Employee_ID, Error_Message, Load_Date, Load_hour } = error;
       console.log(`Procesando Error para: ${Employee_ID}, Error: ${Error_Message}, Fecha: ${Load_Date}, Hora: ${Load_hour}`);
-      const sql = `INSERT INTO employee_errors (ID_EE, ID_Error, Load_Date, Load_hour) VALUES (%s, %s, %s, %s)`;
+      const sql = `INSERT INTO employee_errors (ID_EE, ID_Error, Load_Date, Load_hour) VALUES (?, ?, ?, ?)`;
       return pool.query(sql, [Employee_ID, Error_Message, Load_Date, Load_hour]);
     });
     await Promise.all(insertPromises);
