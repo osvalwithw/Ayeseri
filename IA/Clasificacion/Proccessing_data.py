@@ -8,7 +8,6 @@ def Processing_new_errors(ErrorsFromFN):
     onlynew = []
     not_processed = []
     existing_error_messages = {error['Error_Message'] for error in ErrorsFromDB}
-
     for error in ErrorsFromFN:
         if error['Error_Message'] not in existing_error_messages:
             onlynew.append(error)
