@@ -271,10 +271,10 @@ app.post('/EEInsertErrors', async (req, res) =>{
       return res.status(400).json({ error: 'El campo "Toload" es requerido y debe ser un array no vacío.' });
     }
     const insertPromises = Toload.map(error => {
-      const { Employee_ID, Error_Message, Load_Date, Load_hour } = error;
-      console.log(`Procesando Error para: ${Employee_ID}, Error: ${Error_Message}, Fecha: ${Load_Date}, Hora: ${Load_hour}`);
+      const { Employee_ID, Error_Message, Load_Date, Load_Hour } = error;
+      console.log(`Procesando Error para: ${Employee_ID}, Error: ${Error_Message}, Fecha: ${Load_Date}, Hora: ${Load_Hour}`);
       const sql = `INSERT INTO employee_errors (ID_EE, ID_Error, Load_Date, Load_hour) VALUES (?, ?, ?, ?)`;
-      return pool.query(sql, [Employee_ID, Error_Message, Load_Date, Load_hour]);
+      return pool.query(sql, [Employee_ID, Error_Message, Load_Date, Load_Hour]);
     });
     await Promise.all(insertPromises);
     res.json({ message: 'Errores de EE insertados exitosamente.' });
