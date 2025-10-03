@@ -202,7 +202,7 @@ app.post('/CreateUsers/:OPC', async (req, res) => {
   }
 });
 
-app.get('/GetTickets', async (req, res) => {
+app.get('/GetInfotypes', async (req, res) => {
   try{
     const[rows] = await pool.query(`SELECT * FROM infotypes`)
     res.json(rows);

@@ -41,10 +41,10 @@ def obtain_errors():
     existing_error_messages = {error['Error_Message'] for error in ErrorsFromDB}
 
     for error in ErrorsFromFN:
-        if error['Error Message'] not in existing_error_messages:
+        if error['Error_Message'] not in existing_error_messages:
             onlynew.append(error)
         else:
-            not_processed.append(error['Error Message'])
+            not_processed.append(error['Error_Message'])
 
     for new_error in onlynew:
         code = predecir_infotipo(new_error)
