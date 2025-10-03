@@ -1,10 +1,7 @@
 import json
 from flask import Flask, request, jsonify
 from flask_cors import CORS
-from Errors_Mapping import process_errors_to_payload, build_lookup_by_message, _norm, _get_msg
-from Classify_Method import predecir_infotipo
-from API_requests import GetErros_FromAPI, UploadErrorList
-
+from Proccessing_data import Processing_new_errors, UploadingEE_Errors
 
 app = Flask(__name__)
 CORS(app, resources={r"/*": {"origins": "*"}})
@@ -34,46 +31,8 @@ def obtain_errors():
     for i, item in enumerate(ErrorsFromFN):
         if not isinstance(item, dict):
             return jsonify({"error": f"Elemento {i} no es objeto JSON", "got": type(item)._name_}), 400
-
-    ErrorsFromDB = GetErros_FromAPI()
-    onlynew = []
-    not_processed = []
-    existing_error_messages = {error['Error_Message'] for error in ErrorsFromDB}
-
-    for error in ErrorsFromFN:
-        if error['Error_Message'] not in existing_error_messages:
-            onlynew.append(error)
-        else:
-            not_processed.append(error['Error_Message'])
-
-    for new_error in onlynew:
-        code = predecir_infotipo(new_error)
-        new_error['ID_Infotype'] = code
-
-    # print("TO process", onlynew)
-    print("Ignored due to existence: ", not_processed)
-    if onlynew:
-        UploadErrorList(onlynew)
-    else:
-        print("No new errors to upload.")
-    # def create_error_idx(msg: str) -> int:
-    #     id_it = predecir_infotipo(msg)
-    #     Onlynew = [err for err in to]
-    #     UploadList([{"Error_Message": msg, 'ID_Infotype': id_it}])
-    #     Errors_DB = GetErros_FromAPI() or []
-    #     lookup = build_lookup_by_message(Errors_DB)
-    #     idx = lookup.get(_norm(msg))
-    #     return (idx, id_it)
-    
-    # payloads, stats = process_errors_to_payload(
-    #     ErrorsFromFN,
-    #     ErrorsFromDB,
-    #     create_error_idx,
-    #     predict_infotype=predecir_infotipo,
-    #     keep_title=True
-    # )
-    # print("Stats:", stats)
-    # print("Payloads:", payloads)
+    # Processing_new_errors(ErrorsFromFN)
+    UploadingEE_Errors(ErrorsFromFN)
     return jsonify({"message": "Datos recibidos correctamente"}), 200
 
 if __name__ == "__main__":

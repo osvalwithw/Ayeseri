@@ -264,16 +264,16 @@ app.post('/InsertErrors', async (req, res) =>{
 });
 
 app.post('/EEInsertErrors', async (req, res) =>{
-  const { Toload } = req.body;
-  if (!Toload || !Array.isArray(Toload) || Toload.length === 0) {
-    return res.status(400).json({ error: 'El campo "Toload" es requerido y debe ser un array no vacío.' });
-  }
   try {
+    const { Toload } = req.body;
+    if (!Toload || !Array.isArray(Toload) || Toload.length === 0) {
+      return res.status(400).json({ error: 'El campo "Toload" es requerido y debe ser un array no vacío.' });
+    }
     const insertPromises = Toload.map(error => {
-      const { ID_EE, ID_Error, Load_Date, Load_hour } = error;
-      console.log(`Procesando Error para: ${ID_EE}, Infotype: ${ID_Infotype}, `);
+      const { Employee_ID, Error_Message, Load_Date, Load_hour } = error;
+      console.log(`Procesando Error para: ${Employee_ID}, Error: ${Error_Message}, Fecha: ${Load_Date}, Hora: ${Load_hour}`);
       const sql = `INSERT INTO employee_errors (ID_EE, ID_Error, Load_Date, Load_hour) VALUES (%s, %s, %s, %s)`;
-      return pool.query(sql, [ID_EE, ID_Error, Load_Date, Load_hour]);
+      return pool.query(sql, [Employee_ID, Error_Message, Load_Date, Load_hour]);
     });
     await Promise.all(insertPromises);
     res.json({ message: 'Errores de EE insertados exitosamente.' });
