@@ -266,8 +266,8 @@ app.post('/InsertErrors', async (req, res) =>{
 app.post('/EEInsertErrors', async (req, res) =>{
   console.log(req.body);
   try {
-    const { Toload } = req.body;
-    if (!Toload || !Array.isArray(Toload) || Toload.length === 0) {
+    const Toload = req.body;
+    if (!Array.isArray(Toload) || Toload.length === 0) {
       return res.status(400).json({ error: 'El campo "Toload" es requerido y debe ser un array no vacío.' });
     }
     const insertPromises = Toload.map(error => {
