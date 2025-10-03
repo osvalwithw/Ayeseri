@@ -24,7 +24,7 @@ def GetErros_FromAPI():
         print(f"Please review following error: {RQSError}")
     return None
 
-def UploadList(ListToUpload):
+def UploadErrorList(ListToUpload):
     print('Uploading list to BD...')
     print(ListToUpload)
     try:

@@ -176,7 +176,6 @@ def predecir_infotipo(mensaje_error: str) -> str:
         raise ValueError("mensaje_error vacío.")
     pipe = cargar_modelo()
     y = pipe.predict([mensaje_error])[0]
-    print(y)
     return _as4(y)
 
 def debugging_tokens(text: str):

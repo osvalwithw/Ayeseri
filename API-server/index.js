@@ -202,6 +202,17 @@ app.post('/CreateUsers/:OPC', async (req, res) => {
   }
 });
 
+app.get('/GetTickets', async (req, res) => {
+  try{
+    const[rows] = await pool.query(`SELECT * FROM infotypes`)
+    res.json(rows);
+  } catch (e){
+     console.error('/Request:', e.message);
+     res.status(500).json({error: e.message});
+  }
+});
+
+
 //IA Section-----------------------------------------------------------------------------------------------------
 
 app.post('/api/ThinkingMethod', async (req, res) => {
@@ -237,6 +248,7 @@ app.post('/InsertErrors', async (req, res) =>{
     if (!Toload || !Array.isArray(Toload) || Toload.length === 0) {
     return res.status(400).json({ error: 'El campo "Toload" es requerido y debe ser un array no vacío.' });
     }
+    console.log('Errores a cargar:', Toload);
     const insertPromises = Toload.map(error => {
       const { Error_Message, ID_Infotype } = error;
       console.log(`Procesando Error: ${Error_Message}, Infotype: ${ID_Infotype}`);
