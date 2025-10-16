@@ -1,1 +1,15 @@
-1. - pruebas cuantitativas
+Pruebas cuantitativas: Documentar métricas de desempeño (tiempos de respuesta, concurrencia máxima, precisión y recall del modelo de clasificación).
+
+Cobertura modular:
+
+Módulo 1 (Arquitectura y programación de sistemas): incluir diagramas UML, casos de uso y flujos de datos que muestren la interacción API–base de datos–frontend.
+
+Módulo 2 (Sistemas inteligentes): detallar el entrenamiento del modelo de machine learning, datasets empleados y métricas de validación del clasificador.
+
+Módulo 3 (Sistemas distribuidos): ampliar pruebas de tolerancia a fallos, manejo de concurrencia y escalabilidad de instancias en producción.
+
+Seguridad y privacidad: Describir con mayor detalle el cifrado de datos, la protección de credenciales y el control de acceso de usuarios.
+
+Interfaz y usabilidad: Incorporar capturas adicionales de la plataforma en funcionamiento y evidencias de pruebas de usabilidad.
+
+Trabajo a futuro: Priorizar la mejora de la ventana de visualización de errores, el reentrenamiento del modelo para aumentar precisión y la implementación de notificaciones automáticas por correo electrónico.
