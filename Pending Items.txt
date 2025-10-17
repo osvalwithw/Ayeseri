@@ -18,7 +18,7 @@ la protección de credenciales y el control de acceso de usuarios.
 6. - Interfaz y usabilidad: Incorporar capturas adicionales de la plataforma 
 en funcionamiento y evidencias de pruebas de usabilidad.
 
-Trabajo a futuro: Priorizar la mejora de la ventana de visualización de errores, el reentrenamiento del modelo para aumentar precisión y la implementación de notificaciones automáticas por correo electrónico.
+7. - Trabajo a futuro: Priorizar la mejora de la ventana de visualización de errores, el reentrenamiento del modelo para aumentar precisión y la implementación de notificaciones automáticas por correo electrónico.
 
 
 

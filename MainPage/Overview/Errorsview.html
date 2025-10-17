@@ -7,38 +7,50 @@
         <link rel="stylesheet" href="Style.css">
     </head>
     <body>
-        <div class="Main-header">
-            <h1 id="Header_1"></h1>
-            <table class="information">
-                <tr>
-                <td>Personnel No.</td>
-                <td id="Pnum">
-                    <input style="width: 100px;" type="text" id="EE_Number" name="Numero_EE" readonly>
-                </td>
-                </tr>
-                <tr>
-                    <td>Name.</td>
-                        <td id="Name">
-                        <input style="width: 300px;" type="text" id="Personnel_Name" name="Nombre_EE" readonly>
-                    </td>
-                </tr>
-            </table>
+        <div class="main-bar">
+            <ul class="MbItems">
+                <li><a onclick="history.back()">Regresar</a></li>
+                <li class="submenu">
+                    <a href="#Sesión" class="submenu-btn">Sesion</a>
+                    <div class="submenu-content">
+                        <a href="Perfil">Perfil</a>
+                        <a href="Sugerencias">Sugerencias</a>
+                        <a href="https://ayeseri.vercel.app/">Cerrar sesión</a>
+                    </div>
+                </li>
+            </ul>
         </div>
-
-        <div class="main-table">
-            <table class="error-table">
-                <thead>
-                    <tr>
-                    <td style="width: 25px" id="button_IT"></td> <!--Empty-->
-                    <td>Date</td>
-                    <td>Hour</td>
-                    <td>Error</td>
-                    <td>Infotype involved</td>
-                    </tr>
-                </thead>
-                <tbody id="tablaErrores">
-                </tbody>
-            </table>
+        <div class="Main_window">
+            <div class="main-header">
+                <div class="Header">
+                    <div id="MH_backgroud">
+                        <h1 id="Header_1"></h1>
+                    </div>
+                </div>
+                <div class="employee_selected">
+                    <table class="information">
+                        <tr>
+                        <td>Personnel No.</td>
+                        <td id="Pnum">
+                            <input style="width: 130px;" type="text" id="EE_Number" name="Numero_EE" readonly>
+                        </td>
+                    </table>
+                </div>
+            </div>
+            <div class="main_table">
+                <table class="Errors_table">
+                    <thead id="T_errors_headers">
+                        <tr>
+                        <td>Date</td>
+                        <td>Hour</td>
+                        <td>Error</td>
+                        <td>Infotype involved</td>
+                        </tr>
+                    </thead>
+                    <tbody id="T_errors_body">
+                    </tbody>
+                </table>
+            </div>
         </div>
         <script src="Err_functions.js"></script>
     </body>

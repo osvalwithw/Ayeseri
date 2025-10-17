@@ -9,7 +9,7 @@ function display_errors() {
     if (input && id) {
         input.value = id;
     }
-    document.getElementById('Header_1').textContent = `Overview Infotype ${it} errors`;
+    document.getElementById('Header_1').textContent = `Infotype ${it} errors`;
 
     fetch(`https://ayeseri.onrender.com/employee_errors/${id}/${Timeselect}`)
     .then(res => {
@@ -29,7 +29,7 @@ function mostrarTabla(errores) {
     const id = params.get('ID');
     const it = params.get('IT');
     const Timeselect = params.get('Timepar');
-    const tbody = document.getElementById('tablaErrores');
+    const tbody = document.getElementById('T_errors_headers');
     if (!tbody) {
         console.error("Review were is going to be created the information, missing DIV");
         return;
@@ -40,7 +40,6 @@ function mostrarTabla(errores) {
         if(it == error.ID_Infotype){
             const row = document.createElement('tr');
             row.innerHTML = `
-            <td></td>
             <td>${error.Load_Date}</td>
             <td>${error.Load_hour}</td>
             <td>${error.Error_message}</td>
@@ -50,7 +49,6 @@ function mostrarTabla(errores) {
         } else if(it == 'OTHR' && (error.ID_Infotype == 'NITR' || error.ID_Infotype == 'CFGI')){
             const row = document.createElement('tr');
             row.innerHTML = `
-            <td></td>
             <td>${error.Load_Date}</td>
             <td>${error.Load_hour}</td>
             <td>${error.Error_message}</td>
