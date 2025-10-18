@@ -38,6 +38,7 @@ export async function LoginUser(req, res) {
 
     const u = rows[0];
     const ok = await verifyPassword(password, u.password_hash);
+    console.log('LoginUser:', { userId: u.id, ok });
     if (!ok) return res.status(401).json({ error: 'Credenciales inválidas' });
 
     return res.json({
