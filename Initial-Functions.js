@@ -39,48 +39,47 @@ async function envio_test(){
       }
 }
 
-async function User_Validation(event) {
-  event.preventDefault();
-  let adminkey = 0;
+async function User_Validation() {
+    let adminkey = 0;
+    console.log("Validando usuario...");
+    const inputUser = document.getElementById("Usuario").value?.trim();
+    const inputpss  = document.getElementById("password").value;
 
-  const inputUser = document.getElementById("Usuario").value?.trim();
-  const inputpss  = document.getElementById("password").value;
-
-  if (!inputUser || !inputpss) {
-    alert('Por favor, rellena usuario y contraseña');
-    return;
-  }
-
-  try {
-    const resp = await User_search(inputUser, inputpss);
-
-    if (resp?.ok) {
-      const username = resp.user?.username ?? inputUser;
-      // Mejor: usa resp.user.role === 'admin' en vez de comparar texto del input
-      if (resp.user?.role === 'admin') {
-        adminkey = 1;
-      }
-
-      if (adminkey === 1) {
-        window.open(`../MainPage/AdminSpace/Adminpge.html?User=${encodeURIComponent(username)}`, "_self");
-      } else {
-        window.open(`../MainPage/Employee-search/Main-page.html?User=${encodeURIComponent(username)}`, "_self");
-      }
-      return;
+    if (!inputUser || !inputpss) {
+        alert('Por favor, rellena usuario y contraseña');
+        return;
     }
 
-    // Manejo de errores legibles
-    if (resp?.reason === 'not-found') {
-      alert("El usuario no existe");
-    } else if (resp?.reason === 'bad-credentials') {
-      alert("Contraseña incorrecta, por favor verifica");
-    } else {
-      alert("Error al iniciar sesión. Intenta de nuevo.");
+    try {
+        const resp = await User_search(inputUser, inputpss);
+
+        if (resp?.ok) {
+        const username = resp.user?.username ?? inputUser;
+        // Mejor: usa resp.user.role === 'admin' en vez de comparar texto del input
+        if (resp.user?.role === 'admin') {
+            adminkey = 1;
+        }
+
+        if (adminkey === 1) {
+            window.open(`../MainPage/AdminSpace/Adminpge.html?User=${encodeURIComponent(username)}`, "_self");
+        } else {
+            window.open(`../MainPage/Employee-search/Main-page.html?User=${encodeURIComponent(username)}`, "_self");
+        }
+        return;
+        }
+
+        // Manejo de errores legibles
+        if (resp?.reason === 'not-found') {
+        alert("El usuario no existe");
+        } else if (resp?.reason === 'bad-credentials') {
+        alert("Contraseña incorrecta, por favor verifica");
+        } else {
+        alert("Error al iniciar sesión. Intenta de nuevo.");
+        }
+    } catch (err) { 
+        console.error("Error inesperado en validación:", err);
+        alert("Ocurrió un error inesperado. Intenta de nuevo.");
     }
-  } catch (err) {
-    console.error("Error inesperado en validación:", err);
-    alert("Ocurrió un error inesperado. Intenta de nuevo.");
-  }
 }
 
 
