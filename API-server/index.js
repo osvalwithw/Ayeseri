@@ -182,9 +182,10 @@ app.post('/CreateUsers/:OPC', async (req, res) => {
       await conn.beginTransaction();
       console.log("Tickets a procesar en /CreateUsers:", SendTickets);
       for (const ticket of SendTickets) {
-        const { usuario, email: ticketEmail, password: userPassword, id } = ticket;
+        const { usuario, email: ticketEmail, pss, id } = ticket;
+        const userPassword = pss;
 
-        // Validaciones mínimas
+        // Validaciones
         if (!ticketEmail || !userPassword) {
           throw new Error(`Faltan datos en el ticket ${id || '(sin id)'}`);
         }
