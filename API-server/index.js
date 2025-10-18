@@ -3,7 +3,8 @@ import express from 'express';
 import cors from'cors';
 import { EmailsRouter } from './Emails/SendEmails.js';
 import axios from 'axios';
-import e from 'express';
+import 'dotenv/config.js';
+import { hashPassword } from './Libs/cifr.js';
 
 const app = express();
 app.use(cors());
@@ -176,22 +177,44 @@ app.post('/CreateUsers/:OPC', async (req, res) => {
       return res.status(400).json({ error: 'El campo "SendTickets" es requerido y debe ser un array no vacío.' });
     }
   if(OPC == 1){
-    try{  
-      const insertPromises = SendTickets.map(ticket => {
-        const { usuario, email, id, pss } = ticket;
-        console.log(`Procesando ticket ID: ${id}, Usuario: ${usuario}, Email: ${email}, Pss: ${pss}`);
-        const sql = `INSERT INTO Users (Email, Password, Username) VALUES (?, ?, ?)`;
-        return pool.query(sql, [email, pss, usuario])
-          .then(() => {
-            const deleteSql = `DELETE FROM Requests WHERE id = ?`;
-            return pool.query(deleteSql, [id]);
-          });
-      });
-      await Promise.all(insertPromises);
+    try {
+      await conn.beginTransaction();
+
+      for (const ticket of SendTickets) {
+        const { usuario, email: ticketEmail, password: userPassword, id } = ticket;
+
+        // Validaciones mínimas
+        if (!ticketEmail || !userPassword) {
+          throw new Error(`Faltan datos en el ticket ${id || '(sin id)'}`);
+        }
+        if (userPassword.length < 8) {
+          throw new Error(`Password muy corta para ${ticketEmail}`);
+        }
+
+        // Hash específico de este usuario (bcrypt + pepper + rounds)
+        const password_hash = await hashPassword(userPassword);
+
+        // Evita duplicados por email; si existe, solo actualiza Username (o quita el UPDATE si no quieres tocarlo)
+        await conn.execute(
+          `INSERT INTO users (email, password_hash, password_algo, \`Username\`)
+          VALUES (?, ?, 'bcrypt', ?)
+          ON DUPLICATE KEY UPDATE
+            \`Username\` = VALUES(\`Username\`)`,
+          [ticketEmail, password_hash, usuario]
+        );
+
+        // Borra el request procesado
+        await conn.execute('DELETE FROM requests WHERE id = ?', [id]);
+      }
+
+      await conn.commit();
+      conn.release();
       res.json({ message: 'Usuarios creados y tickets eliminados exitosamente.' });
-    } catch (e){
-        console.error('/CreateUsers:', e.message);
-        res.status(500).json({error: e.message});    
+    } catch (txErr) {
+      await conn.rollback();
+      conn.release();
+      console.error('/CreateUsers TX:', txErr);
+      res.status(500).json({ error: 'Fallo al crear usuarios (rollback aplicado)' });
     }
   } else {
     const DeletePromises = SendTickets.map(ticket => {

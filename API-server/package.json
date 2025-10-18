@@ -14,10 +14,11 @@
   "description": "",
   "dependencies": {
     "axios": "^1.12.2",
-    "bcryptjs": "^3.0.2",
+    "bcryptjs": "^5.1.0",
     "cors": "^2.8.5",
     "express": "^5.1.0",
     "mysql2": "^3.14.1",
-    "nodemailer": "^7.0.6"
+    "nodemailer": "^7.0.6",
+    "dotenv": "^16.3.1"
   }
 }

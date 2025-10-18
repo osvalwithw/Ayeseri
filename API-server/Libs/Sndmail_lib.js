@@ -16,7 +16,7 @@ function getTransporter() {
 export async function SendMail({ to, subject, message }) {
   const transporter = getTransporter();
  
-  // 🔒 Normaliza y escapa SIEMPRE
+  // Normaliza
   const safeTo = String(to ?? '');
   const safeSubject = String(subject ?? '');
   const safeMsg = typeof message === 'string' ? message : JSON.stringify(message ?? '');

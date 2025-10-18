@@ -13,6 +13,8 @@
 
 //EL directorio root de la API es API-server
 
+
+
 async function envio_test(){
     try {
         const res = await fetch('https://ayeseri.onrender.com/Emails/SendEmail', {
@@ -147,7 +149,7 @@ async function SendRequest(){
     const fields = [
         { input: '#NoTicket', label: '#NoTicketlbl', msg: 'Coloca el número de ticket.' },
         { input: '#Username', label: '#Usernamelb',  msg: 'Se necesita nombre de usuario.' },
-        { input: '#Email',    label: '#Emaillb',     msg: 'Coloca el email.' },
+        { input: '#Email',    label: '#Emaillb',     msg: 'ingresa el correo electronico.' },
         { input: '#PSS',      label: '#passwordlb',  msg: 'Coloca la contraseña.' },
         { input: '#RPTPSS',   label: '#RPTPSSlb',    msg: 'Repite la contraseña.' },
     ];

@@ -16,7 +16,7 @@ EmailsRouter.use((req, res, next) => {
 // POST /Emails/SendEmail
 EmailsRouter.post('/SendEmail', async (req, res) => {
   try {
-    console.log('➡️ Body recibido:', req.body);
+    console.log('Body recibido:', req.body);
  
     let { to, subject, message } = req.body || {};
     if (!to || !subject || message == null) { // message puede ser ''
@@ -28,11 +28,11 @@ EmailsRouter.post('/SendEmail', async (req, res) => {
     message = typeof message === 'string' ? message : JSON.stringify(message);
  
     const result = await SendMail({ to: String(to), subject, message });
-    console.log('✅ sendMail OK', result?.messageId);
+    console.log('sendMail OK', result?.messageId);
     return res.json({ ok: true, sent_to: to });
  
   } catch (err) {
-    console.error('❌ SendEmail error:', err);
+    console.error('SendEmail error:', err);
     return res.status(500).json({ error: 'Fallo al enviar el correo' });
   }
 });
