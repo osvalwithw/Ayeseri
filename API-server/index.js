@@ -172,13 +172,13 @@ app.get('/GetTickets', async (req, res) => {
 
 app.post('/CreateUsers/:OPC', async (req, res) => {
   const OPC = req.params.OPC;
-    const { SendTickets } = req.body
+  const conn = await pool.getConnection();
+  const { SendTickets } = req.body
     if (!SendTickets || !Array.isArray(SendTickets) || SendTickets.length === 0) {
       return res.status(400).json({ error: 'El campo "SendTickets" es requerido y debe ser un array no vacío.' });
     }
   if(OPC == 1){
     try {
-      const conn = await pool.getConnection();
       await conn.beginTransaction();
 
       for (const ticket of SendTickets) {
