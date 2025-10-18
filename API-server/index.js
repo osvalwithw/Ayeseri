@@ -178,7 +178,8 @@ app.post('/CreateUsers/:OPC', async (req, res) => {
     }
   if(OPC == 1){
     try {
-      await pool.beginTransaction();
+      const conn = await pool.getConnection();
+      await conn.beginTransaction();
 
       for (const ticket of SendTickets) {
         const { usuario, email: ticketEmail, password: userPassword, id } = ticket;
@@ -195,7 +196,7 @@ app.post('/CreateUsers/:OPC', async (req, res) => {
         const password_hash = await hashPassword(userPassword);
 
         // Evita duplicados por email; si existe, solo actualiza Username (o quita el UPDATE si no quieres tocarlo)
-        await pool.execute(
+        await conn.execute(
           `INSERT INTO users (email, password_hash, password_algo, \`Username\`)
           VALUES (?, ?, 'bcrypt', ?)
           ON DUPLICATE KEY UPDATE
@@ -204,15 +205,15 @@ app.post('/CreateUsers/:OPC', async (req, res) => {
         );
 
         // Borra el request procesado
-        await pool.execute('DELETE FROM requests WHERE id = ?', [id]);
+        await conn.execute('DELETE FROM requests WHERE id = ?', [id]);
       }
 
-      await pool.commit();
-      pool.release();
+      await conn.commit();
+      conn.release();
       res.json({ message: 'Usuarios creados y tickets eliminados exitosamente.' });
     } catch (txErr) {
-      await pool.rollback();
-      pool.release();
+      await conn.rollback();
+      conn.release();
       console.error('/CreateUsers TX:', txErr);
       res.status(500).json({ error: 'Fallo al crear usuarios (rollback aplicado)' });
     }
