@@ -1,7 +1,7 @@
 // POST /LoginUser
 // body: { email?: string, username?: string, password: string }
-import { getDB } from '../DB.js';
-import { verifyPassword } from '../cifr.js';
+import { getDB } from './Libs/DB.js';
+import { verifyPassword } from './Libs/cifr.js';
 
 export async function LoginUser(req, res) {
   let { email, username, password } = req.body || {};
