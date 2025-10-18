@@ -39,96 +39,72 @@ async function envio_test(){
       }
 }
 
-async function User_Validation() {
-    event.preventDefault();
-    adminkey = 0;
-    // Evita que el formulario se enví
-    //TEST line
-    
-    let inputUser = document.getElementById("Usuario").value;
-    let inputpss = document.getElementById("password").value;
-    if (! inputUser && ! inputpss) {
-        alert('Por favor, rellene todos los campos')
-        return;
-    } 
-    if (! inputUser) {
-        alert('Ingrese el correo o nombre de usuario')
-        return;
-    } 
-    if (! inputpss) {
-        alert('Ingrese la contraseña')
-        return;
-    } 
-    try {
-        //console.log("Debbuging method start")
-        const key = await User_search(inputUser, inputpss, 0)
-        //console.log(`${key[0]} + ${key[1]}`)
-        if (key[0] && key[1]) {
-            if(inputUser == 'Admin'){
-                console.log("Maestro");
-                adminkey = 1;
-            }
-            if(adminkey === 1){
-                window.open(`../MainPage/AdminSpace/Adminpge.html?User=${key[2]}`, "_self");
-            } else {
-               window.open(`../MainPage/Employee-search/Main-page.html?User=${key[2]}`, "_self");  
-            }
-        } else if (!key[0]) {
-            alert("El usuario no existe");} 
-        else {
-            alert("Contraseña es incorrecta, por favor veifica la entrada");}
-    } catch (err) {
-      console.error("Error inesperado en validación:", err);
-      alert("Ocurrió un error inesperado. Intenta de nuevo.");
-    }
-}
+async function User_Validation(event) {
+  event.preventDefault();
+  let adminkey = 0;
 
-async function User_search(usertofind, passw, opc){
-    const key = [];
-    try{
-        const response = await fetch(`https://ayeseri.onrender.com/Users`);
-        if (!response.ok) {
-            if (response.status === 404) {
-                console.log('No hay usuarios en la base');
-            } else {
-                console.error('Error 455', response.statusText);//Error peticion
-            }
-            return null;
-        }
-        const data = await response.json();
-        //console.log(data);
-        if(opc == 0){
-            key.push(false, false);
-            for (const Obj of data){
-                if((Obj.Email === usertofind) || (Obj.Username === usertofind)){
-                    key[0] = true;
-                    key.push(Obj.Username);
-                    //console.log(key[0]);
-                }
-                if((Obj.Password === passw && key[0])){
-                    key[1] = true;
-                    //console.log(key[0]);
-                }
-            }
-            //console.log(key);
-            return key;
-        }
-        if(opc == 1){
-            key.push(0);
-            for (const Obj of data){
-                if(Obj.Username === usertofind){
-                    key[0] = 1;
-                    break;
-                }
-            }
-            return key;
-        }
-    } catch (error) {
-        console.error('Error de conexion 468', error);//error de conexion con la API
-        return null;
+  const inputUser = document.getElementById("Usuario").value?.trim();
+  const inputpss  = document.getElementById("password").value;
+
+  if (!inputUser || !inputpss) {
+    alert('Por favor, rellena usuario y contraseña');
+    return;
+  }
+
+  try {
+    const resp = await User_search(inputUser, inputpss);
+
+    if (resp?.ok) {
+      const username = resp.user?.username ?? inputUser;
+      // Mejor: usa resp.user.role === 'admin' en vez de comparar texto del input
+      if (resp.user?.role === 'admin') {
+        adminkey = 1;
+      }
+
+      if (adminkey === 1) {
+        window.open(`../MainPage/AdminSpace/Adminpge.html?User=${encodeURIComponent(username)}`, "_self");
+      } else {
+        window.open(`../MainPage/Employee-search/Main-page.html?User=${encodeURIComponent(username)}`, "_self");
+      }
+      return;
     }
 
+    // Manejo de errores legibles
+    if (resp?.reason === 'not-found') {
+      alert("El usuario no existe");
+    } else if (resp?.reason === 'bad-credentials') {
+      alert("Contraseña incorrecta, por favor verifica");
+    } else {
+      alert("Error al iniciar sesión. Intenta de nuevo.");
+    }
+  } catch (err) {
+    console.error("Error inesperado en validación:", err);
+    alert("Ocurrió un error inesperado. Intenta de nuevo.");
+  }
 }
+
+
+async function User_search(usertofind, passw) {
+  const API = 'https://ayeseri.onrender.com';
+  const isEmail = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(usertofind);
+  const payload = isEmail ? { email: usertofind, password: passw }
+                          : { username: usertofind, password: passw };
+
+  const res = await fetch(`${API}/LoginUser`, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(payload)
+  });
+
+  if (res.ok) {
+    return await res.json(); // { ok, user:{...} }
+  }
+  if (res.status === 401) return { ok: false, reason: 'bad-credentials' };
+  if (res.status === 404) return { ok: false, reason: 'not-found' };
+  return { ok: false, reason: 'server-error' };
+}
+
+
 
 function CreateAccount(){
     //window.open('../MainPage/RegisterMenu/MenuView.html', "_blank", 

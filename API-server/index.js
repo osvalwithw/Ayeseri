@@ -12,6 +12,8 @@ app.use(express.json());
 
 const pool = getDB();                   //conexion a bse de datos
 
+app.post('/LoginUser', LoginUser);
+
 //status de la conexion a bse de datos
 app.get('/healthz', async (_req, res) => {
   try {
