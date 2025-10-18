@@ -180,7 +180,7 @@ app.post('/CreateUsers/:OPC', async (req, res) => {
   if(OPC == 1){
     try {
       await conn.beginTransaction();
-
+      console.log("Tickets a procesar en /CreateUsers:", SendTickets);
       for (const ticket of SendTickets) {
         const { usuario, email: ticketEmail, password: userPassword, id } = ticket;
 
