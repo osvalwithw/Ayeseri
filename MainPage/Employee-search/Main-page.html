@@ -16,7 +16,7 @@
                 <li class="submenu">
                     <a href="#Sesión" class="submenu-btn">Sesion</a>
                     <div class="submenu-content">
-                        <a href="Perfil">Perfil</a>
+                        <a id="UserInfoBTN">Perfil</a>
                         <a href="Sugerencias">Sugerencias</a>
                         <a href="https://ayeseri.vercel.app/">Cerrar sesión</a>
                     </div>
@@ -142,6 +142,35 @@
                     <textarea type="text" id="rptdetails_input" style="width: 300px; height: 100px; resize: none;" rows="5" cols="30"></textarea>
                     <button id="sendreport" style="width: 100px; " onclick="Report_send()">Enviar reporte</button>
                     <button id="Cancel_Sendreport" onclick="show_report_register(1)">Cancel</button>
+                </div>
+            </div>
+            <div class="UserInformation" id="UserInformationView">
+                <button id="USexitbtn" class="material-icons" style="font-size: 30px;">cancel</button>
+                <div class="USUsername" style="margin-top: 50px;">
+                    <p id="UserName">User</p>
+                    <input type="text" id="UsernameField" readonly style="width: 80%;">
+                    <p id="UserRole">Rol</p>
+                    <input type="text" id="UserRoleField" readonly style="width: 30px;">
+                </div>
+                <div class="USEmail">
+                    <p id="UserEmail">Email</p>
+                    <input type="text" id="UserEmailField" readonly style="width: 80%;">
+                </div>
+                <div class="PSSStatus" id="PSSheader">
+                    <p style="color: rgba(255, 255, 0, 0.507);" class="material-icons" style="font-size: 30px;">warning</p>
+                    <p id= "HeaderPSS" >Es necesario cambiar la contraseña!!</p>
+                    <p style="color: rgba(255, 255, 0, 0.507);" class="material-icons" style="font-size: 30px;">warning</p>
+                </div>
+                <div class="USPSSUpdate" id="ChangePSSSection">
+                    <p id="lblNewpss">Nueva contraseña</p>
+                    <input type="password" id="NewPSSField" style="width: 40%;">
+                </div>
+                <div class="USRPTPSS" id="RPTChangePSSSection">
+                    <p id="lblRPTpss">Repetir contraseña</p>
+                    <input type="password" id="RepeatPSSField" style="width: 40%;">
+                </div>
+                <div class="USFields">
+                    <button id="UpdatePSSBTN">Actualizar contraseña</buttion>
                 </div>
             </div>
         </div>

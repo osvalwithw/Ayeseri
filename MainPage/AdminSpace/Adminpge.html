@@ -11,7 +11,7 @@
         <div class="main-bar">
             <ul class="MbItems">
                 <li><a>Inicio</a></li>
-                <li><a>Vista de usuario</a></li>
+                <li><a id="Userview">Vista de usuario</a></li>
                 <li><a onclick="DBErrorUpload()">Carga de errores</a></li>
                 <li><a onclick="bringtickets()">Creacion de usuarios</a></li>
                 <li><a onclick="PSS_Maintenance()">Contraseñas</a></li>
@@ -24,10 +24,9 @@
                 </li>
             </ul>
         </div>
-        
         <div class="HomePage" id="HomePageView">
         </div>
-        <div class="UsersWindow" id="Usersview">
+        <div class="UsersWindow" id="AdminUsersview">
         </div>
         <div class="MainErrorsWindow" id="Errorsview">
             <div class="column ErrorsLoadWindow">
@@ -110,7 +109,7 @@
             </div>
             <div class="USFields">
                 <button id="UpdatePSSBTN">Actualizar contraseña</buttion>
-                </div>
+            </div>
         </div>
         <script src="AdminFunctions.js"></script>
     </body>

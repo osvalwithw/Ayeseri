@@ -1,6 +1,6 @@
 let Window_opc = 0; // 0: None, 1: Errors, 2: User Creation, 3: PSS Maintenance
 const windows = [
-    document.getElementById("Usersview"),
+    document.getElementById("AdminUsersview"),
     document.getElementById("Errorsview"),
     document.getElementById("UserCreationView"),
     document.getElementById("PSSMaintenanceView")
@@ -23,6 +23,34 @@ async function windowadjust(){
         windows[Window_opc].style.display = 'flex';
     }
 }
+//--------------------------------------------Window Adjustment------------------------------------------------------------
+const AdminUserviewBtn = document.getElementById('Userview');
+
+AdminUserviewBtn.addEventListener('click', () =>{
+    Window_opc = 0;
+    windowadjust();
+    fetch(`../Employee-search/Main-page.html`).then(res => {
+        if (!res.ok) throw new Error('Please review API Connection');
+            return res.text();
+    })
+    .then(data => {
+        const parser = new DOMParser();
+        const doc = parser.parseFromString(data, "text/html");
+ 
+         // Carga los estilos de esa página (si los hay)
+        const estilos = doc.querySelectorAll('link[rel="stylesheet"]');
+        estilos.forEach(link => {
+        if (!document.querySelector(`link[href="${link.href}"]`)) {
+            document.head.appendChild(link.cloneNode(true));
+        }});
+        document.getElementById('AdminUsersview').innerHTML = data;
+    })
+    .catch(err => {
+    console.error("Failed to load Employee Search Page, please review the API Conection or logs", err);
+    });
+});
+
+
 
 //--------------------------------------------User Info View------------------------------------------------------------
 const UserInfoBtn = document.getElementById('UserInfoBTN');

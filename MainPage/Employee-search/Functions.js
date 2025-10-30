@@ -283,3 +283,83 @@ async function Sendmessage(){
 }
 
 addMessage('¿Necesitas ayuda con algo? :-)', 'bot');
+
+//--------------------------------------------------------------------------------------------
+// User Info View and PSS Change
+//----------------------------------------------------------------------------
+const UserInfoBtn = document.getElementById('UserInfoBTN');
+const UserInfoExitBtn = document.getElementById('USexitbtn');
+const ConfirmPSSchange = document.getElementById('UpdatePSSBTN');
+
+UserInfoBtn.addEventListener('click', () =>{
+    let pssflag = 0;
+    const params = new URLSearchParams(window.location.search);
+    const Loggeduser = params.get('User');
+    document.getElementById("UserInformationView").style.display = 'block';
+    fetch(`https://ayeseri.onrender.com/SingleUser/${Loggeduser}`)
+    .then(res => { 
+        if (!res.ok) throw new Error('Please review API Connection');
+            return res.json();
+    })
+    .then(data => {
+        pssflag = data[0].PSSFlagchange;
+        document.getElementById('UsernameField').value = `${data[0].Username}`;
+        document.getElementById('UserEmailField').value = `${data[0].email}`;
+        document.getElementById('UserRoleField').value = `${data[0].UserRole}`;
+        // document.getElementById('PSSStatusField').value = `${data[0].PSSFlagchange}`;
+        if(pssflag == 1){
+            document.getElementById('PSSheader').style.display = 'flex';
+        }
+    })
+    .catch(err => {
+    console.error("Failed to load user, please review the API Conection or logs", err);
+    });
+    windowadjust();
+});
+
+UserInfoExitBtn.addEventListener('click', () =>{
+    document.getElementById("UserInformationView").style.display = 'none';
+    windowadjust();
+});
+
+UpdatePSSBTN.addEventListener('click', () =>{
+    const newpss = document.getElementById('NewPSSField').value;
+    const repeatpss = document.getElementById('RepeatPSSField').value;
+    const params = new URLSearchParams(window.location.search);
+    console.log("New PSS:", newpss, "Repeat PSS:", repeatpss);
+    if(newpss === "" || repeatpss === ""){
+        alert("Ambos campos de contraseña deben ser llenados.");
+        return;
+    }
+    if(newpss !== repeatpss){
+        alert("Las contraseñas no coinciden, por favor intente de nuevo.");
+        return;
+    }
+    if(newpss.length < 8){
+        alert("La contraseña debe tener al menos 8 caracteres.");
+        return;
+    }
+    const Loggeduser = params.get('User');
+    fetch(`https://ayeseri.onrender.com/UpdateSinglePSS`, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ 
+            Username: Loggeduser,
+            NewPSS: newpss,
+            PSSFlagchange: 0
+        })
+    })
+    .then(res => {
+        if (!res.ok) throw new Error('Please review API Connection');
+            return res.json();
+    })
+    .then(data => {
+        alert("Contraseña actualizada correctamente!.");
+    })
+    .catch(err => {
+    console.error("Failed to update password, please review the API Conection or logs", err);
+    });
+});
+

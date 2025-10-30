@@ -16,7 +16,7 @@ ul.MbItems {
     margin: 0;
     padding: 0;
     overflow: hidden;
-    background-color: #38444d;
+    background-color: #144469;
 }
 
 li {
@@ -93,13 +93,13 @@ li a:hover,
     width: 70%;
     max-height: fit-content;
     z-index: 2; 
-    background: rgba(53, 56, 245, 0.9); 
+    background: rgba(19, 21, 112, 0.9); 
     box-shadow: 0 8px 32px rgba(0, 0, 0, 0.37);
     border-radius: 10px;
     text-align: center;
     color: #ffffff;
     backdrop-filter: blur(5px);
-    -webkit-backdrop-filter: blur(5px);
+    -webkit-backdrop-filter: blur(20px);
 }
 
 [class^="US"]{
