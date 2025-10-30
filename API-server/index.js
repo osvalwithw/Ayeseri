@@ -122,7 +122,7 @@ app.get('/Users', async (req, res) => {
   }
 });
 
-app.get('/SingleUser:Username', async (req, res) => {
+app.get('/SingleUser/:Username', async (req, res) => {
   const Username = req.params.Username;
   try {
     sql = `
