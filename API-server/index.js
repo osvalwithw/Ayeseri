@@ -313,17 +313,17 @@ app.post('/EEInsertErrors', async (req, res) =>{
 });
 
 app.post('/UpdatePSS', async (req, res) => {
-  const Usertoprocess = Array.isArray(req.body) ? req.body : req.body?.Usertoprocess;
-  console.log(Usertoprocess);
-  if (!Usertoprocess || !Array.isArray(Usertoprocess) || Usertoprocess.length === 0) {
-    return res.status(400).json({ error: 'El cuerpo debe incluir "Usertoprocess" como un array no vacío.' });
+  const Toprocess = Array.isArray(req.body) ? req.body : req.body?.Toprocess;
+  console.log(Toprocess);
+  if (!Toprocess || !Array.isArray(Toprocess) || Toprocess.length === 0) {
+    return res.status(400).json({ error: 'El cuerpo debe incluir "Toprocess" como un array no vacío.' });
   }
   let conn;
   try {
     conn = await pool.getConnection();
     await conn.beginTransaction();
 
-    for (const row of Usertoprocess) {
+    for (const row of Toprocess) {
       const { id, pss } = row;
       if (!id || typeof id !== 'number') {
         throw new Error(`ID inválido en uno de los registros: ${JSON.stringify(row)}`);
