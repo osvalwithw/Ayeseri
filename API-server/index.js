@@ -314,13 +314,10 @@ app.post('/EEInsertErrors', async (req, res) =>{
 
 app.post('/UpdatePSS', async (req, res) => {
   console.log(req.body);
-
-  const Usertoprocess = Array.isArray(req.body) ? req.body : req.body?.Usertoprocess;
-
-  if (!Usertoprocess || !Array.isArray(Usertoprocess) || Usertoprocess.length === 0) {
-    return res.status(400).json({ error: 'El cuerpo debe incluir "Usertoprocess" como un array no vacío.' });
-  }
-
+  // const Usertoprocess = Array.isArray(req.body) ? req.body : req.body?.Usertoprocess;
+  // if (!Usertoprocess || !Array.isArray(Usertoprocess) || Usertoprocess.length === 0) {
+  //   return res.status(400).json({ error: 'El cuerpo debe incluir "Usertoprocess" como un array no vacío.' });
+  // }
   let conn;
   try {
     conn = await pool.getConnection();
