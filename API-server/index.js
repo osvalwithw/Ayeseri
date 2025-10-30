@@ -122,6 +122,20 @@ app.get('/Users', async (req, res) => {
   }
 });
 
+app.get('/SingleUser:Username', async (req, res) => {
+  const Username = req.params.Username;
+  try {
+    sql = `
+      SELECT email, Username, PSSflagchange, UserRole FROM Users
+      WHERE Username = ?`;
+    const [rows] = await pool.query(sql, [Username]);
+    res.json(rows);
+  }catch (e){
+    console.error('/Users:', e.message);
+    res.status(500).json({error: e.message})
+  }
+});
+
 app.get('/Requests/:NoTicket/:Username/:Email/:PSS', async (req, res) => {
   const NoTicket = req.params.NoTicket;
   const Username = req.params.Username;

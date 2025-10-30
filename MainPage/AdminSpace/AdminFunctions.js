@@ -1,4 +1,4 @@
-let Window_opc = 2;
+let Window_opc = 0; // 0: None, 1: Errors, 2: User Creation, 3: PSS Maintenance
 const windows = [
     document.getElementById("Usersview"),
     document.getElementById("Errorsview"),
@@ -23,6 +23,31 @@ async function windowadjust(){
         windows[Window_opc].style.display = 'flex';
     }
 }
+
+const UserInfoBtn = document.getElementById('UserInfoBTN');
+const UserInfoExitBtn = document.getElementById('USexitbtn');
+
+UserInfoBtn.addEventListener('click', () =>{
+    document.getElementById("UserInformationView").style.display = 'block';
+    fetch(`https://ayeseri.onrender.com/Users`)
+    .then(res => { 
+        if (!res.ok) throw new Error('Please review API Connection');
+            return res.json();
+    })
+    .then(data => {
+    console.log(data);
+    })
+    .catch(err => {
+    console.error("Failed to load users, please review the API Conection or logs", err);
+    });
+    windowadjust();
+});
+
+UserInfoExitBtn.addEventListener('click', () =>{
+    document.getElementById("UserInformationView").style.display = 'none';
+    windowadjust();
+});
+
 //--------------------------------------------User creation------------------------------------------------------------{
 let SelectTickets = [];
 const tablaBody = document.getElementById('TableItems');
@@ -166,7 +191,7 @@ ButtonSingleFileLoad.addEventListener('click',() =>{
 EntrySingleFileLoad.addEventListener('change', () =>{
     if(EntrySingleFileLoad.files.length > 0){
         Filetoprocess = EntrySingleFileLoad.files[0];
-        FakeEntrySingleFileLoad.value = Filetoprocess.name;
+        FakeEntrySingleFileLoad.value = "C:Fakepath/" + Filetoprocess.name;
     } else {
         FakeEntrySingleFileLoad.value = 'No has seleccionado ningun archivo...';
         return;
@@ -248,10 +273,13 @@ async function Files2Send(pack) { //https://ayeseri.onrender.com/ClasifyMethod
 //--------------------------------------------Password Maintenance------------------------------------------------------------
 let SelectedUsers = [];
 const TBPSS = document.getElementById('TableItemsPSS');
+const TBPSSHD = document.getElementById('TableheadersPSS');
 
 async function PSS_Maintenance(){
     Window_opc = 3;
     windowadjust();
+    TBPSS.innerHTML = '';
+    TBPSSHD.innerHTML = '';
     fetch(`https://ayeseri.onrender.com/Users`)
     .then(res => { 
         if (!res.ok) throw new Error('Please review API Connection');
@@ -275,7 +303,7 @@ function printingusers(data){
         return;
     }
     const pasteinformation = document.getElementById('TableItemsPSS');
-    const headerinformation = document.getElementById('Tableheaders');
+    const headerinformation = document.getElementById('TableheadersPSS');
     pasteinformation.innerHTML = '';
     let insertheader = document.createElement('tr');
     insertheader.innerHTML=`
@@ -293,7 +321,7 @@ function printingusers(data){
             <td class="User" id="User_${item.Username}">${item.Username}</td>
             <td class="Email" id="email_${item.email}">${item.email}</td>
             <td class="PSSUPDAT" id="PSSUPDAT_${item.password_updated_at}">${item.password_updated_at}</td>
-            <td class="PSSFlagchange" id="PSSCHFL_${item.PSSFlagchange}">${item.PSSFlagchange}</td>
+            <td class="PSSFlagchange" id="PSSCHFL_${item.PSSFlagchange} style="text-align: center;">${item.PSSFlagchange}</td>
         `;
         pasteinformation.appendChild(insertline);
     });
@@ -304,6 +332,13 @@ TableItemsPSS.addEventListener('change', function(event) {
         const checkbox = event.target;
         const UserID = checkbox.value;
         if (checkbox.checked) {
+            const fila = checkbox.closest('tr');
+            const changeflag = fila.querySelector('.PSSFlagchange').textContent;
+            if(changeflag === "1"){
+                alert("Este usuario ya fue procesado previamente.");
+                checkbox.checked = false;
+                return;
+            }
             const Toprocess = {
                 id: UserID,
                 pss: "Ayeseri12345."
@@ -312,13 +347,17 @@ TableItemsPSS.addEventListener('change', function(event) {
         } else {
             SelectedUsers = SelectedUsers.filter(user => user.id !== UserID);
         }
-        console.log("Tickets seleccionados actualmente:", SelectedUsers);
+        console.log("Usuarios seleccionados actualmente:", SelectedUsers);
     }
 });
 
 async function ProcessSelectedUsers(){
     if(SelectedUsers.length === 0){
-        alert("No Users selected, please select at least one to proceed");
+        alert("No hay usuarios seleccionados, por favor seleccione al menos uno para continuar");
+        return;
+    }
+    confirmation = confirm(`Estas seguro de querer resetear la contraseña a ${SelectedUsers.length} usuario(s)?`);
+    if(!confirmation){
         return;
     }
     console.log("Enviando este cuerpo JSON a la API:", JSON.stringify({ Toprocess:SelectedUsers}, null, 2));
@@ -335,9 +374,8 @@ async function ProcessSelectedUsers(){
         }
         const datosRespuesta = await respuesta.json();
         console.log('Éxito! Respuesta del servidor:', datosRespuesta);
-        alert('Los tickets se procesaron correctamente.');
-        bringtickets();       
-        SelectTickets = [];
+        alert('Las contraseñas se actualizaron correctamente.');    
+        SelectedUsers = [];
     } catch (error) {
         console.error('Error al enviar los datos a la API:', error);
         alert('Hubo un problema al conectar con el servidor. Inténtalo de nuevo.');

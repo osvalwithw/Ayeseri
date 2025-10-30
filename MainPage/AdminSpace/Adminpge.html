@@ -18,12 +18,13 @@
                 <li class="submenu">
                     <a href="#Sesión" class="submenu-btn">Sesion</a>
                     <div class="submenu-content">
-                        <a href="Perfil">Perfil</a>
+                        <a id="UserInfoBTN">Perfil</a>
                         <a href="https://ayeseri.vercel.app/">Cerrar sesión</a>
                     </div>
                 </li>
             </ul>
         </div>
+        
         <div class="HomePage" id="HomePageView">
         </div>
         <div class="UsersWindow" id="Usersview">
@@ -34,8 +35,8 @@
                 <input class="LoadFiles" id="FakeSingleLoad" readonly></input>
                 <button class="BTNLoad" id="BTNSingleLoad">Select</button>
                 <input class="LoadFiles" id="MultipleLoad" readonly webkitirectory directory multiple></input>
-                <button class="BTNLoad" id="BTNMultipleLoad">Select</button>
-                <button class="BTNLoad" id="ConfirmLoad">Start</button>
+                <button class="BTNLoad" id="BTNMultipleLoad" readonly>Select</button>
+                <button class="BTNLoad" id="ConfirmLoad">Iniciar carga</button>
             </div>
             <div class="column ErrosTimeModule">
                 <p>Last load: </p>
@@ -68,10 +69,6 @@
             </div> -->
         </div>
         <div class="PSSMaintenanceWindow" id="PSSMaintenanceView">
-            <div class="column PSSTools">
-                <h1>Actions</h1>
-                <button id="ResetPSS" onclick="ProcessSelectedUsers()">Reset PSS</button>
-            </div>
             <div class="column PSSInfo">
                 <h1>Active Users</h1>
                 <table class="ActiveUsersTable">
@@ -81,6 +78,39 @@
                     </tbody>
                 </table>
             </div>
+            <div class="column PSSTools">
+                <h1>Actions</h1>
+                <button id="ResetPSS" onclick="ProcessSelectedUsers()">Reiniciar contraseña</button>
+            </div>
+        </div>
+        <div class="UserInformation" id="UserInformationView">
+            <button id="USexitbtn" class="material-icons" style="font-size: 30px;">cancel</button>
+            <div class="USUsername" style="margin-top: 50px;">
+                <p id="UserName">User</p>
+                <input type="text" id="UsernameField" readonly style="width: 80%;">
+                <p id="UserRole">Rol</p>
+                <input type="text" id="UserRoleField" readonly style="width: 30px;">
+            </div>
+            <div class="USEmail">
+                <p id="UserEmail">Email</p>
+                <input type="text" id="UserEmailField" readonly>
+            </div>
+            <div class="USPSSStatus">
+                <p id="UserEmail">Estatus de contraseña</p>
+                <input type="text" id="PSSStatusField" readonly>
+            </div>
+
+            <div class="USPSSUpdate">
+                <p id="UserEmail">Nueva contraseña</p>
+                <input type="text" id="NewPSSField" style="width: 40%;">
+            </div>
+            <div class="USRPTPSS">
+                <p id="UserEmail">Repetir contraseña</p>
+                <input type="text" id="RepeatPSSField" style="width: 40%;">
+            </div>
+            <div class="USFields">
+                <button id="UpdatePSSBTN" onclick="UpdatePSS()">Actualizar contraseña</buttion>
+                </div>
         </div>
         <script src="AdminFunctions.js"></script>
     </body>

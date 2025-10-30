@@ -57,14 +57,12 @@ async function User_Validation() {
 
     try {
         const resp = await User_search(inputUser, inputpss);
-
+        console.log("Respuesta de la API:", resp);
         if (resp?.ok) {
         const username = resp.user?.username ?? inputUser;
-        // Mejor: usa resp.user.role === 'admin' en vez de comparar texto del input
-        if (resp.user?.role === 'admin') {
+        if (username === 'Admin') {
             adminkey = 1;
         }
-
         if (adminkey === 1) {
             window.open(`../MainPage/AdminSpace/Adminpge.html?User=${encodeURIComponent(username)}`, "_self");
         } else {
@@ -73,7 +71,6 @@ async function User_Validation() {
         return;
         }
 
-        // Manejo de errores legibles
         if (resp?.reason === 'not-found') {
         alert("El usuario no existe");
         } else if (resp?.reason === 'bad-credentials') {
