@@ -339,7 +339,7 @@ app.post('/UpdatePSS', async (req, res) => {
         [password_hash, id]
       );
     }
-
+    console.log("Process completed successfully");
     await conn.commit();
     res.json({ message: 'Contraseñas actualizadas correctamente.' });
   } catch (err) {
