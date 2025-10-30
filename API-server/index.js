@@ -124,10 +124,10 @@ app.get('/Users', async (req, res) => {
 
 app.get('/SingleUser/:Username', async (req, res) => {
   const Username = req.params.Username;
-  try {
-    sql = `
-      SELECT email, Username, PSSflagchange, UserRole FROM Users
+  sql = `
+      SELECT u.email, u.Username, u.PSSFlagchange, u.UserRole FROM Users u
       WHERE Username = ?`;
+  try {
     const [rows] = await pool.query(sql, [Username]);
     res.json(rows);
   }catch (e){
