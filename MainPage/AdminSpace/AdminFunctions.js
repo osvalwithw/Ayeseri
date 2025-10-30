@@ -2,7 +2,8 @@ let Window_opc = 2;
 const windows = [
     document.getElementById("Usersview"),
     document.getElementById("Errorsview"),
-    document.getElementById("UserCreationView")
+    document.getElementById("UserCreationView"),
+    document.getElementById("PSSMaintenanceView")
     ];
 
 document.addEventListener('DOMContentLoaded', windows.forEach(item =>
@@ -244,3 +245,106 @@ async function Files2Send(pack) { //https://ayeseri.onrender.com/ClasifyMethod
 }
 
 //--------------------------------------------Error Load------------------------------------------------------------
+//--------------------------------------------Password Maintenance------------------------------------------------------------
+let SelectedUsers = [];
+const TBPSS = document.getElementById('TableItemsPSS');
+
+async function PSS_Maintenance(){
+    Window_opc = 3;
+    windowadjust();
+    fetch(`https://ayeseri.onrender.com/Users`)
+    .then(res => { 
+        if (!res.ok) throw new Error('Please review API Connection');
+            return res.json();
+    })
+    .then(data => {
+    console.log(data);
+        if(data.length == 0){
+            document.getElementById('TableItems').style.display = "none";
+        }
+    printingusers(data);
+    })
+    .catch(err => {
+    console.error("Failed to load users, please review the API Conection or logs", err);
+    });
+}
+
+function printingusers(data){
+    if(data.length === 0){
+        alert("No hay usuarios registrados :D")
+        return;
+    }
+    const pasteinformation = document.getElementById('TableItemsPSS');
+    const headerinformation = document.getElementById('Tableheaders');
+    pasteinformation.innerHTML = '';
+    let insertheader = document.createElement('tr');
+    insertheader.innerHTML=`
+        <th></th>
+        <th>User Name</th>
+        <th>Email</th>
+        <th>Last Update</th>
+        <th>Change flag</th>
+    `;
+    headerinformation.appendChild(insertheader);
+    data.forEach(item => {
+        let insertline = document.createElement('tr');
+        insertline.innerHTML=`
+            <td><input class="UserPSSMT" id="PSSCheckbox_${item.id}" type="checkbox" value=${item.id}></td>
+            <td class="User" id="User_${item.Username}">${item.Username}</td>
+            <td class="Email" id="email_${item.email}">${item.email}</td>
+            <td class="PSSUPDAT" id="PSSUPDAT_${item.password_updated_at}">${item.password_updated_at}</td>
+            <td class="PSSFlagchange" id="PSSCHFL_${item.PSSFlagchange}">${item.PSSFlagchange}</td>
+        `;
+        pasteinformation.appendChild(insertline);
+    });
+}
+
+TableItemsPSS.addEventListener('change', function(event) {
+    if (event.target.matches('.UserPSSMT')) {
+        const checkbox = event.target;
+        const UserID = checkbox.value;
+        if (checkbox.checked) {
+            const fila = checkbox.closest('tr');
+            const usuario = fila.querySelector('.User').textContent;
+            const email = fila.querySelector('.Email').textContent;
+            const infoTicket = {
+                id: UserID,
+                pss: "Ayeseri12345."
+            };
+            SelectTickets.push(infoTicket);
+        } else {
+            SelectTickets = SelectTickets.filter(ticket => ticket.id !== ticketId);
+        }
+        //console.log("Tickets seleccionados actualmente:", SelectTickets);
+    }
+});
+
+async function ProcessSelectedUsers(OPC){
+    if(SelectedUsers.length === 0){
+        alert("No Users selected, please select at least one to proceed");
+        return;
+    }
+    console.log("Enviando este cuerpo JSON a la API:", JSON.stringify({ SendTickets:SelectTickets}, null, 2));
+    try {
+        const respuesta = await fetch(`https://ayeseri.onrender.com/CreateUsers/${OPC}`, {
+            method: 'POST', 
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ SendTickets:SelectTickets}) 
+        });
+        if (!respuesta.ok) {
+            throw new Error(`Error del servidor: ${respuesta.status}`);
+        }
+        const datosRespuesta = await respuesta.json();
+        console.log('Éxito! Respuesta del servidor:', datosRespuesta);
+        alert('Los tickets se procesaron correctamente.');
+        bringtickets();       
+        SelectTickets = [];
+    } catch (error) {
+        console.error('Error al enviar los datos a la API:', error);
+        alert('Hubo un problema al conectar con el servidor. Inténtalo de nuevo.');
+    }
+}
+
+//--------------------------------------------Password Maintenance------------------------------------------------------------

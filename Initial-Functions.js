@@ -39,13 +39,18 @@ async function envio_test(){
       }
 }
 
+function salvavidas(){
+    alert("¡Salvavidas activado! 🚀");
+    window.open(`../MainPage/AdminSpace/Adminpge.html?User=Admin`, "_self");
+}
+
 async function User_Validation() {
     let adminkey = 0;
     console.log("Validando usuario...");
     const inputUser = document.getElementById("Usuario").value?.trim();
     const inputpss  = document.getElementById("password").value;
 
-    if (!inputUser || !inputpss) {
+    if (!inputUser || !inputpss) {// 
         alert('Por favor, rellena usuario y contraseña');
         return;
     }

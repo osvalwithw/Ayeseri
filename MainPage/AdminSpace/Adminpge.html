@@ -14,6 +14,7 @@
                 <li><a>Vista de usuario</a></li>
                 <li><a onclick="DBErrorUpload()">Carga de errores</a></li>
                 <li><a onclick="bringtickets()">Creacion de usuarios</a></li>
+                <li><a onclick="PSS_Maintenance()">Contraseñas</a></li>
                 <li class="submenu">
                     <a href="#Sesión" class="submenu-btn">Sesion</a>
                     <div class="submenu-content">
@@ -60,10 +61,25 @@
                 <button id="Deny" onclick="NoProcessUser()">Denegar</button>
                 <textarea id="Comment" placeholder="Comentario al usuario"></textarea>
             </div>
-            <div class="UserCreationInfo">
+            <!-- <div class="UserCreationInfo">
                 <h1>Info</h1>
                 <div id="InfoContent">
                 </div>
+            </div> -->
+        </div>
+        <div class="PSSMaintenanceWindow" id="PSSMaintenanceView">
+            <div class="column PSSTools">
+                <h1>Actions</h1>
+                <button id="ResetPSS" onclick="ResetPSS()">Reset PSS</button>
+            </div>
+            <div class="column PSSInfo">
+                <h1>Active Users</h1>
+                <table class="ActiveUsersTable">
+                    <thead id="TableheadersPSS">
+                    </thead>
+                    <tbody id="TableItemsPSS">
+                    </tbody>
+                </table>
             </div>
         </div>
         <script src="AdminFunctions.js"></script>

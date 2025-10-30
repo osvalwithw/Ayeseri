@@ -312,6 +312,47 @@ app.post('/EEInsertErrors', async (req, res) =>{
   }
 });
 
+app.post('/UpdatePSS', async (req, res) => {
+  console.log(req.body);
+
+  const Usertoprocess = Array.isArray(req.body) ? req.body : req.body?.Usertoprocess;
+
+  if (!Usertoprocess || !Array.isArray(Usertoprocess) || Usertoprocess.length === 0) {
+    return res.status(400).json({ error: 'El cuerpo debe incluir "Usertoprocess" como un array no vacío.' });
+  }
+
+  let conn;
+  try {
+    conn = await pool.getConnection();
+    await conn.beginTransaction();
+
+    for (const row of Usertoprocess) {
+      const { id, pss } = row;
+      if (!id || typeof id !== 'number') {
+        throw new Error(`ID inválido en uno de los registros: ${JSON.stringify(row)}`);
+      }
+      const password_hash = await hashPassword(pss);
+      const [result] = await conn.execute(
+        `UPDATE Users
+         SET password_hash = ?
+         WHERE id = ?`,
+        [password_hash, id]
+      );
+    }
+
+    await conn.commit();
+    res.json({ message: 'Contraseñas actualizadas correctamente.' });
+  } catch (err) {
+    if (conn) {
+      try { await conn.rollback(); } catch (e) {}
+    }
+    console.error('Error en /UpdatePSS:', err.message || err);
+    res.status(500).json({ error: 'Fallo al actualizar contraseñas.', details: err.message });
+  } finally {
+    if (conn) conn.release();
+  }
+});
+
 // Arranque
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, '0.0.0.0', () => {
