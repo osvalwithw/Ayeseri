@@ -304,34 +304,31 @@ TableItemsPSS.addEventListener('change', function(event) {
         const checkbox = event.target;
         const UserID = checkbox.value;
         if (checkbox.checked) {
-            const fila = checkbox.closest('tr');
-            const usuario = fila.querySelector('.User').textContent;
-            const email = fila.querySelector('.Email').textContent;
-            const infoTicket = {
+            const Toprocess = {
                 id: UserID,
                 pss: "Ayeseri12345."
             };
-            SelectTickets.push(infoTicket);
+            SelectedUsers.push(Toprocess);
         } else {
-            SelectTickets = SelectTickets.filter(ticket => ticket.id !== ticketId);
+            SelectedUsers = SelectedUsers.filter(user => user.id !== UserID);
         }
-        //console.log("Tickets seleccionados actualmente:", SelectTickets);
+        console.log("Tickets seleccionados actualmente:", SelectedUsers);
     }
 });
 
-async function ProcessSelectedUsers(OPC){
+async function ProcessSelectedUsers(){
     if(SelectedUsers.length === 0){
         alert("No Users selected, please select at least one to proceed");
         return;
     }
-    console.log("Enviando este cuerpo JSON a la API:", JSON.stringify({ SendTickets:SelectTickets}, null, 2));
+    console.log("Enviando este cuerpo JSON a la API:", JSON.stringify({ Toprocess:SelectedUsers}, null, 2));
     try {
-        const respuesta = await fetch(`https://ayeseri.onrender.com/CreateUsers/${OPC}`, {
+        const respuesta = await fetch(`https://ayeseri.onrender.com/UpdatePSS`, {
             method: 'POST', 
             headers: {
                 'Content-Type': 'application/json'
             },
-            body: JSON.stringify({ SendTickets:SelectTickets}) 
+            body: JSON.stringify({ Toprocess:SelectedUsers }) 
         });
         if (!respuesta.ok) {
             throw new Error(`Error del servidor: ${respuesta.status}`);

@@ -334,7 +334,7 @@ app.post('/UpdatePSS', async (req, res) => {
       const password_hash = await hashPassword(pss);
       const [result] = await conn.execute(
         `UPDATE Users
-         SET password_hash = ?
+         SET password_hash = ?, PSSFlagchange = 1, password_updated_at = NOW()
          WHERE id = ?`,
         [password_hash, id]
       );
