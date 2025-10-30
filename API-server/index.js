@@ -325,7 +325,8 @@ app.post('/UpdatePSS', async (req, res) => {
 
     for (const row of Toprocess) {
       const { id, pss } = row;
-      if (!id || typeof id !== 'number') {
+      const idNum = Number(id);
+      if (!idNum || Number.isNaN(idNum) || idNum <= 0) {
         throw new Error(`ID inválido en uno de los registros: ${JSON.stringify(row)}`);
       }
       const password_hash = await hashPassword(pss);
@@ -333,7 +334,7 @@ app.post('/UpdatePSS', async (req, res) => {
         `UPDATE Users
          SET password_hash = ?, PSSFlagchange = 1, password_updated_at = NOW()
          WHERE id = ?`,
-        [password_hash, id]
+        [password_hash, idNum]
       );
     }
     console.log("Process completed successfully");
