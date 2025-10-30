@@ -91,13 +91,13 @@ li a:hover,
     transform: translate(-50%, -50%); 
     height: 70%;
     width: 70%;
-    max-height: 450px;
+    max-height: fit-content;
     z-index: 2; 
     background: rgba(53, 56, 245, 0.9); 
     box-shadow: 0 8px 32px rgba(0, 0, 0, 0.37);
     border-radius: 10px;
     text-align: center;
-    color: white;
+    color: #ffffff;
     backdrop-filter: blur(5px);
     -webkit-backdrop-filter: blur(5px);
 }
@@ -128,6 +128,45 @@ li a:hover,
     color: white;
     font-size: 20px;
     cursor: pointer;
+    margin-bottom: 20px;
+}
+
+#USexitbtn:hover{
+    background-color: rgba(255, 0, 0, 0.738);
+}
+
+input[readonly], #NewPSSField, #RepeatPSSField{
+    background-color: rgba(255, 255, 255, 0.267);
+    border: none;
+    color: white;
+    padding: 8px;
+    width: 100%;
+    box-sizing: border-box;
+}
+
+.USFields{
+    flex: 1;
+    text-align: left;
+    margin-bottom: 20px;
+
+}
+
+.PSSStatus{
+    display: none;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+    margin-top: 20px;
+    margin-bottom: 10px;
+    height: 40px;
+}
+
+#HeaderPSS{
+    font-weight: bold;
+    font-size: 20px;
+    text-decoration: underline;
+    text-decoration-color: yellow;
 }
 /*-----------------------------------------------------------------------------*/
 @media (min-width: 1000px){

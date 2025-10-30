@@ -93,23 +93,23 @@
             </div>
             <div class="USEmail">
                 <p id="UserEmail">Email</p>
-                <input type="text" id="UserEmailField" readonly>
+                <input type="text" id="UserEmailField" readonly style="width: 80%;">
             </div>
-            <div class="USPSSStatus">
-                <p id="UserEmail">Estatus de contraseña</p>
-                <input type="text" id="PSSStatusField" readonly>
+            <div class="PSSStatus" id="PSSheader">
+                <p style="color: rgba(255, 255, 0, 0.507);" class="material-icons" style="font-size: 30px;">warning</p>
+                <p id= "HeaderPSS" >Es necesario cambiar la contraseña!!</p>
+                <p style="color: rgba(255, 255, 0, 0.507);" class="material-icons" style="font-size: 30px;">warning</p>
             </div>
-
-            <div class="USPSSUpdate">
-                <p id="UserEmail">Nueva contraseña</p>
-                <input type="text" id="NewPSSField" style="width: 40%;">
+            <div class="USPSSUpdate" id="ChangePSSSection">
+                <p id="lblNewpss">Nueva contraseña</p>
+                <input type="password" id="NewPSSField" style="width: 40%;">
             </div>
-            <div class="USRPTPSS">
-                <p id="UserEmail">Repetir contraseña</p>
-                <input type="text" id="RepeatPSSField" style="width: 40%;">
+            <div class="USRPTPSS" id="RPTChangePSSSection">
+                <p id="lblRPTpss">Repetir contraseña</p>
+                <input type="password" id="RepeatPSSField" style="width: 40%;">
             </div>
             <div class="USFields">
-                <button id="UpdatePSSBTN" onclick="UpdatePSS()">Actualizar contraseña</buttion>
+                <button id="UpdatePSSBTN">Actualizar contraseña</buttion>
                 </div>
         </div>
         <script src="AdminFunctions.js"></script>

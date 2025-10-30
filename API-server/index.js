@@ -365,6 +365,30 @@ app.post('/UpdatePSS', async (req, res) => {
   }
 });
 
+app.post('/UpdateSinglePSS', async (req, res) => {
+  const { Username, NewPSS, PSSFlagchange } = req.body;
+  if (!Username || !NewPSS) {
+    return res.status(400).json({ error: 'Los campos "Username" y "NewPSS" son requeridos.' });
+  }
+  try {
+    const password_hash = await hashPassword(NewPSS);
+    const [result] = await pool.execute(
+      `UPDATE Users
+       SET password_hash = ?, PSSFlagchange = ?
+       WHERE Username = ?`,
+      [password_hash, PSSFlagchange, Username]
+    );
+    if (result.affectedRows === 0) {
+      return res.status(404).json({ error: 'Usuario no encontrado.' });
+    }
+    res.json({ message: 'Contraseña actualizada correctamente.' });
+  } catch (err) {
+    console.error('Error en /UpdateSinglePSS:', err.message || err);
+    res.status(500).json({ error: 'Fallo al actualizar la contraseña.', details: err.message });
+  }
+});
+
+
 // Arranque
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, '0.0.0.0', () => {
