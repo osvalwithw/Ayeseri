@@ -10,7 +10,7 @@ export function getDB(){
     password: process.env.MYSQLPASSWORD,
     database: process.env.MYSQLDATABASE,
     waitForConnections: true,
-    connectionLimit: 10,
+    connectionLimit: 50,
     queueLimit: 0
     });
     return _Pool;
