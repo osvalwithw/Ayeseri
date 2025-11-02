@@ -419,7 +419,7 @@ app.post('/TSTemployee_errors/update', async (req, res) => {
 
       // 2) intentar update condicionando por version
       const [result] = await conn.execute(
-        'UPDATE TSTemployee_errors SET some_field = ?, version = version + 1 WHERE Numentry = ? AND version = ?',
+        'UPDATE TSTemployee_errors SET ID_Error = ?, version = version + 1 WHERE Numentry = ? AND version = ?',
         [newFieldValue, Numentry, currentVersion]
       );
 
