@@ -446,6 +446,4 @@ app.post('/TSTemployee_errors/update', async (req, res) => {
   return res.status(409).json({ ok:false, reason: 'conflict' });
 });
 
-module.exports = router;
-
 //------------------------------------------- Pruebas ----------------------------------------------------------------------
