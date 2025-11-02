@@ -388,9 +388,64 @@ app.post('/UpdateSinglePSS', async (req, res) => {
   }
 });
 
-
-// Arranque
+//------------------------------------------- Arranque ---------------------------------------------------------------------
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, '0.0.0.0', () => {
   console.log(`API escuchando en ${PORT}`);
 });
+
+//------------------------------------------- Arranque ---------------------------------------------------------------------
+//------------------------------------------- Pruebas ----------------------------------------------------------------------
+
+// Body esperado: { Numentry, newFieldValue }
+app.post('/TSTemployee_errors/update', async (req, res) => {
+  const { Numentry, newFieldValue } = req.body;
+  if (!Numentry) return res.status(400).json({ ok:false, reason: 'missing Numentry' });
+
+  const maxAttempts = 3;
+  for (let attempt = 1; attempt <= maxAttempts; attempt++) {
+    const conn = await pool.getConnection();
+    try {
+      // 1) leer version actual
+      const [rows] = await conn.execute(
+        'SELECT version FROM TSTemployee_errors WHERE Numentry = ? FOR UPDATE',
+        [Numentry]
+      );
+      if (!rows.length) {
+        conn.release();
+        return res.status(404).json({ ok:false, reason: 'not_found' });
+      }
+      const currentVersion = rows[0].version;
+
+      // 2) intentar update condicionando por version
+      const [result] = await conn.execute(
+        'UPDATE TSTemployee_errors SET some_field = ?, version = version + 1 WHERE Numentry = ? AND version = ?',
+        [newFieldValue, Numentry, currentVersion]
+      );
+
+      if (result.affectedRows > 0) {
+        // éxito
+        conn.release();
+        return res.status(200).json({ ok: true, attempt });
+      }
+
+      // conflicto: alguien más actualizó
+      conn.release();
+      // backoff exponencial antes del siguiente intento
+      const backoff = 100 * Math.pow(2, attempt - 1) + Math.floor(Math.random()*50);
+      await new Promise(r => setTimeout(r, backoff));
+      // seguir al siguiente intento
+    } catch (err) {
+      conn.release();
+      console.error('DB error', err);
+      return res.status(500).json({ ok:false, reason: 'db_error' });
+    }
+  }
+
+  // si llegamos aquí: no se logró actualizar tras retries
+  return res.status(409).json({ ok:false, reason: 'conflict' });
+});
+
+module.exports = router;
+
+//------------------------------------------- Pruebas ----------------------------------------------------------------------
