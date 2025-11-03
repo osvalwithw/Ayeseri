@@ -1,17 +1,108 @@
-app.get('/getErrors', async (req, res) => {
-  let sql = `
-      SELECT 
-      e.IDX AS ID_Error,
-      e.Error_Message,
-      i.ID_Infotype AS ID_Infotype,
-      i.Infotype_IND AS Infotype_IDX,
-      FROM errors e
-      JOIN infotypes i ON e.ID_Infotype = i.ID_Infotype`;
-  try{
-    const [rows] = await pool.query(sql);
-    res.json([rows]);
-  } catch {
-    console.error('API connection failure', e);
-    res.status(500).json({error: e.message || String(e)});
-  }
-});
+Perfecto, Oswaldo 👌
+Aquí tienes una explicación ampliada y formal, lista para incluir en tu documento final, centrada en cómo se utilizan los datasets dentro del método de resolución de errores por consultas.
+Está escrita con el mismo tono técnico-académico que el resto del Módulo 2 y se integra perfectamente debajo de la sección de funcionamiento o antes de las métricas.
+
+
+---
+
+Uso de Datasets en el Método de Resolución de Errores por Consultas
+
+1. Introducción al rol de los datasets
+
+El método de resolución de errores por consultas de Ayeseri se apoya en un conjunto estructurado de datos que sirve como base de conocimiento y entrenamiento semántico.
+Estos datasets permiten que el sistema comprenda el lenguaje técnico propio del dominio SAP–Workday y relacione expresiones humanas con soluciones documentadas.
+En términos funcionales, el dataset no solo alimenta el modelo de recuperación (retriever), sino que también constituye la fuente de verdad que la inteligencia artificial consulta para ofrecer respuestas.
+
+
+---
+
+2. Estructura del dataset principal
+
+El principal dataset empleado proviene de una fuente denominada “Resolution Cook Book”, almacenada en formato JSON o CSV y complementada por registros históricos de la base de datos errors y employee_errors.
+Cada fila o entrada representa un caso de error conocido junto con su respectiva solución, estructurada de la siguiente manera:
+
+Campo	Descripción
+
+Source_Infotype	Infotipo o módulo funcional de SAP relacionado con el error.
+Technical_error	Texto del mensaje de error o descripción técnica original.
+Posible_consults	Áreas o equipos sugeridos para contactar en caso de persistencia del fallo.
+Preconditions	Condiciones previas necesarias para ejecutar correctamente la solución.
+Resolution_steps	Pasos detallados que resuelven el problema.
+Fallbacks	Soluciones alternativas o acciones de contingencia.
+
+
+Esta estructura permite que la IA identifique no solo coincidencias literales, sino también patrones semánticos entre errores nuevos y casos documentados.
+
+
+---
+
+3. Proceso de preparación de los datos
+
+Antes de ser utilizados por los modelos de recuperación y ranking, los datasets atraviesan un proceso de curación y preprocesamiento, que incluye:
+
+Normalización textual: se eliminan acentos, símbolos y mayúsculas para evitar duplicidades.
+
+Limpieza de ruido: se descartan registros incompletos, inconsistentes o redundantes.
+
+Tokenización y filtrado de stopwords: se segmenta el texto en unidades significativas, eliminando palabras sin valor informativo.
+
+Vectorización o embeddings: cada Technical_error y Resolution_steps se transforma en una representación numérica mediante modelos de lenguaje, permitiendo medir similitud semántica entre consultas y documentos.
+
+
+El resultado de este proceso se almacena como matrices de vectores, que luego son cargadas en memoria o en una base de datos de índices (según la implementación del motor de búsqueda).
+
+
+---
+
+4. Dataset de soporte: histórico de errores reales
+
+Además del cookbook, Ayeseri utiliza como fuente de aprendizaje complementaria los registros de la tabla employee_errors, que contienen datos reales de ejecución.
+Estos registros se cruzan con los errores clasificados (errors) y con los infotipos predichos por el modelo de clasificación, generando así un dataset dinámico.
+Este dataset actúa como puente entre la teoría (soluciones conocidas) y la práctica (errores detectados en producción), lo que permite enriquecer continuamente la base de conocimiento.
+
+
+---
+
+5. Integración con el modelo de recuperación semántica
+
+El sistema emplea los datasets de dos formas principales:
+
+1. Fase de indexación:
+Los embeddings generados a partir del dataset se organizan en un índice semántico, donde cada vector representa un documento de conocimiento.
+Durante esta etapa se aplican estrategias de reducción dimensional (por ejemplo, PCA o normalización L2) para optimizar el rendimiento y el tiempo de búsqueda.
+
+
+2. Fase de consulta:
+Cuando el usuario formula una pregunta, su texto también se convierte en un embedding.
+El sistema compara este vector con los del índice mediante la similitud coseno, obteniendo los k documentos más cercanos (top-k).
+Posteriormente, un módulo de ranking híbrido refina los resultados basándose en la relevancia contextual y la coincidencia de campos (como el infotipo o tipo de error).
+
+
+
+De esta manera, los datasets no se utilizan de forma estática, sino como un entorno vivo y en constante actualización que sostiene el razonamiento del sistema.
+
+
+---
+
+6. Evaluación y enriquecimiento del dataset
+
+El desempeño del método se mide con métricas como precision@k, recall@k, MRR y nDCG, las cuales dependen directamente de la calidad del dataset.
+Durante las pruebas, se observó que un conjunto de datos más diverso y balanceado mejora la cobertura y la capacidad de generalización del modelo.
+
+Además, el sistema registra las consultas realizadas por los usuarios junto con sus valoraciones (si la respuesta fue útil o no).
+Esa información se emplea para retroalimentar y ampliar el dataset, incorporando nuevos ejemplos y refinando las descripciones existentes, lo que impulsa un proceso de aprendizaje continuo.
+
+
+---
+
+7. Conclusión
+
+En síntesis, los datasets constituyen el núcleo informativo del método de resolución de errores por consultas.
+Su correcta estructuración y actualización garantizan que el sistema pueda entender el lenguaje técnico, contextualizar las consultas y ofrecer soluciones confiables en tiempo real.
+Gracias a este enfoque basado en datos, Ayeseri transforma la experiencia de soporte técnico en un proceso automatizado, escalable y cada vez más inteligente.
+
+
+---
+
+¿Quieres que te genere esta misma sección en formato LaTeX académico, lista para copiar en tu documento (con \section{}, \subsection{} y tabla incluida)?
+Así mantendría la coherencia con el formato del resto de tu módulo 2.
