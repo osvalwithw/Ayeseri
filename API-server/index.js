@@ -136,7 +136,7 @@ app.get('/SingleUser/:Username', async (req, res) => {
   }
 });
 
-app.get('/Requests/:NoTicket/:Username/:Email/:PSS', async (req, res) => {
+app.get('/NewRequests/:NoTicket/:Username/:Email/:PSS', async (req, res) => {
   const NoTicket = req.params.NoTicket;
   const Username = req.params.Username;
   const Email = req.params.Email;

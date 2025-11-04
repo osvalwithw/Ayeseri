@@ -214,21 +214,22 @@ async function SendRequest(){
         return false;
     } 
     console.log("ok");
-    Ticket_email();
-    // try {
-    //     const response = await fetch(`https://ayeseri.onrender.com/Requests/${values['#NoTicket']}/${values['#Username']}/${values['#Email']}/${values['#PSS']}`);
-    //     if (!response.ok) {
-    //         if (response.status === 404) {
-    //             console.log('Revisar conexion');
-    //         } else {
-    //             console.error('Error 455', response.statusText);//Error peticion
-    //         }
-    //         return null;
-    //     }
-    // } catch (error) {
-    //     console.error('Error de conexion 468', error);//error de conexion con la API
-    //     return null;
-    // }
+    // Ticket_email();
+    console.log(`Enviando datos ${values['#NoTicket']}, ${values['#Username']}, ${values['#Email']}, ${values['#PSS']}`);
+    try {
+        const response = await fetch(`https://ayeseri.onrender.com/NewRequests/${values['#NoTicket']}/${values['#Username']}/${values['#Email']}/${values['#PSS']}`);
+        if (!response.ok) {
+            if (response.status === 404) {
+                console.log('Revisar conexion');
+            } else {
+                console.error('Error 455', response.statusText);//Error peticion
+            }
+            return null;
+        }
+    } catch (error) {
+        console.error('Error de conexion 468', error);//error de conexion con la API
+        return null;
+    }
 }
 
 async function Ticketval(tickettoval){
@@ -285,7 +286,6 @@ async function Email_send(dest, asun, mensj){
 }
 //---------------------------------------------------------------------------------------------------------------------------------------
 
-
 //Enviar correo al registrar ticket
 async function Ticket_email(){
     //const params = new URLSearchParams(window.location.search);
@@ -305,5 +305,5 @@ async function Ticket_email(){
 
                     Muchas gracias y que tengas buen dia!. :D
     `;
-    Useremail = Email_send(Emailtosend, ticket_subject, ticket_message);
+    // Useremail = Email_send(Emailtosend, ticket_subject, ticket_message);
 }
