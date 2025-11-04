@@ -200,7 +200,7 @@ tablaBody.addEventListener('change', function(event) {
             const usuario = fila.querySelector('.User_Row').textContent;
             const email = fila.querySelector('.Email_Row').textContent;
             const pss = fila.querySelector('.Pss_row').textContent;
-            const role = fila.querySelector('.Rolselection').textContent;
+            const role = fila.querySelector('.Rolselection').value;
             const infoTicket = {
                 id: ticketId,
                 usuario: usuario,
