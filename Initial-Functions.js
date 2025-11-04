@@ -230,6 +230,7 @@ async function SendRequest(){
         console.error('Error de conexion 468', error);//error de conexion con la API
         return null;
     }
+    alert('Solicitud enviada correctamente. Espera a que el administrador valide tu cuenta.');
 }
 
 async function Ticketval(tickettoval){
