@@ -225,12 +225,13 @@ async function SendRequest(){
                 console.error('Error 455', response.statusText);//Error peticion
             }
             return null;
+        } else {
+            alert('Solicitud enviada correctamente. Espera confirmación por correo.');
         }
     } catch (error) {
         console.error('Error de conexion 468', error);//error de conexion con la API
         return null;
     }
-    alert('Solicitud enviada correctamente. Espera a que el administrador valide tu cuenta.');
 }
 
 async function Ticketval(tickettoval){
