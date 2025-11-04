@@ -161,6 +161,7 @@ function printingtickets(data){
     const pasteinformation = document.getElementById('TableItems');
     const headerinformation = document.getElementById('Tableheaders');
     pasteinformation.innerHTML = '';
+    headerinformation.innerHTML = '';
     let insertheader = document.createElement('tr');
     insertheader.innerHTML=`
         <th></th>
@@ -169,6 +170,7 @@ function printingtickets(data){
         <th>Email</th>
         <th>Password</th>
         <th>Upload Time</th>
+        <th>Role Assigned</th>
     `;
     headerinformation.appendChild(insertheader);
     data.forEach(item => {
@@ -180,6 +182,10 @@ function printingtickets(data){
             <td class="Email_Row" id="Email_${item.id}">${item.Email}</td>
             <td class="Pss_row">${item.Psswd}</td>
             <td>${item.Upload_Time}</td>
+            <td><select class=Rolselection id=Selection_${item.id}>
+                <option value="1">1 - Usuario</option>
+                <option value="2">2 - Administrador</option>
+            </td>
         `;
         pasteinformation.appendChild(insertline);
     });
@@ -194,11 +200,13 @@ tablaBody.addEventListener('change', function(event) {
             const usuario = fila.querySelector('.User_Row').textContent;
             const email = fila.querySelector('.Email_Row').textContent;
             const pss = fila.querySelector('.Pss_row').textContent;
+            const role = fila.querySelector('.Rolselection').textContent;
             const infoTicket = {
                 id: ticketId,
                 usuario: usuario,
                 email: email,
-                pss: pss
+                pss: pss,
+                role: role
             };
             SelectTickets.push(infoTicket);
         } else {

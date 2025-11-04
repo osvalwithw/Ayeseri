@@ -200,7 +200,7 @@ app.post('/CreateUsers/:OPC', async (req, res) => {
       await conn.beginTransaction();
       console.log("Tickets a procesar en /CreateUsers:", SendTickets);
       for (const ticket of SendTickets) {
-        const { usuario, email: ticketEmail, pss, id } = ticket;
+        const { usuario, email: ticketEmail, pss, id, role } = ticket;
         const userPassword = pss;
 
         // Validaciones
@@ -216,11 +216,11 @@ app.post('/CreateUsers/:OPC', async (req, res) => {
 
         // Evita duplicados por email; si existe, solo actualiza Username (o quita el UPDATE si no quieres tocarlo)
         await conn.execute(
-          `INSERT INTO Users (email, password_hash, password_algo, \`Username\`)
-          VALUES (?, ?, 'bcrypt', ?)
+          `INSERT INTO Users (email, password_hash, password_algo, \`Username\`, UserRole, PSSFlagchange)
+          VALUES (?, ?, 'bcrypt', ?, ?, 0)
           ON DUPLICATE KEY UPDATE
             \`Username\` = VALUES(\`Username\`)`,
-          [ticketEmail, password_hash, usuario]
+          [ticketEmail, password_hash, usuario, role]
         );
 
         // Borra el request procesado
