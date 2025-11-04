@@ -91,13 +91,10 @@ async function User_search(usertofind, passw) {
   const isEmail = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(usertofind);
   const payload = isEmail ? { email: usertofind, password: passw }
                           : { username: usertofind, password: passw };
-
   const res = await fetch(`${API}/LoginUser`, {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify(payload)
-  });
-
+    body: JSON.stringify(payload)});
   if (res.ok) {
     return await res.json(); // { ok, user:{...} }
   }
@@ -120,6 +117,33 @@ function Loginpage(){
     //    "width=600,height=400,top=100,left=100, toolbar=no,scrollbars=yes,resizable=no");
     document.getElementById("glass-container").style.display = "block";
     document.getElementById("Register-box").style.display = "none";
+}
+
+async function Usercreated(Username){
+    const API = 'https://ayeseri.onrender.com';
+    try{
+        const response = await fetch(`${API}/Users`);
+            if (!response.ok) {
+                if (response.status === 404) {
+                    console.log('Revisar conexion');
+                } else {
+                    console.error('Error 455', response.statusText);//Error peticion
+                }
+                return null;
+            }
+        const data = await response.json();
+        // console.log(data);
+        for (const Obj of data){
+                // console.log(`${Obj.Username} == ${Username}`);
+                if((Obj.Username === Username)){
+                    return 1;
+                }
+            }
+        return 0;
+    } catch (error) {
+            console.error('Error de conexion 468', error);//error de conexion con la API
+            return null;
+        }
 }
 
 // async function SendRequest(){
@@ -166,7 +190,9 @@ document.querySelector('#sendbutton').addEventListener('click', async (e) => {
         if (lbl) lbl.style.color = 'red';
         if (!firstInvalid) firstInvalid = document.querySelector('#NoTicket');
     }
-    let Userexist = await User_search(values['#Username'], 'NA', 1);
+
+    let Userexist = await Usercreated(values['#Username']);
+    
     if(Userexist == 1){
         errors.push('• El nombre de usuario ya existe');
         const lbl = document.querySelector('#Usernamelb');
@@ -216,13 +242,9 @@ document.querySelector('#sendbutton').addEventListener('click', async (e) => {
     } 
     console.log("ok");
     // Ticket_email();
-    console.log(`Enviando datos ${values['#NoTicket']}, ${values['#Username']}, ${values['#Email']}, ${values['#PSS']}`);
+    // console.log(`Enviando datos ${values['#NoTicket']}, ${values['#Username']}, ${values['#Email']}, ${values['#PSS']}`);
     // await upload_inDB(values['#NoTicket'], values['#Username'], values['#Email'], values['#PSS']);
-    validation = await upload_inDB(
-    values['#NoTicket'],
-    values['#Username'],
-    values['#Email'],
-    values['#PSS']);
+    // validation = await upload_inDB(values['#NoTicket'], values['#Username'], values['#Email'], values['#PSS']);
 });
 
 async function upload_inDB(NoTicket, Username, Email, PSS) {
@@ -237,7 +259,6 @@ async function upload_inDB(NoTicket, Username, Email, PSS) {
             return null;
         }
         const data = await response.json();
-        console.log(data);
         alert('Solicitud registrada con exito, en breve recibira un correo de confirmacion.');
         return data;
     } catch (error) {
@@ -260,9 +281,9 @@ async function Ticketval(tickettoval){
             return null;
         }
         const data = await response.json();
-        console.log(data);
+        // console.log(data);
         for (const Obj of data){
-                console.log(`${Obj.Noticket} == ${tickettoval}`);
+                // console.log(`${Obj.Noticket} == ${tickettoval}`);
                 if((Obj.NoTicket === tickettoval)){
                     key = 1;
                 }
