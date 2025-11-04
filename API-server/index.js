@@ -237,11 +237,17 @@ app.post('/CreateUsers/:OPC', async (req, res) => {
       res.status(500).json({ error: 'Fallo al crear usuarios (rollback aplicado)' });
     }
   } else {
-    const DeletePromises = SendTickets.map(ticket => {
+    try{
+      const DeletePromises = SendTickets.map(ticket => {
         const { usuario, email, id, pss } = ticket;
         console.log(`Procesando ticket ID: ${id}, Usuario: ${usuario}, Email: ${email}, Pss: ${pss}`);
         const deleteSql = `DELETE FROM Requests WHERE id = ?`;
         return pool.query(deleteSql, [id])});
+    } catch (e){
+      console.error('/CreateUsers OPC!=1:', e.message);
+      res.status(500).json({error: e.message});
+    }
+    res.json({ message: 'Operación de eliminación completada exitosamente.' });
   }
 });
 

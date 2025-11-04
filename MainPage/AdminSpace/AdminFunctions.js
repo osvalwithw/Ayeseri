@@ -215,7 +215,7 @@ async function ProcessTickets(OPC){
     }
     console.log("Enviando este cuerpo JSON a la API:", JSON.stringify({ SendTickets:SelectTickets}, null, 2));
     try {
-        const respuesta = await fetch(`https://ayeseri.onrender.com/SingleUser/{}`, {
+        const respuesta = await fetch(`https://ayeseri.onrender.com/CreateUsers/${OPC}`, {
             method: 'POST', 
             headers: {
                 'Content-Type': 'application/json'
