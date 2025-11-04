@@ -149,7 +149,7 @@ app.get('/NewRequests/:NoTicket/:Username/:Email/:PSS', async (req, res) => {
     hourformat: true
   };
   const ActualTimeFunc = new Intl.DateTimeFormat('es-MX', timeparams);
-  const Actualtime = ActualTimeFunc.format(newDate());
+  const Actualtime = ActualTimeFunc.format(new Date());
   const PSS = req.params.PSS;
   const params = [NoTicket, Username, Email, PSS, Actualtime];
   //const encrypt = await bcrypt.hash(PSS, 10);
