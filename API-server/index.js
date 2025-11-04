@@ -159,6 +159,7 @@ app.get('/NewRequests/:NoTicket/:Username/:Email/:PSS', async (req, res) => {
   VALUES (?, ?, ?, ?, ?)`;
   try{
     const [rows] = await pool.query(sql, params);
+    return res.status(201).json({ ok: true, id: rows.insertId });
   } catch (e){
     console.error('/Requests:', e.message);
     res.status(500).json({error: e.message});

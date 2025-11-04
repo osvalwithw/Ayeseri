@@ -122,8 +122,9 @@ function Loginpage(){
     document.getElementById("Register-box").style.display = "none";
 }
 
-async function SendRequest(){
-    
+// async function SendRequest(){
+document.querySelector('#sendbutton').addEventListener('click', async (e) => {
+    e.preventDefault();   
     const fields = [
         { input: '#NoTicket', label: '#NoTicketlbl', msg: 'Coloca el número de ticket.' },
         { input: '#Username', label: '#Usernamelb',  msg: 'Se necesita nombre de usuario.' },
@@ -216,8 +217,17 @@ async function SendRequest(){
     console.log("ok");
     // Ticket_email();
     console.log(`Enviando datos ${values['#NoTicket']}, ${values['#Username']}, ${values['#Email']}, ${values['#PSS']}`);
+    // await upload_inDB(values['#NoTicket'], values['#Username'], values['#Email'], values['#PSS']);
+    validation = await upload_inDB(
+    values['#NoTicket'],
+    values['#Username'],
+    values['#Email'],
+    values['#PSS']);
+});
+
+async function upload_inDB(NoTicket, Username, Email, PSS) {
     try {
-        const response = await fetch(`https://ayeseri.onrender.com/NewRequests/${values['#NoTicket']}/${values['#Username']}/${values['#Email']}/${values['#PSS']}`);
+        const response = await fetch(`https://ayeseri.onrender.com/NewRequests/${NoTicket}/${Username}/${Email}/${PSS}`);
         if (!response.ok) {
             if (response.status === 404) {
                 console.log('Revisar conexion');
@@ -225,9 +235,11 @@ async function SendRequest(){
                 console.error('Error 455', response.statusText);//Error peticion
             }
             return null;
-        } else {
-            alert('Solicitud enviada correctamente. Espera confirmación por correo.');
         }
+        const data = await response.json();
+        console.log(data);
+        alert('Solicitud registrada con exito, en breve recibira un correo de confirmacion.');
+        return data;
     } catch (error) {
         console.error('Error de conexion 468', error);//error de conexion con la API
         return null;
