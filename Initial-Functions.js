@@ -16,6 +16,7 @@
 
 
 async function envio_test(){
+    console.log("Enviando correo de prueba...");
     try {
         const res = await fetch('https://ayeseri.onrender.com/Emails/SendEmail', {
           method: 'POST',
