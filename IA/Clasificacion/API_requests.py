@@ -48,8 +48,8 @@ def GetIT_FromAPI():
 
 
 def UploadErrorList(ListToUpload):
-    print('Uploading list to BD...')
-    print(ListToUpload)
+    # print('Uploading list to BD...')
+    # print(ListToUpload)
     try:
         url = f"https://ayeseri.onrender.com/InsertErrors"
         headers = {'Content-Type': 'application/json'}

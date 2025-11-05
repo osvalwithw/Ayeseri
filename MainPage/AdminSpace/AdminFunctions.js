@@ -333,6 +333,9 @@ function renderPreview(file) {
             return obj;
         });
         // console.log(packing);
+        const normalizedData = e => e.normalize
+
+
         Files2Send(dta);
     };
     reader.readAsText(file);

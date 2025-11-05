@@ -31,8 +31,8 @@ def obtain_errors():
     for i, item in enumerate(ErrorsFromFN):
         if not isinstance(item, dict):
             return jsonify({"error": f"Elemento {i} no es objeto JSON", "got": type(item)._name_}), 400
-    Processing_new_errors(ErrorsFromFN)
-    UploadingEE_Errors(ErrorsFromFN)
+    ErrHD = Processing_new_errors(ErrorsFromFN)
+    UploadingEE_Errors(ErrorsFromFN, ErrHD)
     return jsonify({"message": "Datos recibidos correctamente"}), 200
 
 if __name__ == "__main__":
