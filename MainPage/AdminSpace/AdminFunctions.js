@@ -313,7 +313,6 @@ function renderPreview(file) {
         console.error("Ocurrió un error al leer el archivo:", e);
     };
 
-    // 4. Definimos qué hacer cuando la lectura sea exitosa.
     reader.onload = (e) => {
         const text = e.target.result;
         const lines = text.split(/\r?\n/).filter(l => l.trim() !== "");
@@ -328,13 +327,12 @@ function renderPreview(file) {
             const values = line.split(",");
             const obj = {};
             headers.forEach((h, i) => {
+                if(obj)
                 obj[h] = values[i] ? values[i].trim() : null;
             });
             return obj;
         });
         // console.log(packing);
-        const normalizedData = e => e.normalize
-
 
         Files2Send(dta);
     };
@@ -343,22 +341,28 @@ function renderPreview(file) {
 
 async function Files2Send(pack) { //https://ayeseri.onrender.com/ClasifyMethod
     // console.log(typeof(pack), pack);
-    try {
-        const respuesta = await fetch(`https://supreme-winner-v4j64j4r6vrh99-5001.app.github.dev/ObtainErrorsFN`, {
-            method: 'POST', 
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify(pack)
-        });
-        if (!respuesta.ok) {
-            throw new Error(`Error del servidor: ${respuesta.status}`);
-        }
-        console.log('Archivo enviado con exito');
-    } catch (error) {
-        console.error('Error al enviar los datos a la API:', error);
-        alert('Hubo un problema al conectar con el servidor. Inténtalo de nuevo.');
-    }
+    const params = new URLSearchParams(window.location.search);
+    const Userload = params.get('User');
+    console.log("Usuario que carga el archivo:", Userload);
+    console.log("Paquete a enviar:", pack);
+    pack[['Loadedby']] = Userload;
+    // console.log("Enviando este cuerpo JSON a la API:", JSON.stringify(pack, null, 2));
+    // try {
+    //     const respuesta = await fetch(`https://supreme-winner-v4j64j4r6vrh99-5001.app.github.dev/ObtainErrorsFN`, {
+    //         method: 'POST', 
+    //         headers: {
+    //             'Content-Type': 'application/json'
+    //         },
+    //         body: JSON.stringify(pack)
+    //     });
+    //     if (!respuesta.ok) {
+    //         throw new Error(`Error del servidor: ${respuesta.status}`);
+    //     }
+    //     console.log('Archivo enviado con exito');
+    // } catch (error) {
+    //     console.error('Error al enviar los datos a la API:', error);
+    //     alert('Hubo un problema al conectar con el servidor. Inténtalo de nuevo.');
+    // }
 }
 
 //--------------------------------------------Error Load------------------------------------------------------------

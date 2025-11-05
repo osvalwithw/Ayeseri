@@ -12,6 +12,7 @@ def ping():
 
 @app.route('/ObtainErrorsFN', methods=['POST', 'OPTIONS'])
 def obtain_errors():
+    print(request.url)
     if request.method == 'OPTIONS':
         return ('', 204)
     ErrorsFromFN = request.get_json(silent=True)
@@ -31,6 +32,7 @@ def obtain_errors():
     for i, item in enumerate(ErrorsFromFN):
         if not isinstance(item, dict):
             return jsonify({"error": f"Elemento {i} no es objeto JSON", "got": type(item)._name_}), 400
+    
     ErrHD = Processing_new_errors(ErrorsFromFN)
     UploadingEE_Errors(ErrorsFromFN, ErrHD)
     return jsonify({"message": "Datos recibidos correctamente"}), 200

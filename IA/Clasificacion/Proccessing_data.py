@@ -95,6 +95,6 @@ def UploadingEE_Errors(ErrorsFromFN, errorhd):
             error['Error_Message'] = id_encontrado
             error['Load_Date'] = bs_date
             error['Load_Hour'] = bs_hour
-    # print("Processed EE Errors:", ErrorsFromFN)
-    EEDB_Load(ErrorsFromFN)
+    print("Processed EE Errors:", ErrorsFromFN)
+    # EEDB_Load(ErrorsFromFN)
     return

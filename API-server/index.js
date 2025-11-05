@@ -6,6 +6,7 @@ import axios from 'axios';
 import 'dotenv/config.js';
 import { hashPassword } from './Libs/cifr.js';
 import { LoginUser } from './Libs/Login.js';
+import { promises as fs } from 'fs';
 
 const app = express();
 app.use(cors());
@@ -312,7 +313,8 @@ app.post('/InsertErrors', async (req, res) =>{
   }
 });
 
-app.post('/EEInsertErrors', async (req, res) =>{
+app.post('/EEInsertErrors/:User', async (req, res) =>{
+  const Loadedby = req.params.User;
   console.log(req.body);
   try {
     const Toload = req.body;
@@ -327,6 +329,7 @@ app.post('/EEInsertErrors', async (req, res) =>{
     });
     await Promise.all(insertPromises);
     res.json({ message: 'Errores de EE insertados exitosamente.' });
+    Storefile(Loadedby);
   } catch (e){
     console.error('/InsertErrors:', e.message);
     res.status(500).json({error: e.message});
@@ -394,6 +397,19 @@ app.post('/UpdateSinglePSS', async (req, res) => {
     res.status(500).json({ error: 'Fallo al actualizar la contraseña.', details: err.message });
   }
 });
+
+async function Storefile(actor) {
+
+  const lastloadby = {
+    Date: new Date().toLocaleString(),
+    User: actor,
+    Note: 'Last error load by User'
+  };
+  await fs.mkdir('./Logs/Lastload.txt', { recursive: true });
+  await fs.writeFile('./Logs/Lastload.txt', JSON.stringify(lastloadby, null, 2), 'utf8');
+}
+
+
 
 //------------------------------------------- Arranque ---------------------------------------------------------------------
 const PORT = process.env.PORT || 3000;
