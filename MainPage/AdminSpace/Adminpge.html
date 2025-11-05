@@ -30,11 +30,14 @@
         </div>
         <div class="MainErrorsWindow" id="Errorsview">
             <div class="column ErrorsLoadWindow">
+                <p>Load Errors from File</p>
                 <input type="file" class="LoadFiles" id="SingleLoad" hidden accept=".csv"></input>
                 <input class="LoadFiles" id="FakeSingleLoad" readonly></input>
                 <button class="BTNLoad" id="BTNSingleLoad">Select</button>
+                <p>Load errors from a path</p>
                 <input class="LoadFiles" id="MultipleLoad" readonly webkitirectory directory multiple></input>
                 <button class="BTNLoad" id="BTNMultipleLoad" readonly>Select</button>
+                <p></p>
                 <button class="BTNLoad" id="ConfirmLoad">Iniciar carga</button>
             </div>
             <div class="column ErrosTimeModule">

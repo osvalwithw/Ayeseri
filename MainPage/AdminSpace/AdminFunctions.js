@@ -403,7 +403,7 @@ function printingusers(data){
         <th>User Name</th>
         <th>Email</th>
         <th>Last Update</th>
-        <th>Change flag</th>
+        <th>Change PSS flag</th>
     `;
     headerinformation.appendChild(insertheader);
     data.forEach(item => {
