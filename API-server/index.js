@@ -399,7 +399,7 @@ app.post('/UpdateSinglePSS', async (req, res) => {
 });
 
 async function Storefile(actor) {
-
+  print('Storing last load info for user:', actor);
   const lastloadby = {
     Date: new Date().toLocaleString(),
     User: actor,
@@ -407,6 +407,7 @@ async function Storefile(actor) {
   };
   // await fs.mkdir('./Logs/Lastload.txt', { recursive: true });
   await fs.writeFile('./Logs/Lastload.txt', JSON.stringify(lastloadby, null, 2), 'utf8');
+  return;
 }
 
 
