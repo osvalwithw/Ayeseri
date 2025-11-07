@@ -66,16 +66,17 @@ def Processing_new_errors(ErrorsFromFN):
                 aux = it['Infotype_IND']
         new_error['ID_Infotype'] = aux
 
-    print("TO process", onlynew)
+    # print("TO process", onlynew)
     # print("Ignored due to existence: ", not_processed)
     if onlynew:
+        # print(f"Uploading {len(onlynew)} new errors to the database...")
         # Agregarr tiempo de espera
         UploadErrorList(onlynew)
     else:
         print("No new errors to upload.")
     return errorhd
 
-def UploadingEE_Errors(ErrorsFromFN, errorhd):
+def UploadingEE_Errors(ErrorsFromFN, Userwhouploads):
     ErrorsFromDB = GetErros_FromAPI()
     system_date = datetime.now()
     actual_date = system_date.date()
@@ -96,5 +97,5 @@ def UploadingEE_Errors(ErrorsFromFN, errorhd):
             error['Load_Date'] = bs_date
             error['Load_Hour'] = bs_hour
     print("Processed EE Errors:", ErrorsFromFN)
-    # EEDB_Load(ErrorsFromFN)
+    EEDB_Load(ErrorsFromFN, Userwhouploads)
     return

@@ -6,6 +6,8 @@ from Proccessing_data import Processing_new_errors, UploadingEE_Errors
 app = Flask(__name__)
 CORS(app, resources={r"/*": {"origins": "*"}})
 
+Userwhouploads = None
+
 @app.route('/ping')
 def ping():
     return "pong", 200
@@ -33,8 +35,19 @@ def obtain_errors():
         if not isinstance(item, dict):
             return jsonify({"error": f"Elemento {i} no es objeto JSON", "got": type(item)._name_}), 400
     
+    # print("Received errors:", ErrorsFromFN)
+    for node in ErrorsFromFN:
+        for key in node.keys():
+            if key.lower() == 'loadedby':
+                global Userwhouploads
+                Userwhouploads = node[key]
+                # print(f"Usuario que carga el archivo: {Userwhouploads}")
+                node.pop(key)
+                break
+        
+    # print(ErrorsFromFN)
     ErrHD = Processing_new_errors(ErrorsFromFN)
-    UploadingEE_Errors(ErrorsFromFN, ErrHD)
+    UploadingEE_Errors(ErrorsFromFN, Userwhouploads)
     return jsonify({"message": "Datos recibidos correctamente"}), 200
 
 if __name__ == "__main__":

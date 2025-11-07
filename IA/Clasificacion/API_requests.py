@@ -66,11 +66,14 @@ def UploadErrorList(ListToUpload):
         print(f"Please review following error: {RQSError}")
     return
 
-def EEDB_Load(ListToUpload):
-    url = f"https://ayeseri.onrender.com/EEInsertErrors"
+def EEDB_Load(ListToUpload, Userwhouploads):
+    url = f"https://ayeseri.onrender.com/EEInsertErrors/{Userwhouploads}"
+    print('user who uploads:', Userwhouploads)
     try:
         headers = {'Content-Type': 'application/json'}
+
         response = requests.post(url, json=ListToUpload, headers=headers)
+        
         response.raise_for_status()
         print("Datos enviados correctamente a la API.")
     except requests.exceptions.HTTPError as HttpError:

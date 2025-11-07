@@ -23,6 +23,9 @@ async function windowadjust(){
         windows[Window_opc].style.display = 'flex';
     }
 }
+
+const params = new URLSearchParams(window.location.search);
+const Userload = params.get('User');
 //--------------------------------------------Window Adjustment------------------------------------------------------------
 const AdminUserviewBtn = document.getElementById('Userview');
 
@@ -304,6 +307,7 @@ Proceedbutton.addEventListener('click', () =>{
 });
 
 function renderPreview(file) {
+    
     if (!file) {
         console.error("No se proporcionó ningún archivo a la función renderPreview.");
         return;
@@ -324,11 +328,12 @@ function renderPreview(file) {
 
         const headers = lines[0].split(",").map(h => h.trim());
         const dta = lines.slice(1).map(line => {
+            // dta[['Loadedby']] = Userload;
             const values = line.split(",");
-            const obj = {};
+            const obj = {['Loadedby']: Userload};
             headers.forEach((h, i) => {
                 if(obj)
-                obj[h] = values[i] ? values[i].trim() : null;
+                    obj[h] = values[i] ? values[i].trim() : null;
             });
             return obj;
         });
@@ -341,28 +346,25 @@ function renderPreview(file) {
 
 async function Files2Send(pack) { //https://ayeseri.onrender.com/ClasifyMethod
     // console.log(typeof(pack), pack);
-    const params = new URLSearchParams(window.location.search);
-    const Userload = params.get('User');
-    console.log("Usuario que carga el archivo:", Userload);
-    console.log("Paquete a enviar:", pack);
-    pack[['Loadedby']] = Userload;
+    // console.log("Usuario que carga el archivo:", Userload);
+    // console.log("Paquete a enviar:", pack);
     // console.log("Enviando este cuerpo JSON a la API:", JSON.stringify(pack, null, 2));
-    // try {
-    //     const respuesta = await fetch(`https://supreme-winner-v4j64j4r6vrh99-5001.app.github.dev/ObtainErrorsFN`, {
-    //         method: 'POST', 
-    //         headers: {
-    //             'Content-Type': 'application/json'
-    //         },
-    //         body: JSON.stringify(pack)
-    //     });
-    //     if (!respuesta.ok) {
-    //         throw new Error(`Error del servidor: ${respuesta.status}`);
-    //     }
-    //     console.log('Archivo enviado con exito');
-    // } catch (error) {
-    //     console.error('Error al enviar los datos a la API:', error);
-    //     alert('Hubo un problema al conectar con el servidor. Inténtalo de nuevo.');
-    // }
+    try {
+        const respuesta = await fetch(`https://supreme-winner-v4j64j4r6vrh99-5001.app.github.dev/ObtainErrorsFN`, {
+            method: 'POST', 
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(pack)
+        });
+        if (!respuesta.ok) {
+            throw new Error(`Error del servidor: ${respuesta.status}`);
+        }
+        console.log('Archivo enviado con exito');
+    } catch (error) {
+        console.error('Error al enviar los datos a la API:', error);
+        alert('Hubo un problema al conectar con el servidor. Inténtalo de nuevo.');
+    }
 }
 
 //--------------------------------------------Error Load------------------------------------------------------------
