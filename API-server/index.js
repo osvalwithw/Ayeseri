@@ -399,7 +399,7 @@ app.post('/UpdateSinglePSS', async (req, res) => {
 });
 
 async function Storefile(actor) {
-  print('Storing last load info for user:', actor);
+  console.log('Storing last load info for user:', actor);
   const lastloadby = {
     Date: new Date().toLocaleString(),
     User: actor,
