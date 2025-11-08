@@ -43,7 +43,7 @@ export async function LoginUser(req, res) {
 
     return res.json({
       ok: true,
-      user: { id: u.id, username: u.username, email: u.email }
+      user: { id: u.id, username: u.username, email: u.email, role: u.UserRole }
     });
   } catch (e) {
     console.error('/LoginUser:', e);
