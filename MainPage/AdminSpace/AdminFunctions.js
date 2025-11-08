@@ -607,7 +607,7 @@ async function ChangeSelectedUsersRole(){
         element.role = parseInt(rolselection);
     }); 
     // console.log("Usuarios", SelectedUsers);
-    // console.log("Enviando este cuerpo JSON a la API:", JSON.stringify({ Toprocess:SelectedUsers}, null, 2));
+    console.log("Enviando este cuerpo JSON a la API:", JSON.stringify(SelectedUsers, null, 2));
     confirmation = confirm(`Estas seguro de querer cambiar el rol a ${SelectedUsers.length} usuario(s)?`);
     if(!confirmation){
         return;
@@ -618,7 +618,7 @@ async function ChangeSelectedUsersRole(){
             headers: {
                 'Content-Type': 'application/json'
             },
-            body: JSON.stringify({ Toprocess:SelectedUsers }) 
+            body: JSON.stringify(SelectedUsers, null, 2) 
         });
         if (!respuesta.ok) {
             throw new Error(`Error del servidor: ${respuesta.status}`);

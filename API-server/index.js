@@ -376,9 +376,9 @@ app.post('/UpdatePSS', async (req, res) => {
 });
 
 app.post("/ChangeUserRole", async (req, res) => {
-  console.log('Received request to /ChangeUserRole with query:', req.query);
+  console.log('Received request to /ChangeUserRole with query:', req.body);
   try{
-    const { id, role } = req.query;
+    const { id, role } = req.body;
     if (!id || !role) {
       return res.status(400).json({ error: 'Los parámetros "id" y "role" son requeridos.' });
     }
