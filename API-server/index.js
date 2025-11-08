@@ -400,15 +400,18 @@ app.post('/UpdateSinglePSS', async (req, res) => {
 
 async function Storefile(actor) {
   console.log('Storing last load info for user:', actor);
-  const lastloadby = {
-    Date: new Date().toLocaleString(),
-    User: actor,
-    Note: 'Last error load by User'
-  };
-  await fs.mkdir('./Logs', { recursive: true });
-  await fs.appendFile('./Logs/Lastload.txt', JSON.stringify(lastloadby) + '\n', 'utf8');
-  console.log('Last load info stored successfully');
+  const now = new Date();
+  const date = now.toISOString().slice(0,10);          // YYYY-MM-DD
+  const hour = now.toTimeString().slice(0,8);          // HH:MM:SS
+  await pool.query(
+    `INSERT INTO Lastload (IDinvolved, Date, Hour)
+    SELECT id, CURDATE(), CURTIME()
+    FROM Users
+    WHERE Username = ?`,
+    [actor]
+  );
 }
+
 
 
 
