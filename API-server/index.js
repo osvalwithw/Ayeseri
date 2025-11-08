@@ -315,7 +315,7 @@ app.post('/InsertErrors', async (req, res) =>{
 
 app.post('/EEInsertErrors/:User', async (req, res) =>{
   const Loadedby = req.params.User;
-  console.log(req.body);
+  // console.log(req.body);
   try {
     const Toload = req.body;
     if (!Array.isArray(Toload) || Toload.length === 0) {
@@ -413,6 +413,23 @@ async function Storefile(actor) {
   console.log('Log stored in DB');
 }
 
+app.get('/lastload', async (req, res) => {
+  try{
+    const [rows] = await pool.query(
+    `SELECT 
+    U.Username, 
+    CONCAT (L.Date, ' ', L.Hour) AS DTALASTLOAD 
+    FROM LastLoad L
+    JOIN Users U ON L.IDinvolved = U.id 
+    ORDER BY L.Date DESC, L.Hour DESC 
+    LIMIT 1`
+    );
+    res.json(rows[0] ?? { Date: null, Hour: null });
+  } catch (e){
+      console.error('/lastload:', e.message);
+      res.status(500).json({error: e.message});
+  }
+});
 
 
 
