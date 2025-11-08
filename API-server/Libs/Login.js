@@ -28,7 +28,7 @@ export async function LoginUser(req, res) {
     const value = email || username;
 
     const [rows] = await conn.execute(
-      `SELECT id, \`Username\` AS username, email, password_hash
+      `SELECT id, \`Username\` AS username, email, password_hash, UserRole
          FROM Users
         WHERE ${where}
         LIMIT 1`,

@@ -586,7 +586,11 @@ async function ProcessSelectedUsers(){
         }
         const datosRespuesta = await respuesta.json();
         console.log('Éxito! Respuesta del servidor:', datosRespuesta);
-        alert('Las contraseñas se actualizaron correctamente.');    
+        alert('Las contraseñas se actualizaron correctamente.');
+        SelectedUsers.forEach(element => {
+            let row = document.getElementById(`PSSCheckbox_${element.id}`);
+            row.checked = false;
+        });      
         SelectedUsers = [];
     } catch (error) {
         console.error('Error al enviar los datos a la API:', error);
@@ -607,7 +611,7 @@ async function ChangeSelectedUsersRole(){
         element.role = parseInt(rolselection);
     }); 
     // console.log("Usuarios", SelectedUsers);
-    console.log("Enviando este cuerpo JSON a la API:", JSON.stringify(SelectedUsers, null, 2));
+    // console.log("Enviando este cuerpo JSON a la API:", JSON.stringify(SelectedUsers, null, 2));
     confirmation = confirm(`Estas seguro de querer cambiar el rol a ${SelectedUsers.length} usuario(s)?`);
     if(!confirmation){
         return;
@@ -625,7 +629,11 @@ async function ChangeSelectedUsersRole(){
         }
         const datosRespuesta = await respuesta.json();
         console.log('Éxito! Respuesta del servidor:', datosRespuesta);
-        alert('Los roles se actualizaron correctamente.');    
+        alert('Los roles se actualizaron correctamente.');
+        SelectedUsers.forEach(element => {
+            let row = document.getElementById(`PSSCheckbox_${element.id}`);
+            row.checked = false;
+        });    
         SelectedUsers = [];
     } catch (error) {
         console.error('Error al enviar los datos a la API:', error);
