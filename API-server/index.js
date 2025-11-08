@@ -376,25 +376,28 @@ app.post('/UpdatePSS', async (req, res) => {
 });
 
 app.post("/ChangeUserRole", async (req, res) => {
-  console.log('Received request to /ChangeUserRole with query:', req.body);
+  const UserData = req.body;
+  console.log('Received request to /ChangeUserRole with query:', UserData);
   try{
-    const { id, role } = req.body;
-    if (!id || !role) {
-      return res.status(400).json({ error: 'Los parámetros "id" y "role" son requeridos.' });
-    }
-    const [result] = await pool.execute(
-      `UPDATE Users
-       SET UserRole = ?
-       WHERE id = ?`,
-      [role, id]
-    );
-    if (result.affectedRows === 0) {
-      return res.status(404).json({ error: 'Usuario no encontrado.' });
-    }
-    res.json({ message: 'Rol de usuario actualizado correctamente.' });
+    UserData.forEach(async (user) => {
+      const { id, role } = user;
+      console.log(`Updating user ID: ${id} to role: ${role}`);
+      const [result] = await pool.execute(
+        `UPDATE Users
+         SET UserRole = ?
+         WHERE id = ?`,
+        [role, id]
+      );
+      if (result.affectedRows === 0) {
+        console.warn(`User with ID ${id} not found.`);
+      } else {
+        console.log(`User ID ${id} updated successfully to role ${role}.`);
+      }
+    });
+    res.json({ message: 'Roles de usuario actualizados correctamente.' });
   } catch (err) {
     console.error('Error en /ChangeUserRole:', err.message || err);
-    res.status(500).json({ error: 'Fallo al actualizar el rol de usuario.', details: err.message });
+    res.status(500).json({ error: 'Fallo al actualizar los roles de usuario.', details: err.message });
   }
 });
 
