@@ -19,7 +19,7 @@ body {
     height: 400px; 
     position: relative; 
     z-index: 1; 
-    background: rgba(255, 255, 255, 0.1); 
+    background: rgba(95, 92, 92, 0.253); 
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); 
     border-radius: 10px; 
     border: lpx solid #ffffff;
@@ -167,4 +167,26 @@ p {
     gap: 40px;
     margin-top: 20px;
     margin-left: 50px;
+}
+
+#Missingpassword{
+    display:none;
+    position: absolute;
+    margin-top: 40px;
+    padding-top: 40px;
+    justify-content: center; 
+    align-items: center; 
+    place-items: center;
+    height: 250px;
+    width: 420px;
+    z-index: 1; 
+    background: rgba(73, 71, 71, 0.534); 
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); 
+    border-radius: 10px;
+    text-align: center;
+}
+
+#PSSbutton{
+    cursor: pointer;
+    font-size: 15px;
 }

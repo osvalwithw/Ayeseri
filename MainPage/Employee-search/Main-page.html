@@ -108,10 +108,10 @@
                             <p id="OPTITLB_Others">Others</p>
                         </div>
                     </div>
-                    <div class="DirectSearch">
+                    <!-- <div class="DirectSearch">
                         <p id="Dirlbl">Type Infotype</p>
                         <input id="DirInput" type="text" style="width: 150px; height: 30px;" placeholder="0000/0001/Others.....">
-                    </div>
+                    </div> -->
                     <div class="NewPeriodSelection">
                         <p id="Timelbl">Period Selection</p>
                         <input type="range" id="timeSelection" min="0" max="8" value="3" style="width: 300px;">
@@ -132,14 +132,16 @@
                 </div>
             </div>
             <div id="report-section">
-                <div class="rep_options">
-                    <h2 id="rptlabel">Levantar un reporte</h2>
+                <h2 id="rptlabel" style="width: 100%;">Levantar un reporte</h2>
+                <button id="RPTexitbtn" class="material-icons" style="font-size: 30px;">cancel</button>
+                <div class="rep_options">  
                     <label id="rptquestion">¿Que desea reportar?</label>
-                    <input type="text" id="rptquestion_input">
-                    <label id="rpttime">¿Cuando ocurrio el incidente?</label>
-                    <input type="datetime-local" id="rptdate_input">
+                    <input type="text" id="rptquestion_input" style="width: 70%;" placeholder="Describa brevemente el problema.">
                     <label id="rptdetails">Explique a detalle el problema que tiene.</label>
                     <textarea type="text" id="rptdetails_input" style="width: 300px; height: 100px; resize: none;" rows="5" cols="30"></textarea>
+                    <label id="rpttime">¿Cuando ocurrio el incidente?</label>
+                    <input type="datetime-local" id="rptdate_input">
+                    <p id="Nwline" style="width: 30%;"></p>
                     <button id="sendreport" style="width: 100px; " onclick="Report_send()">Enviar reporte</button>
                     <button id="Cancel_Sendreport" onclick="show_report_register(1)">Cancel</button>
                 </div>

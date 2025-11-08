@@ -41,6 +41,7 @@ li a,
 li a:hover,
 .sub-menu:hover .submenu-btn {
     background-color: rgb(16, 90, 119);
+    cursor: pointer;
 }
 
 .submenu {

@@ -29,16 +29,16 @@ const TimeParameters = [{TID: 0, Label: "To current date", URLtime: "ToCrrDate"}
                         {TID: 8, Label: "All", URLtime: "All"},
                     ];
 
-document.addEventListener("keydown", (event) =>{
-    if(event.key === "Enter"){
-        let directsearch = document.getElementById('DirInput').value;
-        if(Validroutes.includes(directsearch)){
-            ITSelection(directsearch);
-        } else {
-            alert("Revisa la entrada 'Type Infotype'")
-        }
-    }    
-});
+// document.addEventListener("keydown", (event) =>{
+//     if(event.key === "Enter"){
+//         let directsearch = document.getElementById('DirInput').value;
+//         if(Validroutes.includes(directsearch)){
+//             ITSelection(directsearch);
+//         } else {
+//             alert("Revisa la entrada 'Type Infotype'")
+//         }
+//     }    
+// });
 
 const Timeadjust = document.getElementById('timeSelection'); //Selection
 const Timeadjustlbl = document.getElementById('Timeopc');      //Label
@@ -116,7 +116,7 @@ function ITSelection(ITVAL){
     highlight_help.addEventListener("mouseout", () =>{
         highlight_help.style.background = "rgb(1, 53, 106)";
     });
-    tittlechange.innerText = `Infotype`;
+    tittlechange.innerText = `Option selected: `;
     if(Prevsel){
         let Prevselection = document.querySelector(`.${Prevsel}`);
         Prevselection.style.border = "none";
@@ -152,6 +152,16 @@ function ITSelection(ITVAL){
         }
     }
 }
+
+//--------------------------------------------------------------------------------------------
+// Report Section Functions
+//--------------------------------------------------------------------------------------------
+
+const RPTexitbtn = document.getElementById('RPTexitbtn');
+
+RPTexitbtn.addEventListener('click', () =>
+    show_report_register(1)
+);
 
 function show_report_register(RPTopc){
     if(RPTopc === 0){
@@ -192,8 +202,8 @@ function Report_send(){
     let report_header = document.getElementById('rptquestion_input').value;
     let report_time = document.getElementById('rptdate_input').value;
     let report_details = document.getElementById('rptdetails_input').value;
-    Report_subject = `Reporte ${report_header} por ${Userinvolved}`;
-    Report_content = `Un nuevo reporte acaba de llegar de parte de ${Userinvolved} el cual fue enviado el
+    Report_subject = `Ayeseri Reporte "${report_header}" por ${Userinvolved}`;
+    Report_content = `Un nuevo reporte acaba de llegar de parte del usuario ${Userinvolved} el cual fue enviado el
                       ${report_time}, con las siguientes inquietudes:
 
                       ${report_details}

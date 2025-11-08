@@ -275,26 +275,26 @@ const ButtonSingleFileLoad = document.getElementById('BTNSingleLoad');
 const EntryMultipleFileLoad = document.getElementById('MultipleLoad');
 const ButtonMultiplleFileLoad = document.getElementById('BTNMultipleLoad');
 const Proceedbutton = document.getElementById('ConfirmLoad');
-let Filetoprocess = "";
 const LastLoadOn = document.getElementById('Lastload');
 const LastLoadBy = document.getElementById('Lastloadby');
+let Filetoprocess = "";
 
 // Fetch last load info
 async function fetchLastLoadInfo() {
-    fetch(`https://ayeseri.onrender.com/LastErrorLoad`)
+    fetch(`https://ayeseri.onrender.com/lastload`)
         .then(res => { 
         if (!res.ok) throw new Error('Please review API Connection');
             return res.json();
         })
         .then(data => {
-        console.log(data);
+        // console.log(data['Username']);
         if(data.length == 0){
             LastLoadOn.textContent = "No previous loads found";
             LastLoadBy.textContent = "N/A";
             return;
         }
-        LastLoadOn.textContent = data[0].LoadTime;
-        LastLoadBy.textContent = data[0].Loadedby;
+        LastLoadOn.textContent = data['DTALASTLOAD'];
+        LastLoadBy.textContent = data['Username'];
         })
         .catch(err => {
         console.error("Failed to load last load info, please review the API Conection or logs", err);
@@ -308,7 +308,7 @@ ButtonSingleFileLoad.addEventListener('click',() =>{
 EntrySingleFileLoad.addEventListener('change', () =>{
     if(EntrySingleFileLoad.files.length > 0){
         Filetoprocess = EntrySingleFileLoad.files[0];
-        FakeEntrySingleFileLoad.value = "C:Fakepath/" + Filetoprocess.name;
+        FakeEntrySingleFileLoad.value = 'C:Fakepath/' + Filetoprocess.name;
     } else {
         FakeEntrySingleFileLoad.value = 'No has seleccionado ningun archivo...';
         return;

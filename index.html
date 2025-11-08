@@ -12,12 +12,12 @@
         <body>
             <div id="glass-container">
                 <div class="login-box">
-                    <h2>Login</h2>
+                    <h2>Ayeseri Login</h2>
                     <form action="#" method="POST">
                         <input type="text" id="Usuario" name="Usuario" required placeholder="Usuario">
                         <input type="password" id="password" name="password" required placeholder="Password">
                         <div class="options">
-                            <a id="PSSbutton" href="#">¿olvido su contraseña?</a>
+                            <p id="PSSbutton">¿olvido su contraseña?</p>
                             <p>¿No tiene una cuenta? <a onclick="CreateAccount()" id="register">Registarse</a></p>
                         </div>
                         <button onclick="User_Validation()" type="button">Login</button>
@@ -55,8 +55,14 @@
                 </div>
             </div>
             <div>
-                <button onclick="envio_test()"></button>
+                <!-- <button onclick="envio_test()"></button> -->
                 <!-- <button onclick="salvavidas()"></button> -->
+            </div>
+            <div id="Missingpassword">
+                <p>Contacte al administrador para restablecer su contraseña.</p>
+                <p>Puedes eviar un correo a <a href="mailto: jesus.macias6078@alumnos.udg.mx">jesus.macias6078@alumnos.udg.mx</a> </p>
+                <p>Por favor, incluye tu nombre de usuario y el motivo del restablecimiento de la contraseña.</p>
+                <button onclick="closePSSbox()" type="button">Cerrar</button>
             </div>
         </body>
     </html>

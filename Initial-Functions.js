@@ -241,10 +241,15 @@ document.querySelector('#sendbutton').addEventListener('click', async (e) => {
         return false;
     } 
     console.log("ok");
-    // Ticket_email();
+    yousure = confirm("¿Estás seguro de enviar la solicitud con estos datos?");
+    if (!yousure) {
+        return false;
+    }
+    Ticket_email();
     // console.log(`Enviando datos ${values['#NoTicket']}, ${values['#Username']}, ${values['#Email']}, ${values['#PSS']}`);
     // await upload_inDB(values['#NoTicket'], values['#Username'], values['#Email'], values['#PSS']);
-    // validation = await upload_inDB(values['#NoTicket'], values['#Username'], values['#Email'], values['#PSS']);
+    validation = await upload_inDB(values['#NoTicket'], values['#Username'], values['#Email'], values['#PSS']);
+
 });
 
 async function upload_inDB(NoTicket, Username, Email, PSS) {
@@ -341,4 +346,17 @@ async function Ticket_email(){
                     Muchas gracias y que tengas buen dia!. :D
     `;
     // Useremail = Email_send(Emailtosend, ticket_subject, ticket_message);
+}
+
+//---------------------------------------------------------------------------------------------------------------------------------------
+
+const PSSbox = document.getElementById("PSSbutton");
+
+PSSbox.addEventListener("click", (e) =>{
+    e.preventDefault();
+    document.getElementById("Missingpassword").style.display = "block";
+});
+
+function closePSSbox(){
+    document.getElementById("Missingpassword").style.display = "none";
 }
