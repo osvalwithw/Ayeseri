@@ -404,12 +404,13 @@ async function Storefile(actor) {
   const date = now.toISOString().slice(0,10);          // YYYY-MM-DD
   const hour = now.toTimeString().slice(0,8);          // HH:MM:SS
   await pool.query(
-    `INSERT INTO Lastload (IDinvolved, Date, Hour)
+    `INSERT INTO LastLoad (IDinvolved, Date, Hour)
     SELECT id, CURDATE(), CURTIME()
     FROM Users
     WHERE Username = ?`,
     [actor]
   );
+  console.log('Log stored in DB');
 }
 
 
