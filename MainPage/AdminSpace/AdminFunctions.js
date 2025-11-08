@@ -266,6 +266,7 @@ async function NoProcessUser(){
 function DBErrorUpload(){
     Window_opc = 1;
     windowadjust();
+    fetchLastLoadInfo();
 }
 
 const FakeEntrySingleFileLoad = document.getElementById('FakeSingleLoad');
@@ -275,6 +276,30 @@ const EntryMultipleFileLoad = document.getElementById('MultipleLoad');
 const ButtonMultiplleFileLoad = document.getElementById('BTNMultipleLoad');
 const Proceedbutton = document.getElementById('ConfirmLoad');
 let Filetoprocess = "";
+const LastLoadOn = document.getElementById('Lastload');
+const LastLoadBy = document.getElementById('Lastloadby');
+
+// Fetch last load info
+async function fetchLastLoadInfo() {
+    fetch(`https://ayeseri.onrender.com/LastErrorLoad`)
+        .then(res => { 
+        if (!res.ok) throw new Error('Please review API Connection');
+            return res.json();
+        })
+        .then(data => {
+        console.log(data);
+        if(data.length == 0){
+            LastLoadOn.textContent = "No previous loads found";
+            LastLoadBy.textContent = "N/A";
+            return;
+        }
+        LastLoadOn.textContent = data[0].LoadTime;
+        LastLoadBy.textContent = data[0].Loadedby;
+        })
+        .catch(err => {
+        console.error("Failed to load last load info, please review the API Conection or logs", err);
+    });
+}
 
 ButtonSingleFileLoad.addEventListener('click',() =>{
     EntrySingleFileLoad.click();
