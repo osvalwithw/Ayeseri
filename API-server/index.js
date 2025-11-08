@@ -375,6 +375,28 @@ app.post('/UpdatePSS', async (req, res) => {
   }
 });
 
+app.get("/ChangeUserRole", async (req, res) => {
+  try{
+    const { id, role } = req.query;
+    if (!id || !role) {
+      return res.status(400).json({ error: 'Los parámetros "id" y "role" son requeridos.' });
+    }
+    const [result] = await pool.execute(
+      `UPDATE Users
+       SET UserRole = ?
+       WHERE id = ?`,
+      [role, id]
+    );
+    if (result.affectedRows === 0) {
+      return res.status(404).json({ error: 'Usuario no encontrado.' });
+    }
+    res.json({ message: 'Rol de usuario actualizado correctamente.' });
+  } catch (err) {
+    console.error('Error en /ChangeUserRole:', err.message || err);
+    res.status(500).json({ error: 'Fallo al actualizar el rol de usuario.', details: err.message });
+  }
+});
+
 app.post('/UpdateSinglePSS', async (req, res) => {
   const { Username, NewPSS, PSSFlagchange } = req.body;
   if (!Username || !NewPSS) {

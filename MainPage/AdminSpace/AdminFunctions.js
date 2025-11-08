@@ -393,7 +393,8 @@ async function Files2Send(pack) { //https://ayeseri.onrender.com/ClasifyMethod
 }
 
 //--------------------------------------------Error Load------------------------------------------------------------
-//--------------------------------------------Password Maintenance------------------------------------------------------------
+//--------------------------------------------User Maintenance------------------------------------------------------------
+
 let SelectedUsers = [];
 const TBPSS = document.getElementById('TableItemsPSS');
 const TBPSSHD = document.getElementById('TableheadersPSS');
@@ -430,25 +431,90 @@ function printingusers(data){
     pasteinformation.innerHTML = '';
     let insertheader = document.createElement('tr');
     insertheader.innerHTML=`
+    <div>
         <th></th>
         <th>User Name</th>
         <th>Email</th>
         <th>Last Update</th>
         <th>Change PSS flag</th>
+        <th>Role Assigned</th>
+    </div>
     `;
     headerinformation.appendChild(insertheader);
     data.forEach(item => {
         let insertline = document.createElement('tr');
+        let formatdate = new Date(item.password_updated_at);
+        let day = String(formatdate.getDate()).padStart(2, '0');
+        let month = String(formatdate.getMonth() + 1).padStart(2, '0');
+        let year = formatdate.getFullYear();
+        let formattedDate = `${day}-${month}-${year}`;
+        let time = formatdate.toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'});
+        if(item.UserRole === 1){
+            roleassigned = "Usuario";
+        } else if (item.UserRole === 2){
+            roleassigned = "Administrador";
+        }
+        if(item.PSSFlagchange === 1){
+            pssstatus = "Requiere cambio";
+        } else {
+            pssstatus = "No requiere cambio";
+        }
         insertline.innerHTML=`
-            <td><input class="UserPSSMT" id="PSSCheckbox_${item.id}" type="checkbox" value=${item.id}></td>
-            <td class="User" id="User_${item.Username}">${item.Username}</td>
-            <td class="Email" id="email_${item.email}">${item.email}</td>
-            <td class="PSSUPDAT" id="PSSUPDAT_${item.password_updated_at}">${item.password_updated_at}</td>
-            <td class="PSSFlagchange" id="PSSCHFL_${item.PSSFlagchange} style="text-align: center;">${item.PSSFlagchange}</td>
+            <div id="UserRow_${item.id}">
+                <td><input class="UserPSSMT" id="PSSCheckbox_${item.id}" type="checkbox" value=${item.id}></td>
+                <td class="User" id="User_${item.Username}">${item.Username}</td>
+                <td class="Email" id="email_${item.email}">${item.email}</td>
+                <td class="PSSUPDAT" id="PSSUPDAT_${item.password_updated_at}">${formattedDate} AT ${time}</td>
+                <td class="PSSFlagchange" id="PSSCHFL_${item.PSSFlagchange} style="text-align: center;">${pssstatus}</td>
+                <td class="RoleAssigned" id="RoleASS_${item.UserRole}">
+                <select class=Rolselection id=Selection_${item.id}>
+                    <option value="1">1 - Usuario</option>
+                    <option value="2">2 - Administrador</option>
+                </td>
+            </div>
         `;
+        let roleSelect = insertline.querySelector('.Rolselection');
+        roleSelect.value = item.UserRole;
         pasteinformation.appendChild(insertline);
     });
 }
+
+// let SelectedUSers4Role = [];
+// const Rolescolumn = document.querySelectorAll('.Rolselection');
+
+// document.addEventListener('change', (event) => {
+
+//     // Comprueba si el elemento que cambió TIENE la clase '.Rolselection'
+//     if (event.target.classList.contains('Rolselection')) {
+
+//         // --- Si entra aquí, es uno de tus selects ---
+
+//         const selectElement = event.target; // El <select> que cambió
+        
+//         // 3. Obtén los datos desde el elemento
+//         const nuevoValor = selectElement.value;
+//         const idDelItem = selectElement.dataset.id; // Obtenemos el data-id
+
+//         console.log(`(Delegado) Cambio detectado - ID: ${idDelItem}, Nuevo Rol: ${nuevoValor}`);
+
+//         // 4. Crea el objeto de cambio
+//         const cambio = {
+//             id: idDelItem,
+//             nuevoRol: nuevoValor
+//         };
+
+//         // 5. Tu misma lógica para buscar y añadir al array
+//         const indexExistente = SelectedUSers4Role.findIndex(item => item.id === idDelItem);
+
+//         if (indexExistente > -1) {
+//             SelectedUSers4Role[indexExistente] = cambio;
+//         } else {
+//             SelectedUSers4Role.push(cambio);
+//         }
+
+//         console.log('Cambios pendientes por guardar:', SelectedUSers4Role);
+//     }
+// });
 
 TableItemsPSS.addEventListener('change', function(event) {
     if (event.target.matches('.UserPSSMT')) {
@@ -456,25 +522,48 @@ TableItemsPSS.addEventListener('change', function(event) {
         const UserID = checkbox.value;
         if (checkbox.checked) {
             const fila = checkbox.closest('tr');
+            const usuario = fila.querySelector('.User').textContent;
             const changeflag = fila.querySelector('.PSSFlagchange').textContent;
-            if(changeflag === "1"){
-                alert("Este usuario ya fue procesado previamente.");
-                checkbox.checked = false;
-                return;
-            }
+            const roleSelect = fila.querySelector('.Rolselection').value;
+            // if(changeflag === "1"){
+            //     alert("Este usuario ya fue procesado previamente.");
+            //     checkbox.checked = false;
+            //     return;
+            // }
             const Toprocess = {
                 id: UserID,
-                pss: "Ayeseri12345."
+                username: usuario,
+                pss: "Ayeseri12345.",
+                role: roleSelect,
+                PSSFlagchange: changeflag
             };
             SelectedUsers.push(Toprocess);
         } else {
             SelectedUsers = SelectedUsers.filter(user => user.id !== UserID);
         }
-        console.log("Usuarios seleccionados actualmente:", SelectedUsers);
+        // console.log("Usuarios seleccionados actualmente:", SelectedUsers);
     }
 });
 
 async function ProcessSelectedUsers(){
+    let alertmessage = document.getElementById('Alertscontainer');
+    let insertalert = document.createElement('ul');
+    alertmessage.innerHTML = '';
+    SelectedUsers.forEach(element => {
+        if(element.PSSFlagchange === "Requiere cambio"){
+            SelectedUsers = SelectedUsers.filter(user => user.id !== element.id);
+            let row = document.getElementById(`PSSCheckbox_${element.id}`);
+            row.checked = false;
+            insertalert.innerHTML += `
+                <li>El usuario "${element.username}" ya requiere un cambio de contraseña, por lo que no será procesado nuevamente.</li>
+            `;
+        }
+        delete element.PSSFlagchange;
+        delete element.username;
+        delete element.role;
+    }); 
+    alertmessage.appendChild(insertalert);
+    console.log("Usuarios", SelectedUsers);
     if(SelectedUsers.length === 0){
         alert("No hay usuarios seleccionados, por favor seleccione al menos uno para continuar");
         return;
@@ -505,4 +594,39 @@ async function ProcessSelectedUsers(){
     }
 }
 
-//--------------------------------------------Password Maintenance------------------------------------------------------------
+async function ChangeSelectedUsersRole(){
+    if(SelectedUsers.length === 0){
+        alert("No hay usuarios seleccionados, por favor seleccione al menos uno para continuar");
+        return;
+    }
+    SelectedUsers.forEach(element => {
+        delete element.pss;
+        delete element.PSSFlagchange;
+        delete element.username;
+        let rolselection = document.getElementById(`Selection_${element.id}`).value;
+        element.role = parseInt(rolselection);
+    }); 
+    // console.log("Usuarios", SelectedUsers);
+    console.log("Enviando este cuerpo JSON a la API:", JSON.stringify({ Toprocess:SelectedUsers}, null, 2));
+    // try {
+    //     const respuesta = await fetch(`https://ayeseri.onrender.com/ChangeUserRole`, {
+    //         method: 'POST', 
+    //         headers: {
+    //             'Content-Type': 'application/json'
+    //         },
+    //         body: JSON.stringify({ Toprocess:SelectedUsers }) 
+    //     });
+    //     if (!respuesta.ok) {
+    //         throw new Error(`Error del servidor: ${respuesta.status}`);
+    //     }
+    //     const datosRespuesta = await respuesta.json();
+    //     console.log('Éxito! Respuesta del servidor:', datosRespuesta);
+    //     alert('Los roles se actualizaron correctamente.');    
+    //     SelectedUsers = [];
+    // } catch (error) {
+    //     console.error('Error al enviar los datos a la API:', error);
+    //     alert('Hubo un problema al conectar con el servidor. Inténtalo de nuevo.');
+    // }
+}   
+
+//--------------------------------------------User Maintenance------------------------------------------------------------
