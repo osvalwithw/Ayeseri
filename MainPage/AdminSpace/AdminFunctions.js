@@ -607,26 +607,30 @@ async function ChangeSelectedUsersRole(){
         element.role = parseInt(rolselection);
     }); 
     // console.log("Usuarios", SelectedUsers);
-    console.log("Enviando este cuerpo JSON a la API:", JSON.stringify({ Toprocess:SelectedUsers}, null, 2));
-    // try {
-    //     const respuesta = await fetch(`https://ayeseri.onrender.com/ChangeUserRole`, {
-    //         method: 'POST', 
-    //         headers: {
-    //             'Content-Type': 'application/json'
-    //         },
-    //         body: JSON.stringify({ Toprocess:SelectedUsers }) 
-    //     });
-    //     if (!respuesta.ok) {
-    //         throw new Error(`Error del servidor: ${respuesta.status}`);
-    //     }
-    //     const datosRespuesta = await respuesta.json();
-    //     console.log('Éxito! Respuesta del servidor:', datosRespuesta);
-    //     alert('Los roles se actualizaron correctamente.');    
-    //     SelectedUsers = [];
-    // } catch (error) {
-    //     console.error('Error al enviar los datos a la API:', error);
-    //     alert('Hubo un problema al conectar con el servidor. Inténtalo de nuevo.');
-    // }
+    // console.log("Enviando este cuerpo JSON a la API:", JSON.stringify({ Toprocess:SelectedUsers}, null, 2));
+    confirmation = confirm(`Estas seguro de querer cambiar el rol a ${SelectedUsers.length} usuario(s)?`);
+    if(!confirmation){
+        return;
+    }
+    try {
+        const respuesta = await fetch(`https://ayeseri.onrender.com/ChangeUserRole`, {
+            method: 'POST', 
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ Toprocess:SelectedUsers }) 
+        });
+        if (!respuesta.ok) {
+            throw new Error(`Error del servidor: ${respuesta.status}`);
+        }
+        const datosRespuesta = await respuesta.json();
+        console.log('Éxito! Respuesta del servidor:', datosRespuesta);
+        alert('Los roles se actualizaron correctamente.');    
+        SelectedUsers = [];
+    } catch (error) {
+        console.error('Error al enviar los datos a la API:', error);
+        alert('Hubo un problema al conectar con el servidor. Inténtalo de nuevo.');
+    }
 }   
 
 //--------------------------------------------User Maintenance------------------------------------------------------------

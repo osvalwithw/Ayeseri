@@ -375,7 +375,7 @@ app.post('/UpdatePSS', async (req, res) => {
   }
 });
 
-app.get("/ChangeUserRole", async (req, res) => {
+app.post("/ChangeUserRole", async (req, res) => {
   try{
     const { id, role } = req.query;
     if (!id || !role) {
