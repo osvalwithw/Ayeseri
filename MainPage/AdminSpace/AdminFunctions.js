@@ -26,34 +26,28 @@ async function windowadjust(){
 
 const params = new URLSearchParams(window.location.search);
 const Userload = params.get('User');
-//--------------------------------------------Window Adjustment------------------------------------------------------------
+//--------------------------------------------User view method------------------------------------------------------------
 const AdminUserviewBtn = document.getElementById('Userview');
+let windowopen = null
 
 AdminUserviewBtn.addEventListener('click', () =>{
     Window_opc = 0;
     windowadjust();
-    fetch(`../Employee-search/Main-page.html`).then(res => {
-        if (!res.ok) throw new Error('Please review API Connection');
-            return res.text();
-    })
-    .then(data => {
-        const parser = new DOMParser();
-        const doc = parser.parseFromString(data, "text/html");
- 
-         // Carga los estilos de esa página (si los hay)
-        const estilos = doc.querySelectorAll('link[rel="stylesheet"]');
-        estilos.forEach(link => {
-        if (!document.querySelector(`link[href="${link.href}"]`)) {
-            document.head.appendChild(link.cloneNode(true));
-        }});
-        document.getElementById('AdminUsersview').innerHTML = data;
-    })
-    .catch(err => {
-    console.error("Failed to load Employee Search Page, please review the API Conection or logs", err);
-    });
 });
 
-
+function Openuserview(){
+    if(windowopen && !windowopen.closed){
+        let labelusv = document.getElementById('UserviewIsopen');
+        labelusv.innerHTML = 'Hay una ventana activa!';
+        alert("Hay una ventana que esta abierta, cierrala primero antes de abrir otra");
+        windowopen.focus()
+    } else {
+        const params = new URLSearchParams(window.location.search);
+        const username = params.get('User');
+        const role = params.get('RL');
+        windowopen = window.open(`../Employee-search/Main-page.html?User=${encodeURIComponent(username)}&RL=${encodeURIComponent(role)}`, "_blank");
+    }
+}
 
 //--------------------------------------------User Info View------------------------------------------------------------
 const UserInfoBtn = document.getElementById('UserInfoBTN');

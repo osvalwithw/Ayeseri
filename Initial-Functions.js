@@ -59,25 +59,27 @@ async function User_Validation() {
     try {
         const resp = await User_search(inputUser, inputpss);
         console.log("Respuesta de la API:", resp);
+        // console.log("Usuario ID:");
+        // console.log("Usuario ingresado:", resp.user?.username);
+        // console.log("Rol del usuario:", resp.user?.role);
         if (resp?.ok) {
-        const username = resp.user?.username ?? inputUser;
-        if (username === 'Admin') {
-            adminkey = 1;
-        }
-        if (adminkey === 1) {
-            window.open(`../MainPage/AdminSpace/Adminpge.html?User=${encodeURIComponent(username)}`, "_self");
-        } else {
-            window.open(`../MainPage/Employee-search/Main-page.html?User=${encodeURIComponent(username)}`, "_self");
-        }
-        return;
+            const username = resp.user?.username ?? inputUser;
+            const role = resp.user?.role;
+            // console.log("Usuario validado:", username, "con rol:", role);
+            if (role === 2) {
+                window.open(`../MainPage/AdminSpace/Adminpge.html?User=${encodeURIComponent(username)}&RL=${encodeURIComponent(role)}`, "_self");
+            } else {
+                window.open(`../MainPage/Employee-search/Main-page.html?User=${encodeURIComponent(username)}&RL=${encodeURIComponent(role)}`, "_self");
+            }
+            return;
         }
 
         if (resp?.reason === 'not-found') {
-        alert("El usuario no existe");
+            alert("El usuario no existe");
         } else if (resp?.reason === 'bad-credentials') {
-        alert("Contraseña incorrecta, por favor verifica");
+          alert("Contraseña incorrecta, por favor verifica");
         } else {
-        alert("Error al iniciar sesión. Intenta de nuevo.");
+           alert("Error al iniciar sesión. Intenta de nuevo.");
         }
     } catch (err) { 
         console.error("Error inesperado en validación:", err);
