@@ -9,7 +9,7 @@ function display_errors() {
     if (input && id) {
         input.value = id;
     }
-    document.getElementById('Header_1').textContent = `Infotype ${it} errors`;
+    document.getElementById('Header_1').textContent = `Category ${it} errors`;
 
     fetch(`https://ayeseri.onrender.com/employee_errors/${id}/${Timeselect}`)
     .then(res => {
@@ -36,7 +36,8 @@ function mostrarTabla(errores) {
     }
 
     errores.forEach(error => {
-        console.log(error.Error_message)
+        console.log("Error: ", error.Error_message);
+        console.log("IT:", it)
         if(it == error.ID_Infotype){
             const row = document.createElement('tr');
             row.innerHTML = `
@@ -46,7 +47,8 @@ function mostrarTabla(errores) {
             <td>${error.ID_Infotype}</td>
             `;
             tbody.appendChild(row);
-        } else if(it == 'OTHR' && (error.ID_Infotype == 'NITR' || error.ID_Infotype == 'CFGI')){
+        } 
+        else if(it == 'Others' && (error.ID_Infotype == 'NITR' || error.ID_Infotype == 'CFGI')){
             const row = document.createElement('tr');
             row.innerHTML = `
             <td>${error.Load_Date}</td>

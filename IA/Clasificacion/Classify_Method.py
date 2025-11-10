@@ -21,12 +21,6 @@ PIPELINE_PATH = "modelo_infotipo_pipeline.pkl"
 from nltk.corpus import stopwords
 from nltk.stem import PorterStemmer
 
-def _as4(label) -> str:
-    s = str(label).strip()
-
-    digits = "".join(ch for ch in s if ch.isdigit())
-    return digits.zfill(4)[:4]
-
 def _ensure_stopwords() -> set:
     try:
         stopwords.words("english")
@@ -105,9 +99,7 @@ def _build_pipeline() -> Pipeline:
     return Pipeline([("vect", vect), ("clf", clf)])
 
 def reentrenar_modelo(test_size: float = 0.2, random_state: int = 42) -> dict:
-    X, y = _load_training_data()  # <- tu loader actual (asegúrate que trae etiquetas reales)
-    # Si usas etiquetas string tipo "0001", normalízalas:
-    # y = [_as4(lbl) for lbl in y]
+    X, y = _load_training_data() 
  
     counts = Counter(y)
     n_classes = len(counts)
@@ -163,9 +155,6 @@ def reentrenar_modelo(test_size: float = 0.2, random_state: int = 42) -> dict:
     joblib.dump(pipe, PIPELINE_PATH)
     return metrics
 
-    joblib.dump(pipe, PIPELINE_PATH)
-    return metrics
-
 def cargar_modelo() -> Pipeline:
     if not os.path.exists(PIPELINE_PATH):
         reentrenar_modelo()
@@ -176,7 +165,7 @@ def predecir_infotipo(mensaje_error: str) -> str:
         raise ValueError("mensaje_error vacío.")
     pipe = cargar_modelo()
     y = pipe.predict([mensaje_error])[0]
-    return _as4(y)
+    return y
 
 def debugging_tokens(text: str):
     tocs = _analyzer(text)
@@ -188,20 +177,3 @@ def tocs_predictions(text: str, k: int = 5):
     classes = pipe.named_steps["clf"].classes_
     idxs = np.argsort(proba)[::-1][:k]
     return [(str(classes[i]), float(proba[i])) for i in idxs]
-
-if __name__ == "__main__":
-    try:
-        m = reentrenar_modelo()
-        print("== Métricas ==\n", m["classification_report"])
-        print("Accuracy:", m["accuracy"])
-        print("F1-macro:", m["f1_macro"])
-        print("F1-weighted:", m["f1_weighted"])
-        print("Confusion matrix:", m["confusion_matrix"])
-    except Exception as e:
-        print("⚠️ No se pudo reentrenar:", e)
-
-    try:
-        ejemplo = ["Formatting error in the field P0001-ANSVH", 'Invalid combination of action type 1B/action reason']
-        print("Predicción ejemplo:", predecir_infotipo(ejemplo))
-    except Exception as e:
-        print("⚠️ Predicción falló:", e)

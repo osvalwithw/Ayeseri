@@ -695,11 +695,12 @@ input[readonly], #NewPSSField, #RepeatPSSField{
 
 .Onlyadmins{
     position: fixed;
-    top: 85px;
-    left: 30px;
-    z-index: 3;
+    top: 8px;
+    left: 49%;
+    z-index: 100;
     background-color: rgba(238, 255, 0, 0.733);
-    width:300px;
+    width: 40%;
+    max-width: 180px;
     height: 30px;
     border-radius: 12px;
     display:none;

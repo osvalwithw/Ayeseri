@@ -296,6 +296,7 @@ async function fetchLastLoadInfo() {
 }
 
 ButtonSingleFileLoad.addEventListener('click',() =>{
+    EntrySingleFileLoad.value = '';
     EntrySingleFileLoad.click();
 });
 
@@ -357,7 +358,6 @@ function renderPreview(file) {
             return obj;
         });
         // console.log(packing);
-
         Files2Send(dta);
     };
     reader.readAsText(file);
