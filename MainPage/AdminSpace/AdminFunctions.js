@@ -369,7 +369,7 @@ async function Files2Send(pack) { //https://ayeseri.onrender.com/ClasifyMethod
     // console.log("Paquete a enviar:", pack);
     // console.log("Enviando este cuerpo JSON a la API:", JSON.stringify(pack, null, 2));
     try {
-        const respuesta = await fetch(`https://supreme-winner-v4j64j4r6vrh99-5001.app.github.dev/ObtainErrorsFN`, {
+        const respuesta = await fetch(`https://https://fuzzy-space-yodel-7vg64wj76gr2p75j.github.dev/ObtainErrorsFN`, {
             method: 'POST', 
             headers: {
                 'Content-Type': 'application/json'
