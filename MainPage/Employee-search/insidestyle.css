@@ -84,7 +84,7 @@ h1 {
 }
 
 .AyeseriTimeselection {
-  -webkit-appearance: none;
+  /* -webkit-appearance: none; */
   width: 300px;
   height: 10px;
   border-radius: 10px;
