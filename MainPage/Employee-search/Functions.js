@@ -373,3 +373,20 @@ UpdatePSSBTN.addEventListener('click', () =>{
     });
 });
 
+const adminreturn = document.getElementById('Onlyadminsview');
+
+document.addEventListener('DOMContentLoaded', () => {
+    const params = new URLSearchParams(window.location.search);
+    const role = Number(params.get('RL'));
+    // console.log(":)", role)
+    if(role === 2){
+        // console.log(";)")
+        adminreturn.style.display = 'flex';
+    }
+});
+
+adminreturn.addEventListener('click', () =>{
+    console.log(':)');
+    window.close();
+});
+

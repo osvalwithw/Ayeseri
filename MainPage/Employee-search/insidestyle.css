@@ -9,6 +9,114 @@ html, body {
 button{
     cursor: pointer;
 }
+
+.Windows{
+    background-color: rgba(117, 117, 117, 0.267);
+}
+
+input, textarea{
+    padding: 12px 16px;
+    margin: 8px 0;
+    border: 2px solid transparent;
+    border-radius: 12px;
+    background: rgba(255, 255, 255, 0.15);
+    backdrop-filter: blur(8px);
+    color: #e0f7fa;
+    font-size: 15px;
+    font-weight: 500;
+    transition: all 0.3s ease;
+    outline: none;
+    box-shadow: 0 2px 8px rgba(0, 174, 255, 0.2);
+}
+
+input::placeholder, textarea::placeholder{
+    color: rgba(255, 255, 255, 0.6);
+    font-weight: 400;
+}
+
+input:hover, textarea.submenu:hover{
+    border-color: rgba(0, 174, 255, 0.4);
+    background: rgba(0, 0, 0, 0.2);
+}
+
+input:focus, textarea:focus{
+    border-color: #094855;
+    background: rgba(255,255,255, 0.25);
+    box-shadow: 0 0 10px rgba(0, 174, 255, 0.4)
+}
+
+h1 {
+  top: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
+  padding: 14px 30px;
+  background: rgba(82, 82, 82, 0.281);
+  backdrop-filter: blur(10px);
+  border-radius: 10px;
+  border-bottom: 1px solid rgba(0, 174, 255, 0.25);
+  box-shadow: 0 2px 20px rgba(0, 174, 255, 0.15);
+  color: white;
+}
+
+.NewPeriodSelection {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  padding: 20px;
+  background: rgba(255, 255, 255, 0.08);
+  border-radius: 16px;
+  backdrop-filter: blur(10px);
+  box-shadow: 0 6px 20px rgba(0, 174, 255, 0.15);
+  color: #e0f7fa;
+  font-family: 'Poppins', sans-serif;
+  width: fit-content;
+  margin: 0 auto;
+}
+
+#Timelbl {
+  font-weight: 600;
+  letter-spacing: 0.5px;
+  margin-bottom: 6px;
+}
+
+.AyeseriTimeselection {
+  -webkit-appearance: none;
+  width: 300px;
+  height: 10px;
+  border-radius: 10px;
+  background: linear-gradient(90deg, #0847a571, #0654646c);
+  outline: none;
+  box-shadow: 0 0 10px rgba(0, 174, 255, 0.3);
+  transition: all 0.3s ease;
+  cursor: pointer;
+}
+
+.AyeseriTimeselection::-webkit-slider-runnable-track {
+  height: 20px;
+  border-radius: 10px;
+  background: rgba(255, 255, 255, 0.15);
+}
+
+.AyeseriTimeselection::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  background: radial-gradient(circle at 30% 30%, #eafaff, #065c6d);
+  border: 2px solid white;
+  box-shadow: 0 0 10px rgba(0,174,255,0.5);
+  transition: transform 0.2s ease;
+}
+
+.AyeseriTimeselection:active::-webkit-slider-thumb {
+  transform: scale(1.1);
+}
+
 /*-------------Barra de inicio---------------------------------------------*/
 .main-bar{
     position: sticky;
@@ -171,7 +279,7 @@ li a:hover,
     align-items: center;
     justify-content: flex-start;
     margin: 10px;
-    background: rgba(255, 255, 255, 0.3);
+    /* background: rgba(255, 255, 255, 0.3); */
     border-radius: 15px;
     box-shadow: 0 4px 8px 0;
 }
@@ -223,7 +331,6 @@ li a:hover,
     opacity: 1;
 }
 
-/*-------------------Informacion a consultar/consultada---------------------------------------*/
 .PInformation {
     display:flex;
     align-items: center;
@@ -232,8 +339,8 @@ li a:hover,
     gap:15px;
     margin-top: 20px;
     width: 310px;
-    height: 40px;
-    background: rgba(255, 255, 255, 0.3);
+    max-height: fit-content;
+    /* background: rgba(255, 255, 255, 0.3); */
     border-radius: 15px;
     box-shadow: 0 4px 8px 0;
 }
@@ -244,8 +351,7 @@ li a:hover,
     flex-direction: column;
     align-items: center;
     row-gap: 20px;
-    background: rgba(255, 0, 0, 0.1);
-    width:auto;
+    /* background: rgba(255, 0, 0, 0.1); */
     box-shadow: 0 4px 8px 0;
     border-radius: 15px;
 }
@@ -322,7 +428,7 @@ li a:hover,
 
 #report-section{ 
     display: none;
-    position: fixed; 
+    position: fixed;  
     justify-content: center;
     align-items: center;
     flex-direction: column;
@@ -383,7 +489,7 @@ li a:hover,
 
 /*---------------------------------------------------------------------------------------------------------------------------------------*/
 .Ayeseri_Helper{
-    background-color: rgb(255, 255, 255, 0.2);
+    /* background-color: rgb(255, 255, 255, 0.2); */
     min-width: 400px;
     height: 700px;
     text-align: center;
@@ -467,7 +573,7 @@ li a:hover,
     flex-direction: row;
     justify-content: center;
     align-items: center;
-    background-color: rgba(255, 0, 0, 0.2);
+    /* background-color: rgba(255, 0, 0, 0.2); */
     width: 460px;
     height: 100px;
     margin-left: 20px;
@@ -585,4 +691,23 @@ input[readonly], #NewPSSField, #RepeatPSSField{
     font-size: 20px;
     text-decoration: underline;
     text-decoration-color: yellow;
+}
+
+.Onlyadmins{
+    position: fixed;
+    top: 85px;
+    left: 30px;
+    z-index: 3;
+    background-color: rgba(238, 255, 0, 0.733);
+    width:300px;
+    height: 30px;
+    border-radius: 12px;
+    display:none;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+}
+
+.Onlyadmins:hover{
+    background-color: rgba(255, 217, 0, 0.733);
 }

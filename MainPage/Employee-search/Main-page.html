@@ -18,14 +18,14 @@
                     <div class="submenu-content">
                         <a id="UserInfoBTN">Perfil</a>
                         <a href="Sugerencias">Sugerencias</a>
-                        <a href="https://ayeseri.vercel.app/">Cerrar sesión</a>
+                        <a href="/index.html">Cerrar sesión</a>
                     </div>
                 </li>
             </ul>
         </div>
         <div class="main-window">
             <div class="headeroptions">
-                <div class="display_opt">
+                <div class="Windows display_opt">
                     <div class="Overview">
                         <button id="TOverview_icon" class="material-icons" style="font-size: 35px;" onclick="search_EE()">panorama</button>
                         <span class="OVlabel" id="overview_label">Overview</span>
@@ -35,18 +35,18 @@
                         <span id="report-label">Report</span>
                     </div>
                 </div>
-                <div class="PInformation">
+                <div class="Windows PInformation">
                     <label id="PIlabel" >Personel number:</label>
                     <input style="width: 100px;"type="text" id="Personnel_Nmb" name="No.Empleado" required placeholder="No.Empleado"></input>
                 </div>
             </div>
 <!-------------------------------------------------------------------------------------------------------------------------------------------------------->
             <div class="User_tools">
-                <div class="column Maintain-options">
+                <div class="Windows column Maintain-options">
                     <div class="InfMainTittle">
-                        <h2 id="InfMainTittlelbl">Select an infotype </h2>                        
+                        <h1 id="InfMainTittlelbl">Select an infotype </h1>                        
                     </div>
-                    <div class="NewInfotypeSelection">
+                    <div class="NewInfotypeSelection"> 
                         <div class="IT0000">
                             <input type="radio" onclick="ITSelection('0000')" id="ICIT0">
                                 <i id="IconICIT0" class="material-icons" style="font-size: 60px;">tag_faces</i>  
@@ -114,18 +114,18 @@
                     </div> -->
                     <div class="NewPeriodSelection">
                         <p id="Timelbl">Period Selection</p>
-                        <input type="range" id="timeSelection" min="0" max="8" value="3" style="width: 300px;">
+                        <input class="AyeseriTimeselection" type="range" id="timeSelection" min="0" max="8" value="3" style="width: 300px;">
                         <p id="Timeopc">No filter selected</p>
                         <!--button onclick="definetimeentries()"-->
                     </div>
                 </div>
-                <div class="column Ayeseri_Helper">
+                <div class="Windows column Ayeseri_Helper">
                     <div class="HelpMainbox">
                         <div id="User_chat">
                             <form id="chat-form" class="input-row"></form>
                         </div>
                         <div id="User_operations">
-                            <textarea id="User_msg" type="text" placeholder="Tengo un problema con...." class="errorinput"></textarea>
+                            <textarea style="resize: none; overflow-y: auto; height: 100px;" id="User_msg" type="text" placeholder="Tengo un problema con...." class="errorinput"></textarea>
                             <button type="submit" class="sendbtn" onclick="Sendmessage()">Enviar</button>
                         </div>
                     </div>
@@ -175,6 +175,10 @@
                     <button id="UpdatePSSBTN">Actualizar contraseña</buttion>
                 </div>
             </div>
+            
+        </div>
+        <div class="Onlyadmins" id="Onlyadminsview">
+            <p>Cerrar vista de usuario</p>
         </div>
         <script src="Functions.js"></script>
     </body>

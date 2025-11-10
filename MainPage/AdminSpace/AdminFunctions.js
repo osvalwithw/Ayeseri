@@ -26,6 +26,7 @@ async function windowadjust(){
 
 const params = new URLSearchParams(window.location.search);
 const Userload = params.get('User');
+const alertmessage = document.getElementById('Alertscontainer');
 //--------------------------------------------User view method------------------------------------------------------------
 const AdminUserviewBtn = document.getElementById('Userview');
 let windowopen = null
@@ -394,6 +395,7 @@ const TBPSSHD = document.getElementById('TableheadersPSS');
 
 async function PSS_Maintenance(){
     Window_opc = 3;
+    alertmessage.innerHTML = '';
     windowadjust();
     TBPSS.innerHTML = '';
     TBPSSHD.innerHTML = '';
@@ -472,43 +474,6 @@ function printingusers(data){
     });
 }
 
-// let SelectedUSers4Role = [];
-// const Rolescolumn = document.querySelectorAll('.Rolselection');
-
-// document.addEventListener('change', (event) => {
-
-//     // Comprueba si el elemento que cambió TIENE la clase '.Rolselection'
-//     if (event.target.classList.contains('Rolselection')) {
-
-//         // --- Si entra aquí, es uno de tus selects ---
-
-//         const selectElement = event.target; // El <select> que cambió
-        
-//         // 3. Obtén los datos desde el elemento
-//         const nuevoValor = selectElement.value;
-//         const idDelItem = selectElement.dataset.id; // Obtenemos el data-id
-
-//         console.log(`(Delegado) Cambio detectado - ID: ${idDelItem}, Nuevo Rol: ${nuevoValor}`);
-
-//         // 4. Crea el objeto de cambio
-//         const cambio = {
-//             id: idDelItem,
-//             nuevoRol: nuevoValor
-//         };
-
-//         // 5. Tu misma lógica para buscar y añadir al array
-//         const indexExistente = SelectedUSers4Role.findIndex(item => item.id === idDelItem);
-
-//         if (indexExistente > -1) {
-//             SelectedUSers4Role[indexExistente] = cambio;
-//         } else {
-//             SelectedUSers4Role.push(cambio);
-//         }
-
-//         console.log('Cambios pendientes por guardar:', SelectedUSers4Role);
-//     }
-// });
-
 TableItemsPSS.addEventListener('change', function(event) {
     if (event.target.matches('.UserPSSMT')) {
         const checkbox = event.target;
@@ -539,7 +504,6 @@ TableItemsPSS.addEventListener('change', function(event) {
 });
 
 async function ProcessSelectedUsers(){
-    let alertmessage = document.getElementById('Alertscontainer');
     let insertalert = document.createElement('ul');
     alertmessage.innerHTML = '';
     SelectedUsers.forEach(element => {
