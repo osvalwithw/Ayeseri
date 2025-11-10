@@ -429,16 +429,16 @@ async function Storefile(actor) {
   const now = new Date();
   const date = now.toISOString().slice(0,10);          // YYYY-MM-DD
   const hour = now.toTimeString().slice(0,8);          // HH:MM:SS
-  await pool.query(
-    `UPDATE LastLoad (IDinvolved, Date, Hour)
-    SELECT id, CURDATE(), CURTIME()
-    FROM Users
-    WHERE Username = ?
-    ON DUPLICATE KEY UPDATE
+  const sql = `
+  INSERT INTO LastLoad (IDinvolved, Date, Hour)
+  SELECT id, CURDATE(), CURTIME()
+  FROM Users
+  WHERE Username = ?
+  ON DUPLICATE KEY UPDATE
     Date = VALUES(Date),
-    Hour = VALUES(Hour);`,
-    [actor]
-  );
+    Hour = VALUES(Hour);
+`;
+await pool.execute(sql, [actor]);
   console.log('Log stored in DB');
 }
 
