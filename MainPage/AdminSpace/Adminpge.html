@@ -26,47 +26,53 @@
         </div>
         <div class="HomePage" id="HomePageView">
         </div>
-        <div class="UsersWindow" id="AdminUsersview">
+        <div class="Windows UsersWindow" id="AdminUsersview">
             <div id="launchuserview">
                 <p>Para abrir la sesion de usuario, presiona el boton.</p>
                 <p id="UserviewIsopen"></p>
-                <button id="OpenUserview" onclick="Openuserview()">Abrir vista de usuario</button>
+                <button class="Ayeseributtons" id="OpenUserview" onclick="Openuserview()">Abrir vista de usuario</button>
             </div>
         </div>
         <div class="MainErrorsWindow" id="Errorsview">
-            <div class="column ErrorsLoadWindow">
-                <p>Load Errors from File</p>
+            <div class="Windows Errcolumn ErrorsLoadWindow">
+                <h1 class="AyeseriHeaders">Load Errors from File</h1>
                 <input type="file" class="LoadFiles" id="SingleLoad" hidden accept=".csv"></input>
                 <input class="LoadFiles" id="FakeSingleLoad" readonly></input>
-                <button class="BTNLoad" id="BTNSingleLoad">Select</button>
-                <p>Load errors from a path</p>
+                <button class="Ayeseributtons BTNLoad" id="BTNSingleLoad">Select</button>
+                <!-- <p>Load errors from a path</p>
                 <input class="LoadFiles" id="MultipleLoad" readonly webkitirectory directory multiple placeholder="Work in progress...."></input>
                 <button class="BTNLoad" id="BTNMultipleLoad" readonly>Select</button>
-                <p></p>
-                <button class="BTNLoad" id="ConfirmLoad">Iniciar carga</button>
+                <p id="linejump"></p> -->
+                <button class="Ayeseributtons BTNLoad" id="ConfirmLoad">Iniciar carga</button>
             </div>
-            <div class="column ErrosTimeModule">
-                <p>Last load on: </p>
-                <p id="Lastload"></p>
-                <p>By: </p>
-                <p id="Lastloadby"></p>
+            <div class="Windows Errcolumn ErrosTimeModule">
+                <div class="section LSLTime">
+                    <p>Last load on: </p>
+                    <p id="Lastload"></p>
+                </div>
+                <div class="section LSBY">
+                    <p>By: </p>
+                    <p id="Lastloadby"></p>
+                </div>
             </div>
             <div id="preview"></div>
         </div>
         <div class="usercreation-window" id="UserCreationView">
-            <div class="column Pending-tickets">
-                <h1>Pending Tickets</h1>
-                <table class="PendingTicketsTable">
+            <div class="Windows column Pending-tickets">
+                <h1 class="AyeseriHeaders">Pending Tickets</h1>
+                <table class="Tablesformat PendingTicketsTable">
                     <thead id="Tableheaders">
                     </thead>
                     <tbody id="TableItems">
                     </tbody>
                 </table>
             </div>
-            <div class="column PT_Tools">
-                <h1>Actions</h1>
-                <button id="Proceed" onclick="ProcessTickets(1)">Autorizar</button>
-                <button id="Deny" onclick="NoProcessUser()">Denegar</button>
+            <div class="Windows column PT_Tools">
+                <h1 class="AyeseriHeaders">Actions</h1>
+                <div class="Actionbuttons">
+                    <button class="Ayeseributtons" id="Proceed" onclick="ProcessTickets(1)">Autorizar</button>
+                    <button id="Deny" onclick="NoProcessUser()">Denegar</button>
+                </div>
                 <textarea id="Comment" placeholder="Comentario al usuario"></textarea>
             </div>
             <!-- <div class="UserCreationInfo">
@@ -76,23 +82,24 @@
             </div> -->
         </div>
         <div class="PSSMaintenanceWindow" id="PSSMaintenanceView">
-            <div class="column PSSInfo">
-                <h1>Active Users</h1>
-                <table class="ActiveUsersTable">
+            <div class="Windows column PSSInfo">
+                <h1 class="AyeseriHeaders">Active Users</h1>
+                <table class="Tablesformat ActiveUsersTable">
                     <thead id="TableheadersPSS">
                     </thead>
                     <tbody id="TableItemsPSS">
                     </tbody>
                 </table>
             </div>
-            <div class="column PSSTools">
-                <h1>Actions</h1>
-                <button id="ResetPSS" onclick="ProcessSelectedUsers()">Reiniciar contraseña</button>
-                <button id="ChangeRole" onclick="ChangeSelectedUsersRole()">Cambiar roles</button>
+            <div class="Windows column PSSTools">
+                <h1 class="AyeseriHeaders">Actions</h1>
+                <div class="Actionbuttons">
+                    <button class="Ayeseributtons" id="ResetPSS" onclick="ProcessSelectedUsers()">Reiniciar contraseña</button>
+                    <button class="Ayeseributtons" id="ChangeRole" onclick="ChangeSelectedUsersRole()">Cambiar roles</button>
+                </div>
                 <div id="AlertMessaes">
-                    <h1 id="ProcessingText">Alerts</h1>
+                    <h1 class="AyeseriHeaders" id="ProcessingText">Alerts</h1>
                     <div class="Alertscontainer" id="Alertscontainer">
-
                     </div>
                 </div>
             </div>
@@ -123,7 +130,7 @@
                 <input type="password" id="RepeatPSSField" style="width: 40%;">
             </div>
             <div class="USFields">
-                <button id="UpdatePSSBTN">Actualizar contraseña</buttion>
+                <button class="Ayeseributtons" id="UpdatePSSBTN">Actualizar contraseña</buttion>
             </div>
         </div>
         <script src="AdminFunctions.js"></script>

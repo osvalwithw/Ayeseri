@@ -36,11 +36,10 @@ AdminUserviewBtn.addEventListener('click', () =>{
 });
 
 function Openuserview(){
+    let labelusv = document.getElementById('UserviewIsopen');
     if(windowopen && !windowopen.closed){
-        let labelusv = document.getElementById('UserviewIsopen');
-        labelusv.innerHTML = 'Hay una ventana activa!';
         alert("Hay una ventana que esta abierta, cierrala primero antes de abrir otra");
-        windowopen.focus()
+        windowopen.focus();
     } else {
         const params = new URLSearchParams(window.location.search);
         const username = params.get('User');

@@ -6,9 +6,230 @@ html, body {
 
 }
 
-button{
-    cursor: pointer;
+.Windows{
+    background-color: rgba(117, 117, 117, 0.267);
 }
+
+button.Ayeseributtons{
+    cursor: pointer;
+    color: white;
+    border: none;
+    background: linear-gradient(135deg, #0d6efd, #00b4d8);
+    font-weight: 600;
+    font-size: 15px;
+    padding: 12px 14px;
+    border-radius: 12px;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 12px rgba(0, 174, 255, 0.25);
+    letter-spacing: 0.5px;
+}
+
+.Ayeseributtons:hover{
+    background: linear-gradient(135deg, #0077b6, #48cae4);
+    transform: translateY(-2px);
+    box-shadow: 0 8px 20px rgba(0, 174, 255, 0.35);
+}
+
+.Ayeseributtons:active{
+    transform: scale(0.97);
+    box-shadow: 0 2px 6px rgba(0, 174, 255, 0.3);
+}
+
+input, textarea{
+    width: 80%;
+    padding: 12px 16px;
+    margin: 8px 0;
+    border: 2px solid transparent;
+    border-radius: 12px;
+    background: rgba(255, 255, 255, 0.15);
+    backdrop-filter: blur(8px);
+    color: #e0f7fa;
+    font-size: 15px;
+    font-weight: 500;
+    transition: all 0.3s ease;
+    outline: none;
+    box-shadow: 0 2px 8px rgba(0, 174, 255, 0.2);
+}
+
+input::placeholder, textarea::placeholder{
+    color: rgba(255, 255, 255, 0.6);
+    font-weight: 400;
+}
+
+input:hover, textarea.submenu:hover{
+    border-color: rgba(0, 174, 255, 0.4);
+    background: rgba(0, 0, 0, 0.2);
+}
+
+input:focus, textarea:focus{
+    border-color: #094855;
+    background: rgba(255,255,255, 0.25);
+    box-shadow: 0 0 10px rgba(0, 174, 255, 0.4)
+}
+
+select{
+    width: 100%;
+    padding: 12px 16px;
+    margin: 8px 0;
+    border: 2px solid transparent;
+    border-radius: 12px;
+    background: rgba(255, 255, 255, 0.15);
+    backdrop-filter: blur(8px);
+    color: #e0f7fa;
+    font-size: 15px;
+    font-weight: 500;
+    transition: all 0.3s ease;
+    outline: none;
+    appearance: none;
+    cursor: pointer;
+    box-shadow: 0 2px 8px rgba(0, 174, 255, 0.2);
+    background-image: linear-gradient(45deg, transparent 50% #00b4d8 50%);
+    background-position: calc(100% - 20px) calc(1em + 4px);
+    background-size: 5px 5px, 5px 5px; 
+    background-repeat: no-repeat;
+}
+
+select:hover{
+    border-color: rgba(5, 104, 150, 0.4);
+    background: rgba(255, 255, 255, 0.4);
+}
+
+select:focus{
+    border-color: #00b4d8;
+    background: rgba(255, 255, 255, 0.25);
+    box-shadow: 0 0 10px rgba(0, 174, 255, 0.4);
+}
+
+select option{
+    background: #001d3d;
+    color: #e0f7fa;
+    font-weight: 500;
+    padding: 8px;
+    border: none;
+}
+
+select:focus option {
+    transition: background 0.2s ease;
+}
+
+select option:hover{
+    background: #0077b6;
+}
+
+input[type="checkbox"]{
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    cursor:pointer;
+    user-select: none;
+    color: #e0f7fa;
+    font-weight: 500;
+    font-size: 15px;
+    width: 22px;
+    height: 22px;
+    border: 2px solid rgba(0, 174, 255, 0.4);
+    border-radius: 6px;
+    background: rgba(255, 255, 255, 0.15);
+    backdrop-filter: blur(6px);
+    transition: all 0.3s ease;
+    position: relative;
+    box-shadow: 0 2px 6px rgba(0, 174, 255, 0.25);
+}
+
+input[type="checkbox"]:hover{
+    border-color: #00b4d8;
+    box-shadow: 0 0 6px rgba(0, 174, 255, 0.4);
+}
+
+input[type="checkbox"]:checked{
+    background: linear-gradient(135deg, #0d6fed, #00b4d8);
+    border-color: transparent;
+    box-shadow: 0 0 10px rgba(0, 174, 255, 0.5);
+}
+
+input[type="checkbox"]:checked::after{
+    content: '';
+    position:absolute;
+    top: 1px;
+    left: 4px;
+    color: white;
+    font-size: 16px;
+    font-weight: bold;
+}
+
+input[type="checkbox"]:active{
+    transform: scale(0.9);
+}
+
+
+/* Tabla */
+.Tablesformat {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 14.5px;
+  color: #e6faff;
+}
+
+.Tablesformat thead th {
+  position: sticky;
+  top: 0;
+  z-index: 2;
+  text-align: left;
+  font-weight: 700;
+  letter-spacing: 0.4px;
+  background: linear-gradient(180deg, rgba(0,20,40,0.7), rgba(0,60,100,0.65));
+  color: #ffffff;
+  padding: 14px 16px;
+  border-bottom: 1px solid rgba(0,174,255,0.35);
+}
+
+.Tablesformat td {
+  padding: 12px 16px;
+  border-bottom: 1px solid rgba(255,255,255,0.08);
+}
+
+.Tablesformat tbody tr:nth-child(odd) { background: rgba(255,255,255,0.04); }
+.Tablesformat tbody tr:hover { background: rgba(0,174,255,0.10); }
+
+.AyeseriRowSelect input[type="checkbox"] {
+  width: 18px; height: 18px; cursor: pointer; accent-color: #00b4d8;
+}
+.Tablesformat tr.selected { background: rgba(0,174,255,0.18); }
+
+.Tablesformat--comfy  td { padding: 14px 18px; }
+.Tablesformat--dense  td { padding: 8px 12px;  font-size: 13.5px; }
+
+/* @media (max-width: 820px) {
+  .Tablesformat thead { display: none; }
+  .Tablesformat, .Tablesformat tbody, .Tablesformat tr, .Tablesformat td { display: block; width: 100%; }
+  .Tablesformat tr { margin: 10px 10px; border: 1px solid rgba(0,174,255,0.2); border-radius: 12px; overflow: hidden; }
+  .Tablesformat td {
+    padding: 10px 14px; position: relative;
+    display: grid; grid-template-columns: 35% 1fr; gap: 8px;
+  }
+  .Tablesformat td::before {
+    content: attr(data-label);
+    color: #9bdaf0; font-weight: 600;
+  }
+ 
+} */
+
+.AyeseriHeaders {
+  top: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
+  padding: 14px 30px;
+  background: rgba(0, 25, 55, 0.3);
+  backdrop-filter: blur(10px);
+  border-radius: 10px;
+  border-bottom: 1px solid rgba(0, 174, 255, 0.25);
+  box-shadow: 0 2px 20px rgba(0, 174, 255, 0.15);
+  color: white;
+  width: 90%;
+}
+
 /*-------------Barra de inicio---------------------------------------------*/
 
 ul.MbItems {
@@ -135,14 +356,14 @@ li a:hover,
     background-color: rgba(255, 0, 0, 0.738);
 }
 
-input[readonly], #NewPSSField, #RepeatPSSField{
+/* input[readonly], #NewPSSField, #RepeatPSSField{
     background-color: rgba(255, 255, 255, 0.267);
     border: none;
     color: white;
     padding: 8px;
     width: 100%;
     box-sizing: border-box;
-}
+} */
 
 .USFields{
     flex: 1;
@@ -178,11 +399,27 @@ input[readonly], #NewPSSField, #RepeatPSSField{
     .column{
         flex: 1;
     }
+
+    .Errcolumn{
+        flex: 1;
+    }
+
+    .ErrosTimeModule{
+        flex-direction: column;
+    }
 }
 
 @media (max-width: 999px){
     .PSSTools{
         margin-top: 40px;
+    }
+
+    .ErrosTimeModule{
+        flex-direction: row;
+    }
+
+    #linejump{
+        display: none;
     }
 }
 
@@ -202,7 +439,7 @@ div.MainErrorsWindow{
     gap:20px;
     text-align: center;
     align-items: center;
-    background-color: rgba(0, 255, 145, 0.315);
+    /* background-color: rgba(0, 255, 145, 0.315); */
 }
 
 .ErrorsLoadWindow p{
@@ -212,11 +449,11 @@ div.MainErrorsWindow{
     color:#ffffff;
 }
 
-.ErrorsLoadWindow input{
+/* .ErrorsLoadWindow input{
     padding:10px;
     max-width: 80%;
     max-height: 15px;
-}
+} */
 
 .ErrorsLoadWindow button{
     padding: 10px 14px;
@@ -224,13 +461,35 @@ div.MainErrorsWindow{
 }
 
 .ErrosTimeModule{
-    flex: 1;
     display:flex;
-    flex-direction: column;
     align-items: left;
     gap: 20px;
     margin-top: 40px; 
-    background-color: rgba(191, 255, 0, 0.267);
+    /* background-color: rgba(191, 255, 0, 0.267); */
+}
+
+div.section{
+    flex:2;
+    background-color: #3d3d3d3a;
+    display: flex;
+    gap: 5px;
+    padding-left: 10px;
+    border-radius: 5px;
+    max-height: fit-content;
+}
+
+.section p{
+    color:#ffffff;
+    font-weight: bold;
+    font-size: 18px;
+}
+
+.Errcolumn{
+    padding: 20px;
+    min-width: 0;
+    border-radius: 10px;
+    box-sizing: border-box;
+    box-shadow: 0 4px 8px 0 ;
 }
 /*-----------------------------------------------------------------------------*/
 div.usercreation-window{
@@ -241,6 +500,9 @@ div.usercreation-window{
 }
 
 .column{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
     padding: 20px;
     min-width: 0;
     border-radius: 10px;
@@ -251,7 +513,7 @@ div.usercreation-window{
 .Pending-tickets{
     flex:2;
     text-align: center;
-    background-color: rgba(17, 0, 255, 0.315);
+    /* background-color: rgba(17, 0, 255, 0.315); */
     overflow-x: auto;
 }
 
@@ -261,10 +523,10 @@ div.usercreation-window{
     align-items: center;
     gap: 20px;
     margin-top: 40px; 
-    background-color: rgba(0, 102, 255, 0.267);
+    /* background-color: rgba(0, 102, 255, 0.267); */
 }
 
-.PendingTicketsTable{
+/* .PendingTicketsTable{
     border-collapse: collapse;
 }
 
@@ -273,10 +535,35 @@ div.usercreation-window{
     border: 1px solid #ccc;
     padding: 8px 12px;
     text-align: left;
-}
+} */
 
 .PT_Tools #Comment{
     resize: none;
+}
+
+#Deny{
+    cursor: pointer;
+    color: white;
+    border: none;
+    background: linear-gradient(135deg, #fd0d0d, #d83200);
+    font-weight: 600;
+    font-size: 15px;
+    padding: 12px 14px;
+    border-radius: 12px;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 12px rgba(255, 0, 0, 0.25);
+    letter-spacing: 0.5px;
+}
+
+#Deny:hover{
+    background: linear-gradient(135deg, #b60000, #e44d48);
+    transform: translateY(-2px);
+    box-shadow: 0 8px 20px rgba(0, 174, 255, 0.35);
+}
+
+#Deny:active{
+    transform: scale(0.97);
+    box-shadow: 0 2px 6px rgba(255, 0, 0, 0.3);
 }
 
 /*---------------------------------------------------------------------------------------------*/
@@ -291,11 +578,11 @@ div.PSSMaintenanceWindow{
 .PSSInfo{
     flex:2;
     text-align: center;
-    background-color: rgba(255, 234, 0, 0.315);
+    /* background-color: rgba(255, 234, 0, 0.315); */
     overflow-x: auto;
 }
 
-.ActiveUsersTable{
+/* .ActiveUsersTable{
     border-collapse: collapse;
     width: 100%;
 }
@@ -305,16 +592,37 @@ div.PSSMaintenanceWindow{
     border: 1px solid #ccc;
     padding: 8px 12px;
     text-align: left;
-}
+} */
 
 .PSSTools{
-    background-color: rgba(136, 255, 0, 0.267);
+    /* background-color: rgba(136, 255, 0, 0.267); */
     display:flex;
     flex-direction: column;
     align-items: center;
     gap: 20px;
 }
 
+.Actionbuttons{
+    display: flex;
+    flex-direction: row;
+    gap: 20px;
+}
+
 .UsersWindow{
-    
+    justify-content: center;
+    position: fixed; 
+    top: 50%;        
+    left: 50%;       
+    transform: translate(-50%, -50%); 
+    height: fit-content;
+    width: 500px;
+    max-height: 140px;
+    z-index: 2; 
+    /* background: rgba(71, 72, 165, 0.9);  */
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.37);
+    border-radius: 10px;
+    text-align: center;
+    color: #ffffff;
+    backdrop-filter: blur(5px);
+    -webkit-backdrop-filter: blur(20px);
 }
