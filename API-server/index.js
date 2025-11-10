@@ -275,7 +275,7 @@ app.post('/api/ThinkingMethod', async (req, res) => {
   console.log(`Recibida pregunta para la IA: "${query}"`);
 
   try {
-    const aiServiceResponse = await axios.post('https://oswal2-ayeseri-is-thinking.hf.space/ThinkingMethod', {
+    const aiServiceResponse = await axios.post('https://fuzzy-space-yodel-7vg64wj76gr2p75j-5002.app.github.dev/ThinkingMethod', {
       query: query  // Envio
     });
 
