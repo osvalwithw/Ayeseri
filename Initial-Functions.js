@@ -347,7 +347,7 @@ async function Ticket_email(){
 
                     Muchas gracias y que tengas buen dia!. :D
     `;
-    // Useremail = Email_send(Emailtosend, ticket_subject, ticket_message);
+    Useremail = Email_send(Emailtosend, ticket_subject, ticket_message);
 }
 
 //---------------------------------------------------------------------------------------------------------------------------------------

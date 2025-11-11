@@ -139,7 +139,7 @@ async function bringtickets(){
             return res.json();
     })
     .then(data => {
-    console.log(data);
+    // console.log(data);
         if(data.length == 0){
             document.getElementById('TableItems').style.display = "none";
         }
@@ -174,7 +174,7 @@ function printingtickets(data){
         let insertline = document.createElement('tr');
         insertline.innerHTML=`
             <td><input class="DBRequestContent" id="Checkbox_${item.id}" type="checkbox" value=${item.id}></td>
-            <td>${item.NoTicket}</td>
+            <td class="ticket">${item.NoTicket}</td>
             <td class="User_Row" id="User_${item.id}">${item.User}</td>
             <td class="Email_Row" id="Email_${item.id}">${item.Email}</td>
             <td class="Pss_row">${item.Psswd}</td>
@@ -195,11 +195,13 @@ tablaBody.addEventListener('change', function(event) {
         if (checkbox.checked) {
             const fila = checkbox.closest('tr');
             const usuario = fila.querySelector('.User_Row').textContent;
+            const ticket = fila.querySelector('.ticket').textContent;
             const email = fila.querySelector('.Email_Row').textContent;
             const pss = fila.querySelector('.Pss_row').textContent;
             const role = fila.querySelector('.Rolselection').value;
             const infoTicket = {
                 id: ticketId,
+                req: ticket,
                 usuario: usuario,
                 email: email,
                 pss: pss,
@@ -209,7 +211,7 @@ tablaBody.addEventListener('change', function(event) {
         } else {
             SelectTickets = SelectTickets.filter(ticket => ticket.id !== ticketId);
         }
-        console.log("Tickets seleccionados actualmente:", SelectTickets);
+        // console.log("Tickets seleccionados actualmente:", SelectTickets);
     }
 });
 
@@ -218,7 +220,12 @@ async function ProcessTickets(OPC){
         alert("No Tickets selected, please select at least one to proceed");
         return;
     }
-    console.log("Enviando este cuerpo JSON a la API:", JSON.stringify({ SendTickets:SelectTickets}, null, 2));
+    Resolution_email(OPC);
+    BDProcessing(OPC);
+}
+
+async function BDProcessing(OPC){
+    // console.log("Enviando este cuerpo JSON a la API:", JSON.stringify({ SendTickets:SelectTickets}, null, 2));
     try {
         const respuesta = await fetch(`https://ayeseri.onrender.com/CreateUsers/${OPC}`, {
             method: 'POST', 
@@ -248,9 +255,78 @@ async function NoProcessUser(){
     }
     if(confirm("¿Seguro que quieres eliminar al/los empleado(s) seleccionado(s)?")){
         console.log(":)")
-        ProcessTickets(2);
+        Resolution_email(2);
+        BDProcessing(2);
     } else {
         return;
+    }
+}
+
+async function Email_send(dest, asun, mensj){ 
+    try {
+        const res = await fetch('https://ayeseri.onrender.com/Emails/SendEmail', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            to: dest,
+            subject: asun,
+            message: mensj
+          })
+        });
+ 
+        const data = await res.json();
+        if (res.ok) {
+          alert(`Correo enviado a ${data.sent_to}`);
+        } else {
+          alert(`Error: ${data.error}`);
+        }
+      } catch (e) {
+        console.error(e);
+        alert('Error inesperado, intentelo mas tarde');
+        return 404;
+      }
+}
+
+//Enviar correo al decidir una accion
+async function Resolution_email(EmailOPC){
+    const CommentstoUsers = document.getElementById('Comment').value;
+    if(EmailOPC === 1){
+        SelectTickets.forEach(element =>{
+            // console.log(CommentstoUsers);
+            Confirmationsubject = `Seguimiento de ticket ${element.req}`;
+            confirmationmessage = `Su nueva cuenta de Ayeseri esta lista para su uso con los siguientes parametros:
+
+                            Nombre de usuario:  ${element.usuario}
+                            Correo asociado:    ${element.email}
+                            Contraseña:         Anotada por el usuario :)
+
+                        Observaciones: ${CommentstoUsers}
+                        
+                        Si necesita corregir informacion antes de proceder, acude con el administrador a la brevedad antes de las 10 AM hora del pacifico.
+
+                        Muchas gracias y que tengas buen dia!. :D
+        `;
+        // console.log(Confirmationsubject);
+        // console.log(confirmationmessage);
+        Useremail = Email_send(element.email, Confirmationsubject, confirmationmessage);
+        });
+    } else {
+        SelectTickets.forEach(element =>{
+            // console.log(CommentstoUsers);
+            Confirmationsubject = `Seguimiento de ticket ${element.req}`;
+            confirmationmessage = `Se ha rechazado la creacion de la siguiente cuenta por los siguientes motivos:
+
+                            Nombre de usuario:  ${element.usuario}
+                            Correo asociado:    ${element.email}
+                                    
+                        Observaciones: ${CommentstoUsers}
+                        
+                        Muchas gracias y que tengas buen dia!. :D
+        `;
+        // console.log(Confirmationsubject);
+        // console.log(confirmationmessage);
+        Useremail = Email_send(element.email, Confirmationsubject, confirmationmessage);
+        });
     }
 }
 
